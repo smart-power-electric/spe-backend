@@ -106,12 +106,12 @@ export class ClientRepository
       .from(clients)
       .execute();
 
-      return {
-        data,
-        total: countQuery[0].total,
-        offset,
-        limit,
-      };
+    return {
+      data,
+      total: countQuery[0].total,
+      offset,
+      limit,
+    };
   }
 
   async create(

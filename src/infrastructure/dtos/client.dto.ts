@@ -45,12 +45,6 @@ export class ClientDto {
     description: 'Zip code of client',
   })
   zip?: string | null;
-  @ApiPropertyOptional({
-    type: 'string',
-    example: 'Country',
-    description: 'Country of client',
-  })
-  country?: string | null;
 
   constructor(
     id: number,

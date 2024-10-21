@@ -10,8 +10,10 @@ import { DrizzleDb } from 'src/commons/database/drizzleDb';
 import { CreateClientHandler } from './commands/handlers/create-client.handler';
 import { GetClientHandler } from './queries/handlers/get-client.handler';
 import { GetAllClientHandler } from './queries/handlers/get-all-client.handler';
+import { UpdateClientHandler } from './commands/handlers/update-client.handler';
+import { DeleteClientHandler } from './commands/handlers/delete-client.handler';
 
-export const CommandHandlers = [CreateClientHandler];
+export const CommandHandlers = [CreateClientHandler, UpdateClientHandler, DeleteClientHandler];
 export const QueryHandlers = [GetClientHandler, GetAllClientHandler];
 
 @Module({

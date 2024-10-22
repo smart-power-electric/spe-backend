@@ -158,7 +158,7 @@ export class ServiceController {
     description: 'Invalid parameters',
     type: ErrorFormat,
   })
-  async updateClien(
+  async updateService(
     @Req() req: Request,
     @Param('id') id: number,
     @Body(new ZodValidationPipe(updateServiceSchema)) body: CreateServiceRequest,

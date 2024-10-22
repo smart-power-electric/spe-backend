@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class ServiceDto {
-  @ApiProperty({ type: 'integer', example: 1, description: 'Id of service' })
+  @ApiProperty({ type: Number, example: 1, description: 'Id of service' })
   id: number;
   @ApiProperty({
     type: String,

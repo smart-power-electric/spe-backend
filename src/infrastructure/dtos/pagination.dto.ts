@@ -4,21 +4,21 @@ export class Pagination<T> {
   @ApiProperty({ type: [Object], description: 'Data' })
   data: T[];
   @ApiProperty({
-    type: 'integer',
+    type: Number,
     description: 'Offset',
     default: 0,
     nullable: true,
   })
   offset: number | number;
   @ApiProperty({
-    type: 'integer',
+    type: Number,
     description: 'Limit',
     default: 10,
     nullable: true,
   })
   limit: number | null;
   @ApiProperty({
-    type: 'integer',
+    type: Number,
     description: 'Total',
     default: 0,
   })

@@ -13,12 +13,14 @@ import { LoggingMiddleware } from './commons/logging/logging.middleware';
 import { LoggingService } from './commons/logging/logging.service';
 import { VersionController } from './version/version.controller';
 import { ServiceModule } from './service/service.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
-    ClientModule,
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
+    ClientModule,
     ServiceModule,
+    ProjectModule,
   ],
   controllers: [AppController, VersionController],
   providers: [

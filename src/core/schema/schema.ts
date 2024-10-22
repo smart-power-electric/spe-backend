@@ -37,8 +37,8 @@ export const projects = main.table(
     name: varchar(),
     description: text(),
     location: varchar(),
-    startDate: date('start_date'),
-    endDate: date('end_date'),
+    startDate: date('start_date', { mode: 'date' }),
+    endDate: date('end_date', { mode: 'date' }),
     createdAt: timestamp('created_at', {
       precision: 6,
       withTimezone: true,

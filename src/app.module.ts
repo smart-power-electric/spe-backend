@@ -12,11 +12,13 @@ import { ILogger } from './commons/logging/logger.interface';
 import { LoggingMiddleware } from './commons/logging/logging.middleware';
 import { LoggingService } from './commons/logging/logging.service';
 import { VersionController } from './version/version.controller';
+import { ServiceModule } from './service/service.module';
 
 @Module({
   imports: [
     ClientModule,
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
+    ServiceModule,
   ],
   controllers: [AppController, VersionController],
   providers: [

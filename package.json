@@ -1,20 +1,21 @@
 {
-  "name": "spe-backend",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "name": "smart_power_electric_backend",
+  "description": "Documentation for the Smart Power Electric Backend",
+  "version": "1.0.0",
+  "author": "Raymel Ramos Guerra",
+  "license": "MIT",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
+    "compodoc": "compodoc -p tsconfig.json -d ./documentation -c compodoc.config.json",
     "build:prod": "npm run apiv && tsc --noEmit &&  nest build && npm run sentry:sourcemaps && npm run sentry:sourcemaps",
-    "build": "npm run apiv && tsc --noEmit &&  nest build",
+    "build": "npm run compodoc && npm run apiv && tsc --noEmit &&  nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format-check": "prettier --check \"src**/*.ts\" \"test/**/*.ts\"",
-    "start": "tsc --noEmit && nest start",
-    "start:warnings": "tsc --noEmit && nest build && node --trace-warnings dist/main",
-    "start:dev": "tsc --noEmit && nest start -b swc -w --debug",
-    "start:debug": "tsc --noEmit && nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start": "npm run compodoc && tsc --noEmit && nest start",
+    "start:warnings": "npm run compodoc && tsc --noEmit && nest build && node --trace-warnings dist/main",
+    "start:dev": "npm run compodoc && tsc --noEmit && nest start -b swc -w --debug",
+    "start:debug": "npm run compodoc && tsc --noEmit && nest start --debug --watch",
+    "start:prod": "npm run compodoc && node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "lint-fix": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "jest",
@@ -28,7 +29,9 @@
     "dbcheck": "drizzle-kit check --config=./mx.drizzle.config.ts",
     "dbdrop": "drizzle-kit drop --config=./mx.drizzle.config.ts",
     "gensdk": "npx openapi-generator-cli generate --generator-key v3.0 v2.0 -g typescript-axios -i https://localhost:3000/v1/api-json -o ./src/services/communication/sdk",
-    "apiv": "node ./scripts/generate_apiversion.js"
+    "apiv": "node ./scripts/generate_apiversion.js",
+    "foldering:w": "cmd /c .\\scripts\\foldering.bat",
+    "foldering:l": "bash ./scripts/foldering.sh"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -55,6 +58,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.26",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",

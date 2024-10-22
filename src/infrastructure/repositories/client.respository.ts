@@ -20,43 +20,10 @@ export class ClientRepository
 
   async getAll(
     ctx: Context,
-    filter: Partial<
-      Partial<
-        Omit<
-          {
-            name: string | null;
-            id: number;
-            address: string | null;
-            contact: string | null;
-            email: string | null;
-            phone: string | null;
-            city: string | null;
-            state: string | null;
-            zip: string | null;
-            createdAt: Date | null;
-            updatedAt: Date | null;
-          },
-          'id'
-        >
-      >
-    >,
+    filter: Partial<Partial<Omit<Client, 'id'>>>,
     offset: number,
     limit: number,
-  ): Promise<
-    Pagination<{
-      name: string | null;
-      id: number;
-      address: string | null;
-      contact: string | null;
-      email: string | null;
-      phone: string | null;
-      city: string | null;
-      state: string | null;
-      zip: string | null;
-      createdAt: Date | null;
-      updatedAt: Date | null;
-    }>
-  > {
+  ): Promise<Pagination<Client>> {
     this.logger.info(
       ctx,
       `${ClientRepository.name}.${this.getAll.name} called`,
@@ -116,37 +83,8 @@ export class ClientRepository
 
   async create(
     ctx: Context,
-    data: Partial<
-      Omit<
-        {
-          name: string | null;
-          id: number;
-          address: string | null;
-          contact: string | null;
-          email: string | null;
-          phone: string | null;
-          city: string | null;
-          state: string | null;
-          zip: string | null;
-          createdAt: Date | null;
-          updatedAt: Date | null;
-        },
-        'id'
-      >
-    >,
-  ): Promise<{
-    name: string | null;
-    id: number;
-    address: string | null;
-    contact: string | null;
-    email: string | null;
-    phone: string | null;
-    city: string | null;
-    state: string | null;
-    zip: string | null;
-    createdAt: Date | null;
-    updatedAt: Date | null;
-  } | null> {
+    data: Partial<Omit<Client, 'id'>>,
+  ): Promise<Client | null> {
     this.logger.info(
       ctx,
       `${ClientRepository.name}.${this.create.name} called`,
@@ -164,37 +102,8 @@ export class ClientRepository
   async update(
     ctx: Context,
     id: number,
-    data: Partial<
-      Omit<
-        {
-          name: string | null;
-          id: number;
-          address: string | null;
-          contact: string | null;
-          email: string | null;
-          phone: string | null;
-          city: string | null;
-          state: string | null;
-          zip: string | null;
-          createdAt: Date | null;
-          updatedAt: Date | null;
-        },
-        'id'
-      >
-    >,
-  ): Promise<{
-    name: string | null;
-    id: number;
-    address: string | null;
-    contact: string | null;
-    email: string | null;
-    phone: string | null;
-    city: string | null;
-    state: string | null;
-    zip: string | null;
-    createdAt: Date | null;
-    updatedAt: Date | null;
-  } | null> {
+    data: Partial<Omit<Client, 'id'>>,
+  ): Promise<Client | null> {
     this.logger.info(
       ctx,
       `${ClientRepository.name}.${this.update.name} called`,
@@ -202,7 +111,7 @@ export class ClientRepository
     const query = await this.db
       .getDb()
       .update(clients)
-      .set(data)
+      .set({ ...data, updatedAt: new Date() })
       .where(eq(clients.id, id))
       .returning()
       .execute();
@@ -210,22 +119,7 @@ export class ClientRepository
     return query ? query[0] : null;
   }
 
-  async delete(
-    ctx: Context,
-    id: number,
-  ): Promise<{
-    name: string | null;
-    id: number;
-    address: string | null;
-    contact: string | null;
-    email: string | null;
-    phone: string | null;
-    city: string | null;
-    state: string | null;
-    zip: string | null;
-    createdAt: Date | null;
-    updatedAt: Date | null;
-  } | null> {
+  async delete(ctx: Context, id: number): Promise<Client | null> {
     this.logger.info(
       ctx,
       `${ClientRepository.name}.${this.delete.name} called`,
@@ -240,22 +134,7 @@ export class ClientRepository
     return query ? query[0] : null;
   }
 
-  async getById(
-    ctx: Context,
-    id: number,
-  ): Promise<{
-    name: string | null;
-    id: number;
-    address: string | null;
-    contact: string | null;
-    email: string | null;
-    phone: string | null;
-    city: string | null;
-    state: string | null;
-    zip: string | null;
-    createdAt: Date | null;
-    updatedAt: Date | null;
-  } | null> {
+  async getById(ctx: Context, id: number): Promise<Client | null> {
     this.logger.info(
       ctx,
       `${ClientRepository.name}.${this.getById.name} called`,

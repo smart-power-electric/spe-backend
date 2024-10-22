@@ -21,41 +21,37 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { ILogger } from 'src/commons/logging/logger.interface';
-import {
-  ClientDto,
-  ClientFilterQuery,
-  CreateClientRequest,
-} from 'src/infrastructure/dtos/client.dto';
 import { Pagination } from 'src/infrastructure/dtos/pagination.dto';
 import { Request } from 'express';
-import { GetAllClientQuery } from './queries/get-all-client.query';
-import { CreateClientCommand } from './commands/create-client.command';
-import { createClientSchema, updateClientSchema } from 'src/infrastructure/validators/client.zod';
 import { ZodValidationPipe } from 'src/commons/pipes/ZodValidationPipe';
 import { ErrorFormat } from 'src/commons/http-exception/Error.entity';
-import { GetClientQuery } from './queries/get-client.query';
-import { UpdateClientCommand } from './commands/update-client.command';
-import { DeleteClientCommand } from './commands/delete-client.command';
+import { CreateServiceRequest, ServiceDto, ServiceFilterQuery } from 'src/infrastructure/dtos/service.dto';
+import { GetAllServiceQuery } from './queries/get-all-service.query';
+import { createServiceSchema, updateServiceSchema } from 'src/infrastructure/validators/service.zod';
+import { CreateServiceCommand } from './commands/create-service.command';
+import { GetServiceQuery } from './queries/get-service.query';
+import { UpdateServiceCommand } from './commands/update-service.command';
+import { DeleteServiceCommand } from './commands/delete-service.command';
 
-@Controller('clients')
-@ApiTags('Client')
-export class ClientController {
+@Controller('services')
+@ApiTags('Service')
+export class ServiceController {
   constructor(
     @Inject(ILogger) private readonly logger: ILogger,
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {
-    this.logger.init(ClientController.name, 'info');
+    this.logger.init(ServiceController.name, 'info');
   }
 
   @Get()
   @ApiOperation({
     summary:
-      'Get the paginated list of clients. The default limit is 20 and the default offset is 0.',
+      'Get the paginated list of services. The default limit is 20 and the default offset is 0.',
   })
   @ApiOkResponse({
-    description: 'List of clients',
-    type: Pagination<ClientDto>,
+    description: 'List of services',
+    type: Pagination<ServiceDto>,
   })
   @ApiQuery({
     name: 'offset',
@@ -73,91 +69,91 @@ export class ClientController {
     description: 'Invalid query parameters',
     type: ErrorFormat,
   })
-  async findAllClient(
+  async findAllService(
     @Req() req: Request,
-    @Query() queryParams: ClientFilterQuery,
+    @Query() queryParams: ServiceFilterQuery,
     @Query('offset') offset: number = 0,
     @Query('limit') limit: number = 20,
-  ): Promise<Pagination<ClientDto>> {
+  ): Promise<Pagination<ServiceDto>> {
     const ctx = req.appContext;
     this.logger.info(
       ctx,
-      `${ClientController.name}.findAll`,
+      `${ServiceController.name}.findAll`,
       `queryParams: ${JSON.stringify(queryParams)}`,
     );
     return this.queryBus.execute(
-      new GetAllClientQuery(ctx, queryParams, offset, limit),
+      new GetAllServiceQuery(ctx, queryParams, offset, limit),
     );
   }
 
   @Post()
   @ApiOperation({
-    summary: 'Create a new client',
+    summary: 'Create a new service',
   })
   @ApiOkResponse({
-    description: 'Client created',
-    type: ClientDto,
+    description: 'Service created',
+    type: ServiceDto,
   })
-  @ApiBody({ type: CreateClientRequest, description: 'Client data' })
+  @ApiBody({ type: CreateServiceRequest, description: 'Service data' })
   @ApiBadRequestResponse({
     description: 'Invalid query parameters',
     type: ErrorFormat,
   })
-  async createClient(
+  async createService(
     @Req() req: Request,
-    @Body(new ZodValidationPipe(createClientSchema)) body: CreateClientRequest,
-  ): Promise<ClientDto> {
+    @Body(new ZodValidationPipe(createServiceSchema)) body: CreateServiceRequest,
+  ): Promise<ServiceDto> {
     const ctx = req.appContext;
     this.logger.info(
       ctx,
-      `${ClientController.name}.create`,
+      `${ServiceController.name}.create`,
       `queryParams: ${JSON.stringify(body)}`,
     );
-    return this.commandBus.execute(new CreateClientCommand(ctx, body));
+    return this.commandBus.execute(new CreateServiceCommand(ctx, body));
   }
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Get a client by id',
+    summary: 'Get a service by id',
   })
   @ApiOkResponse({
-    description: 'Client found',
-    type: ClientDto,
+    description: 'Service found',
+    type: ServiceDto,
   })
   @ApiParam({
     name: 'id',
     type: Number,
     required: true,
-    description: 'Client id',
+    description: 'Service id',
   })
   @ApiBadRequestResponse({
     description: 'Invalid query parameters',
     type: ErrorFormat,
   })
-  async findClientById(
+  async findServiceById(
     @Req() req: Request,
     @Param('id') id: number,
-  ): Promise<ClientDto> {
+  ): Promise<ServiceDto> {
     const ctx = req.appContext;
-    this.logger.info(ctx, `${ClientController.name}.findById`, `id: ${id}`);
-    return this.queryBus.execute(new GetClientQuery(ctx, id));
+    this.logger.info(ctx, `${ServiceController.name}.findById`, `id: ${id}`);
+    return this.queryBus.execute(new GetServiceQuery(ctx, id));
   }
 
   @Patch(':id')
   @ApiOperation({
-    summary: 'Update a client by id',
+    summary: 'Update a service by id',
   })
   @ApiOkResponse({
-    description: 'Client updated',
-    type: ClientDto,
+    description: 'Service updated',
+    type: ServiceDto,
   })
   @ApiParam({
     name: 'id',
     type: Number,
     required: true,
-    description: 'Client id',
+    description: 'Service id',
   })
-  @ApiBody({ type: CreateClientRequest, description: 'Client data' })
+  @ApiBody({ type: CreateServiceRequest, description: 'Service data' })
   @ApiBadRequestResponse({
     description: 'Invalid parameters',
     type: ErrorFormat,
@@ -165,41 +161,41 @@ export class ClientController {
   async updateClien(
     @Req() req: Request,
     @Param('id') id: number,
-    @Body(new ZodValidationPipe(updateClientSchema)) body: CreateClientRequest,
-  ): Promise<ClientDto> {
+    @Body(new ZodValidationPipe(updateServiceSchema)) body: CreateServiceRequest,
+  ): Promise<ServiceDto> {
     const ctx = req.appContext;
     this.logger.info(
       ctx,
-      `${ClientController.name}.updateById`,
+      `${ServiceController.name}.updateById`,
       `id: ${id}, body: ${JSON.stringify(body)}`,
     );
-    return this.commandBus.execute(new UpdateClientCommand(ctx, id, body));
+    return this.commandBus.execute(new UpdateServiceCommand(ctx, id, body));
   }
 
   @Delete(':id')
   @ApiOperation({
-    summary: 'Delete a client by id',
+    summary: 'Delete a service by id',
   })
   @ApiOkResponse({
-    description: 'Client deleted',
-    type: ClientDto,
+    description: 'Service deleted',
+    type: ServiceDto,
   })
   @ApiParam({
     name: 'id',
     type: Number,
     required: true,
-    description: 'Client id',
+    description: 'Service id',
   })
   @ApiBadRequestResponse({
     description: 'Invalid parameters',
     type: ErrorFormat,
   })
-  async deleteClient(
+  async deleteService(
     @Req() req: Request,
     @Param('id') id: number,
-  ): Promise<ClientDto> {
+  ): Promise<ServiceDto> {
     const ctx = req.appContext;
-    this.logger.info(ctx, `${ClientController.name}.deleteById`, `id: ${id}`);
-    return this.commandBus.execute(new DeleteClientCommand(ctx, id));
+    this.logger.info(ctx, `${ServiceController.name}.deleteById`, `id: ${id}`);
+    return this.commandBus.execute(new DeleteServiceCommand(ctx, id));
   }
 }

@@ -181,7 +181,8 @@ export const services = main.table('services', {
     cache: 1,
   }),
   name: varchar(),
-  unitCost: numeric('unit_cost'),
+  unitCost: numeric('unit_cost', { precision: 10, scale: 2 }),
+  description: varchar(),
   createdAt: timestamp('created_at', {
     precision: 6,
     withTimezone: true,

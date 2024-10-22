@@ -15,6 +15,13 @@
       "when": 1729402091001,
       "tag": "0001_reflective_red_shift",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1729551922307,
+      "tag": "0002_charming_black_panther",
+      "breakpoints": true
     }
   ]
 }

@@ -4,43 +4,43 @@ export class ClientDto {
   @ApiProperty({ type: 'integer', example: 1, description: 'Id of client' })
   id: number;
   @ApiProperty({
-    type: 'string',
+    type: String,
     example: 'John Doe',
     description: 'Name of client',
   })
   name: string;
   @ApiProperty({
-    type: 'string',
+    type: String,
     example: 'Email of client',
     description: 'Email of client',
   })
   email: string;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: '1234567890',
     description: 'Phone number of client',
   })
   phone?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: '123 Main St',
     description: 'Address of client',
   })
   address?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: 'City',
     description: 'City of client',
   })
   city?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: 'State',
     description: 'State of client',
   })
   state?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: '12345',
     description: 'Zip code of client',
   })
@@ -69,43 +69,43 @@ export class ClientDto {
 
 export class CreateClientRequest {
   @ApiProperty({
-    type: 'string',
+    type: String,
     example: 'John Doe',
     description: 'Name of client',
   })
   name: string;
   @ApiProperty({
-    type: 'string',
+    type: String,
     example: 'Email of client',
     description: 'Email of client',
   })
   email: string;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: '1234567890',
     description: 'Phone number of client',
   })
   phone?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: '123 Main St',
     description: 'Address of client',
   })
   address?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: 'City',
     description: 'City of client',
   })
   city?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: 'State',
     description: 'State of client',
   })
   state?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     example: '12345',
     description: 'Zip code of client',
   })
@@ -133,39 +133,39 @@ export class CreateClientRequest {
 
 export class ClientFilterQuery {
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     description: 'Name of client',
     nullable: true,
   })
   name?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     description: 'Email of client',
     nullable: true,
   })
   email?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     description: 'Phone number of client',
   })
   phone?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     description: 'Address of client',
   })
   address?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     description: 'City of client',
   })
   city?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     description: 'State of client',
   })
   state?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: String,
     description: 'Zip code of client',
   })
   zip?: string | null;

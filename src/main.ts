@@ -12,6 +12,8 @@ import { ConfigService } from '@nestjs/config';
 import { ErrorHandlerFilter } from './commons/http-exception/http-exception.filter';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 declare global {
   namespace Express {
@@ -32,6 +34,7 @@ async function SwaggerSetup(app: INestApplication) {
     deepScanRoutes: true,
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
   };
+
   const configDocumentationV1 = new DocumentBuilder()
     .setTitle('Smart Power Electric API')
     .setDescription('Smart Power Electric API Documentation')
@@ -62,12 +65,18 @@ async function SwaggerSetup(app: INestApplication) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
     origin: '*',
     methods: 'GET,PUT,PATCH,POST,DELETE',
     allowedHeaders: '*',
   });
+
+    // Compodoc documentation
+    app.useStaticAssets(join(__dirname, '..', 'documentation'), {
+      prefix: '/docs', // Ruta expuesta: http://localhost:3000/docs
+    });
+
   const { httpAdapter } = app.get(HttpAdapterHost);
   const globalFilters = new ErrorHandlerFilter(httpAdapter);
   app.useGlobalFilters(globalFilters);

@@ -162,7 +162,7 @@ export class ClientController {
     description: 'Invalid parameters',
     type: ErrorFormat,
   })
-  async updateClien(
+  async updateClient(
     @Req() req: Request,
     @Param('id') id: number,
     @Body(new ZodValidationPipe(updateClientSchema)) body: CreateClientRequest,

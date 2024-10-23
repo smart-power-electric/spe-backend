@@ -5,7 +5,7 @@ import { newContext } from '../app-context/context.entity';
 
 @Injectable()
 export class DrizzleLogger implements Logger {
-  constructor(@Inject(ILogger) private logger: ILogger) {
+  constructor(@Inject(ILogger) private readonly logger: ILogger) {
     this.logger.init(DrizzleLogger.name, 'debug');
     this.logger.info(newContext(), 'DrizzleLogger initialized');
   }

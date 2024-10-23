@@ -1,0 +1,60 @@
+services:
+
+  postgres:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "spe"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "1234"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      start_period: 1m
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    networks:
+          - app-network
+
+  keycloak:
+    image: keycloak/keycloak:26.0
+    environment:
+      - KEYCLOAK_DATABASE_VENDOR=postgresql
+      - KEYCLOAK_DATABASE_HOST=postgres
+      - KEYCLOAK_DATABASE_PORT=15432
+      - KEYCLOAK_DATABASE_NAME=keycloak
+      - KEYCLOAK_DATABASE_USER=admin
+      - KEYCLOAK_DATABASE_PASSWORD=1234
+      # - KEYCLOAK_DATABASE_SCHEMA=public
+      # - KEYCLOAK_JDBC_PARAMS=sslmode=verify-full&connectTimeout=30000
+      - KEYCLOAK_HTTP_PORT=18080
+      - KEYCLOAK_HTTPS_PORT=18443
+      - KEYCLOAK_BIND_ADDRESS=0.0.0.0
+      - KEYCLOAK_ENABLE_HEALTH_ENDPOINTS=true
+      - KEYCLOAK_ENABLE_STATISTICS=true
+    ports:
+      - "18080:8080"
+      - "18443:8443"
+    volumes:
+      - ./keycloak-data:/opt/jboss/keycloak/standalone/data
+      - ./keycloak-logs:/opt/jboss/keycloak/standalone/log
+    networks:
+      - app-network
+volumes:
+  postgres_data:
+    driver: local
+networks:
+  app-network:
+    driver: bridge

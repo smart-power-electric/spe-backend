@@ -44,6 +44,20 @@ services:
       - KEYCLOAK_BIND_ADDRESS=0.0.0.0
       - KEYCLOAK_ENABLE_HEALTH_ENDPOINTS=true
       - KEYCLOAK_ENABLE_STATISTICS=true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:18080/auth/realms/master"]
+      start_period: 1m
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "18080:8080"
       - "18443:8443"

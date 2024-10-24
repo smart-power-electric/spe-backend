@@ -1,1 +1,0 @@
-ALTER TABLE "main"."services" ADD COLUMN "description" varchar;

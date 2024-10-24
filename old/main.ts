@@ -1,5 +1,6 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { UserInfo } from './commons/keycloak/keycloak.entity';
 import {
   DocumentBuilder,
   SwaggerDocumentOptions,
@@ -8,12 +9,11 @@ import {
 import { INestApplication, VersioningType } from '@nestjs/common';
 import { writeFileSync } from 'fs';
 import { ConfigService } from '@nestjs/config';
+import { ErrorHandlerFilter } from './commons/http-exception/http-exception.filter';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { UserLoginInfo } from './common/core/context.entity';
-import { ErrorHandlerFilter } from './common/infrastructure/http/exception/http-exception.filter';
 
 declare global {
   namespace Express {
@@ -22,7 +22,7 @@ declare global {
         startTime: Date;
         requestId: string;
         payload: any;
-        user: UserLoginInfo | null;
+        user: UserInfo | null;
       };
     }
   }

@@ -1,5 +1,4 @@
-import { UserInfo } from "../keycloak/keycloak.entity";
-import { trace, context } from '@opentelemetry/api';
+import { UserInfo } from '../keycloak/keycloak.entity';
 
 /**
  * Context model
@@ -14,17 +13,10 @@ export interface Context {
 }
 
 export function generateContextId(): string {
-  const activeSpan = trace.getSpan(context.active());
-  if (!activeSpan) {
-    return (
-      Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-    );
-  }
-  const traceId = activeSpan.spanContext().traceId;
-  // const spanId = activeSpan.spanContext().spanId;
-  // const traceFlag = activeSpan.spanContext().traceFlags;
-
-  return traceId;
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
 }
 export function newContext(): Context {
   return {

@@ -1,12 +1,40 @@
 services:
+  spe_backend:
+    build:
+      context: ../.
+      dockerfile: ./Dockerfile
+    ports:
+      - ${PORT} # Ensure the port mapping is correct
+    deploy:
+      replicas: 2
+    environment:
+      - NODE_ENV=production
+      - HOST=${HOST}
+      - PORT=${PORT}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_SSL_MODE=${DATABASE_SSL_MODE}
+      - AUTOMIGRATE=${AUTOMIGRATE}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_EXPIRATION_TOKEN=${JWT_EXPIRATION_TOKEN}
+      - JWT_EXPIRATION_REFRESH_TOKEN=${JWT_EXPIRATION_REFRESH_TOKEN}
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+    restart: unless-stopped
 
   postgres:
     image: postgres:latest
     restart: unless-stopped
     environment:
-      POSTGRES_DB: "spe"
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     deploy:
       resources:
         limits:
@@ -22,7 +50,7 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - "15432:5432"
+      - "${DATABASE_PORT}:5432"
     volumes:
       - ./pg_data:/var/lib/postgresql/data
     networks:

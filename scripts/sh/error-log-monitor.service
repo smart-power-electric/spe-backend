@@ -1,0 +1,12 @@
+[Unit]
+Description=Error log monitor for your app
+After=network.target your-app.service
+Requires=your-app.service
+
+[service]
+ExecStart=/root/your-app/log-alert.sh
+Restart=always
+User=user
+
+[Install]
+WantedBy=multi-user.target

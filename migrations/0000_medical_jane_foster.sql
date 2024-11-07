@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS "main"."worker_rates" (
 CREATE TABLE IF NOT EXISTS "main"."workers" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"name" varchar,
-	"specialty" varchar,
+	"speciality" varchar,
 	"contact" varchar,
 	"address" varchar,
 	"phone" varchar,

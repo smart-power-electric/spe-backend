@@ -1,5 +1,5 @@
 {
-  "id": "06fd13d6-5254-4ff5-a30b-259393d3a94a",
+  "id": "5dc85744-e923-45fe-af33-1665d4f9b55c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -925,8 +925,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "specialty": {
-          "name": "specialty",
+        "speciality": {
+          "name": "speciality",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false

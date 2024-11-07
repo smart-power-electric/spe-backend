@@ -19,13 +19,16 @@ import {
   UpdateClientRequest,
 } from './client.swagger';
 import {
+  ApiBadRequestResponse,
   ApiBody,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
+  ApiResponse,
 } from '@nestjs/swagger';
 import { Request } from 'express';
+import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
 
 @Controller('client')
 export class ClientController {
@@ -37,6 +40,16 @@ export class ClientController {
   @Post()
   @HttpCode(201)
   @ApiOkResponse({ description: 'Client created', type: ClientResponse })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
   @ApiBody({ type: CreateClientRequest })
   @ApiOperation({
     summary: 'Create a new client',
@@ -61,6 +74,16 @@ export class ClientController {
     summary: 'Get all clients',
   })
   @ApiOkResponse({ description: 'All clients', type: [ClientResponse] })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
   findAll(
@@ -84,6 +107,16 @@ export class ClientController {
     summary: 'Get client by id',
   })
   @ApiOkResponse({ description: 'Client found', type: ClientResponse })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
   @ApiParam({ name: 'id', type: Number })
   findOne(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
@@ -99,6 +132,16 @@ export class ClientController {
   @Patch(':id')
   @HttpCode(200)
   @ApiOkResponse({ description: 'Client updated', type: ClientResponse })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateClientRequest })
   update(
@@ -114,6 +157,16 @@ export class ClientController {
   @Delete(':id')
   @HttpCode(204)
   @ApiOkResponse({ description: 'Client deleted' })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
   @ApiParam({ name: 'id', type: Number })
   remove(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;

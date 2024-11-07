@@ -1,37 +1,22 @@
-import { ArgumentsHost, Catch, HttpException } from '@nestjs/common';
+import { ArgumentsHost, Catch, HttpException, Inject } from '@nestjs/common';
 import { AbstractHttpAdapter, BaseExceptionFilter } from '@nestjs/core';
 import { Request, Response } from 'express';
-import { Logger, createLogger, format } from 'winston';
-import { PlatformError } from '../Error.entity';
-import { generateTransportLayer } from '../../logging/logging.service';
-import { parseError } from './ErrorParser';
+import { ApplicationException } from 'src/common/core/exception';
+import { ILogger } from 'src/common/core/logger.interface';
 
 @Catch()
 @Catch(HttpException)
 @Catch(Error)
-@Catch(PlatformError)
+@Catch(ApplicationException)
 export class ErrorHandlerFilter extends BaseExceptionFilter {
-  private readonly logger!: Logger;
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(httpAdapterHost: AbstractHttpAdapter<any, any, any>) {
+  constructor(
+    @Inject(ILogger) private readonly logger: ILogger,
+    httpAdapterHost: AbstractHttpAdapter<any, any, any>,
+  ) {
     super(httpAdapterHost);
-    const transportLayer = generateTransportLayer();
-
-    this.logger = createLogger({
-      level: 'error',
-      defaultMeta: { service: 'ErrorHandlerFilter' },
-      format: format.combine(
-        format.timestamp(),
-        format.json(),
-        format.metadata({
-          fillExcept: ['message', 'level', 'timestamp', 'label'],
-        }),
-      ),
-    });
-    for (const transport of transportLayer) {
-      this.logger.add(new transport.transport(transport.params));
-    }
+    this.logger.init('ErrorHandlerFilter', 'error');
+    this.logger.info(null, 'ErrorHandlerFilter initialized');
   }
 
   override catch(exception: any, host: ArgumentsHost) {
@@ -43,18 +28,100 @@ export class ErrorHandlerFilter extends BaseExceptionFilter {
 
     const responseBody = {
       statusCode: errorParsed.code,
-      timestamp: new Date().toISOString(),
-      message: errorParsed.message,
-      name: errorParsed.name,
+      timestamp: errorParsed.error.timestamp,
+      message: errorParsed.error.message,
+      name: errorParsed.error.type,
       path: request.url,
-      requestId: request.appContext?.requestId,
+      requestId: errorParsed.error.requestId,
     };
-    const message = exception['message'] || null;
-    const stack = exception['stack'] || null;
-    this.logger.error(message, request.appContext);
-    this.logger.error(stack, request.appContext);
-    this.logger.error(JSON.stringify(exception), request.appContext);
-    this.logger.error(JSON.stringify(responseBody), request.appContext);
+    if (responseBody.statusCode === 500) {
+      const message = exception['message'] || null;
+      const stack = exception['stack'] || null;
+      if (message || stack) {
+        this.logger.error(
+          request.appContext,
+          message,
+          stack,
+          JSON.stringify(exception),
+        );
+      } else {
+        this.logger.error(
+          request.appContext,
+          JSON.stringify(errorParsed.error.toJSON()),
+        );
+      }
+    }
     response.status(errorParsed.code).json(responseBody);
   }
+}
+
+function parseError(exception: any): {
+  code: number;
+  error: ApplicationException;
+} {
+  if (exception instanceof ApplicationException) {
+    switch (exception.type) {
+      case 'INVALID_FORMAT':
+        return {
+          code: 400,
+          error: exception,
+        };
+      case 'NOT_FOUND':
+        return {
+          code: 404,
+          error: exception,
+        };
+      case 'NOT_AUTHORIZED':
+        return {
+          code: 401,
+          error: exception,
+        };
+      case 'FORBIDDEN':
+        return {
+          code: 403,
+          error: exception,
+        };
+      case 'CONFLICT':
+        return {
+          code: 409,
+          error: exception,
+        };
+      default:
+        return {
+          code: 500,
+          error: exception,
+        };
+    }
+  }
+  if (exception instanceof HttpException) {
+    return {
+      code: exception.getStatus(),
+      error: new ApplicationException(
+        exception.message,
+        'INTERNAL_ERROR',
+        '00000000-0000-0000-0000-000000000000',
+        new Date().toISOString(),
+      ),
+    };
+  }
+  if (exception instanceof Error) {
+    return {
+      code: 500,
+      error: new ApplicationException(
+        exception.message,
+        'INTERNAL_ERROR',
+        '00000000-0000-0000-0000-000000000000',
+        new Date().toISOString(),
+      ),
+    };
+  }
+  return {
+    code: 500,
+    error: new ApplicationException(
+      'Internal Server Error',
+      'INTERNAL_ERROR',
+      '00000000-0000-0000-0000-000000000000',
+      new Date().toISOString(),
+    ),
+  };
 }

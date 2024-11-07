@@ -3,13 +3,13 @@ CREATE SCHEMA "main";
 CREATE TABLE IF NOT EXISTS "main"."clients" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"name" varchar,
-	"address" varchar,
-	"contact" varchar,
 	"email" varchar,
 	"phone" varchar,
+	"address" varchar,
 	"city" varchar,
 	"state" varchar,
 	"zip" varchar,
+	"contact" varchar,
 	"created_at" timestamp (6) with time zone,
 	"updated_at" timestamp (6) with time zone
 );
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS "main"."invoices" (
 	"stage_id" uuid,
 	"invoice_number" varchar,
 	"date" date,
-	"total_amount" numeric,
+	"total_amount" double precision,
 	"show_materials" boolean,
 	"created_at" timestamp (6) with time zone,
 	"updated_at" timestamp (6) with time zone
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS "main"."invoices" (
 CREATE TABLE IF NOT EXISTS "main"."materials" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"name" varchar,
-	"unit_cost" numeric,
+	"unit_cost" double precision,
 	"created_at" timestamp (6) with time zone,
 	"updated_at" timestamp (6) with time zone
 );
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS "main"."project_quotation" (
 	"material_id" uuid,
 	"service_id" uuid,
 	"quantity" integer,
-	"total_cost" numeric,
+	"total_cost" double precision,
 	"created_at" timestamp (6) with time zone,
 	"updated_at" timestamp (6) with time zone
 );
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS "main"."service_sheets" (
 CREATE TABLE IF NOT EXISTS "main"."services" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"name" varchar,
-	"unit_cost" numeric(10, 2),
+	"unit_cost" double precision,
 	"description" varchar,
 	"created_at" timestamp (6) with time zone,
 	"updated_at" timestamp (6) with time zone
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS "main"."worker_payments" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"worker_id" uuid,
 	"service_sheet_id" uuid,
-	"total_payment" numeric,
+	"total_payment" double precision,
 	"payment_date" date,
 	"is_extra" boolean,
 	"created_at" timestamp (6) with time zone,
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS "main"."worker_payments" (
 CREATE TABLE IF NOT EXISTS "main"."worker_rates" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"worker_id" uuid,
-	"rate" numeric,
+	"rate" double precision,
 	"effective_date" date,
 	"created_at" timestamp (6) with time zone,
 	"updated_at" timestamp (6) with time zone

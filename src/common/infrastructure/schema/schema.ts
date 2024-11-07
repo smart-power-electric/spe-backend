@@ -5,7 +5,6 @@ import {
   varchar,
   text,
   date,
-  numeric,
   doublePrecision,
   boolean,
   timestamp,
@@ -49,7 +48,7 @@ export const projects = main.table(
 export const materials = main.table('materials', {
   id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
   name: varchar(),
-  unitCost: numeric('unit_cost'),
+  unitCost: doublePrecision('unit_cost'),
   createdAt: timestamp('created_at', {
     precision: 6,
     withTimezone: true,
@@ -103,7 +102,7 @@ export const projectQuotation = main.table(
     materialId: uuid('material_id'),
     serviceId: uuid('service_id'),
     quantity: integer(),
-    totalCost: numeric('total_cost'),
+    totalCost: doublePrecision('total_cost'),
     createdAt: timestamp('created_at', {
       precision: 6,
       withTimezone: true,
@@ -139,7 +138,7 @@ export const projectQuotation = main.table(
 export const services = main.table('services', {
   id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
   name: varchar(),
-  unitCost: numeric('unit_cost', { precision: 10, scale: 2 }),
+  unitCost: doublePrecision('unit_cost'),
   description: varchar(),
   createdAt: timestamp('created_at', {
     precision: 6,
@@ -219,7 +218,7 @@ export const workerRates = main.table(
   {
     id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
     workerId: uuid('worker_id'),
-    rate: numeric(),
+    rate: doublePrecision(),
     effectiveDate: date('effective_date'),
     createdAt: timestamp('created_at', {
       precision: 6,
@@ -284,7 +283,7 @@ export const workerPayments = main.table(
     id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
     workerId: uuid('worker_id'),
     serviceSheetId: uuid('service_sheet_id'),
-    totalPayment: numeric('total_payment'),
+    totalPayment: doublePrecision('total_payment'),
     paymentDate: date('payment_date'),
     isExtra: boolean('is_extra'),
     createdAt: timestamp('created_at', {
@@ -355,7 +354,7 @@ export const invoices = main.table(
     stageId: uuid('stage_id'),
     invoiceNumber: varchar('invoice_number'),
     date: date(),
-    totalAmount: numeric('total_amount'),
+    totalAmount: doublePrecision('total_amount'),
     showMaterials: boolean('show_materials'),
     createdAt: timestamp('created_at', {
       precision: 6,

@@ -1,5 +1,5 @@
 {
-  "id": "67e8a5b6-b366-4899-bd6d-1ff97af449fc",
+  "id": "06fd13d6-5254-4ff5-a30b-259393d3a94a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -20,18 +20,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "address": {
-          "name": "address",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "contact": {
-          "name": "contact",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
         "email": {
           "name": "email",
           "type": "varchar",
@@ -40,6 +28,12 @@
         },
         "phone": {
           "name": "phone",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "address": {
+          "name": "address",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -58,6 +52,12 @@
         },
         "zip": {
           "name": "zip",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contact": {
+          "name": "contact",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -111,7 +111,7 @@
         },
         "total_amount": {
           "name": "total_amount",
-          "type": "numeric",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": false
         },
@@ -173,7 +173,7 @@
         },
         "unit_cost": {
           "name": "unit_cost",
-          "type": "numeric",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": false
         },
@@ -308,7 +308,7 @@
         },
         "total_cost": {
           "name": "total_cost",
-          "type": "numeric",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": false
         },
@@ -554,7 +554,7 @@
         },
         "unit_cost": {
           "name": "unit_cost",
-          "type": "numeric(10, 2)",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": false
         },
@@ -783,7 +783,7 @@
         },
         "total_payment": {
           "name": "total_payment",
-          "type": "numeric",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": false
         },
@@ -865,7 +865,7 @@
         },
         "rate": {
           "name": "rate",
-          "type": "numeric",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": false
         },

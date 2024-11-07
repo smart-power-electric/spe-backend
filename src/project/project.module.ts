@@ -17,4 +17,4 @@ import { ProjectController } from './infrastructure/project.controller';
     },
   ],
 })
-export class ClientModule {}
+export class ProjectModule {}

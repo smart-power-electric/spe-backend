@@ -6,6 +6,8 @@ import configuration from './common/application/application-config/configuration
 import { CommonModule } from './common/common.module';
 import { VersionModule } from './version/version.module';
 import { ClientModule } from './client/client.module';
+import { ProjectModule } from './project/project.module';
+import { MaterialModule } from './material/material.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { ClientModule } from './client/client.module';
     CommonModule,
     VersionModule,
     ClientModule,
+    ProjectModule,
+    MaterialModule,
   ],
   controllers: [AppController],
   providers: [AppService],

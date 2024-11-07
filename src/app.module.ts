@@ -8,6 +8,7 @@ import { VersionModule } from './version/version.module';
 import { ClientModule } from './client/client.module';
 import { ProjectModule } from './project/project.module';
 import { MaterialModule } from './material/material.module';
+import { StageModule } from './stage/material.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MaterialModule } from './material/material.module';
     ClientModule,
     ProjectModule,
     MaterialModule,
+    StageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

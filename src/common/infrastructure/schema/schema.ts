@@ -70,8 +70,8 @@ export const stages = main.table(
     description: text(),
     percentage: doublePrecision(),
     adjustedPercentage: doublePrecision('adjusted_percentage'),
-    startDate: date('start_date'),
-    endDate: date('end_date'),
+    startDate: date('start_date', { mode: 'date' }),
+    endDate: date('end_date', { mode: 'date' }),
     createdAt: timestamp('created_at', {
       precision: 6,
       withTimezone: true,
@@ -199,8 +199,8 @@ export const workers = main.table('workers', {
   address: varchar(),
   phone: varchar(),
   socialSecurity: varchar('social_security'),
-  startDate: date('start_date'),
-  endDate: date('end_date'),
+  startDate: date('start_date', { mode: 'date' }),
+  endDate: date('end_date', { mode: 'date' }),
   createdAt: timestamp('created_at', {
     precision: 6,
     withTimezone: true,
@@ -219,7 +219,7 @@ export const workerRates = main.table(
     id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
     workerId: uuid('worker_id'),
     rate: doublePrecision(),
-    effectiveDate: date('effective_date'),
+    effectiveDate: date('effective_date', { mode: 'date' }),
     createdAt: timestamp('created_at', {
       precision: 6,
       withTimezone: true,
@@ -248,7 +248,7 @@ export const serviceSheets = main.table(
     id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
     workerId: uuid('worker_id'),
     projectId: uuid('project_id'),
-    weekStartDate: date('week_start_date'),
+    weekStartDate: date('week_start_date', { mode: 'date' }),
     totalHours: integer('total_hours'),
     createdAt: timestamp('created_at', {
       precision: 6,
@@ -284,7 +284,7 @@ export const workerPayments = main.table(
     workerId: uuid('worker_id'),
     serviceSheetId: uuid('service_sheet_id'),
     totalPayment: doublePrecision('total_payment'),
-    paymentDate: date('payment_date'),
+    paymentDate: date('payment_date', { mode: 'date' }),
     isExtra: boolean('is_extra'),
     createdAt: timestamp('created_at', {
       precision: 6,
@@ -353,7 +353,7 @@ export const invoices = main.table(
     id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
     stageId: uuid('stage_id'),
     invoiceNumber: varchar('invoice_number'),
-    date: date(),
+    date: date({ mode: 'date' }),
     totalAmount: doublePrecision('total_amount'),
     showMaterials: boolean('show_materials'),
     createdAt: timestamp('created_at', {

@@ -3,6 +3,7 @@ import { AccessFile } from '../core/version.interfaces';
 import { Inject, Injectable } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 import { newContext } from 'src/common/core/context.entity';
+import { InternalErrorException } from 'src/common/core/exception';
 
 @Injectable()
 export class AccessLocalFileService implements AccessFile {
@@ -22,7 +23,10 @@ export class AccessLocalFileService implements AccessFile {
         `Error reading file: `,
         erroString,
       );
-      throw new Error(`Error reading file: ${erroString}`);
+      throw new InternalErrorException(
+        null,
+        `Error reading file: ${erroString}`,
+      );
     }
   }
 }

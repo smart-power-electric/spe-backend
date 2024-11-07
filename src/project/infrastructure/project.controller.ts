@@ -29,6 +29,8 @@ import {
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
 import { ProjectUseCases } from '../core/project.interface';
+import { ZodValidationPipe } from 'src/common/application/pipes/ZodValidationPipe';
+import { createProjectSchema, UpdateProjectSchema } from '../core/project.zod';
 
 @Controller('project')
 export class ProjectController {
@@ -56,7 +58,8 @@ export class ProjectController {
   })
   create(
     @Req() req: Request,
-    @Body() createProjectDto: CreateProjectRequest,
+    @Body(new ZodValidationPipe(createProjectSchema))
+    createProjectDto: CreateProjectRequest,
   ): Promise<ProjectResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -147,7 +150,8 @@ export class ProjectController {
   update(
     @Req() req: Request,
     @Param('id') id: string,
-    @Body() updateProjectDto: UpdateProjectRequest,
+    @Body(new ZodValidationPipe(UpdateProjectSchema))
+    updateProjectDto: UpdateProjectRequest,
   ) {
     const ctx = req.appContext;
     this.logger.info(ctx, ProjectController.name, 'update', 'Updating project');

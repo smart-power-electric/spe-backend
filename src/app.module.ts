@@ -8,7 +8,7 @@ import { VersionModule } from './version/version.module';
 import { ClientModule } from './client/client.module';
 import { ProjectModule } from './project/project.module';
 import { MaterialModule } from './material/material.module';
-import { StageModule } from './stage/material.module';
+import { StageModule } from './stage/stage.module';
 import { ProjectQuotationModule } from './projectQuotation/projectQuotation.module';
 
 @Module({

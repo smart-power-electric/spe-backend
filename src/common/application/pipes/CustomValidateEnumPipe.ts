@@ -1,5 +1,5 @@
 import { PipeTransform, Injectable } from '@nestjs/common';
-import { PlatformError } from 'src/common/infrastructure/http/Error.entity';
+import { InvalidFormatException } from 'src/common/core/exception';
 
 @Injectable()
 export class CustomValidateEnumPipe<T extends object> implements PipeTransform {
@@ -7,7 +7,8 @@ export class CustomValidateEnumPipe<T extends object> implements PipeTransform {
 
   transform(value: any): T[keyof T] {
     if (!Object.values(this.enumType).includes(value)) {
-      throw PlatformError.BadRequest(
+      throw new InvalidFormatException(
+        null,
         `Invalid value: ${value}. Allowed values are: ${Object.values(this.enumType).join(', ')}`,
       );
     }

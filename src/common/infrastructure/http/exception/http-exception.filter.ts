@@ -1,7 +1,8 @@
-import { ArgumentsHost, Catch, HttpException, Inject } from '@nestjs/common';
+import { ArgumentsHost, Catch, HttpException } from '@nestjs/common';
 import { AbstractHttpAdapter, BaseExceptionFilter } from '@nestjs/core';
-import { Request, Response } from 'express';
 import { ApplicationException } from 'src/common/core/exception';
+import { LoggingService } from '../../logging/logging.service';
+import { Request, Response } from 'express';
 import { ILogger } from 'src/common/core/logger.interface';
 
 @Catch()
@@ -9,14 +10,12 @@ import { ILogger } from 'src/common/core/logger.interface';
 @Catch(Error)
 @Catch(ApplicationException)
 export class ErrorHandlerFilter extends BaseExceptionFilter {
+  private readonly logger: ILogger;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(
-    @Inject(ILogger) private readonly logger: ILogger,
-    httpAdapterHost: AbstractHttpAdapter<any, any, any>,
-  ) {
+  constructor(httpAdapterHost: AbstractHttpAdapter<any, any, any>) {
     super(httpAdapterHost);
-    this.logger.init('ErrorHandlerFilter', 'error');
-    this.logger.info(null, 'ErrorHandlerFilter initialized');
+    this.logger = new LoggingService();
+    this.logger.init(ErrorHandlerFilter.name, 'info');
   }
 
   override catch(exception: any, host: ArgumentsHost) {
@@ -32,7 +31,7 @@ export class ErrorHandlerFilter extends BaseExceptionFilter {
       message: errorParsed.error.message,
       name: errorParsed.error.type,
       path: request.url,
-      requestId: errorParsed.error.requestId,
+      requestId: errorParsed.error.requestId ?? request.appContext.requestId,
     };
     if (responseBody.statusCode === 500) {
       const message = exception['message'] || null;

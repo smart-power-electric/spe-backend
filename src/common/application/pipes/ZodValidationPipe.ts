@@ -1,5 +1,5 @@
 import { PipeTransform } from '@nestjs/common';
-import { PlatformError } from 'src/common/infrastructure/http/Error.entity';
+import { InvalidFormatException } from 'src/common/core/exception';
 import { ZodError, ZodSchema, z } from 'zod';
 
 export class ZodValidationPipe implements PipeTransform {
@@ -14,7 +14,7 @@ export class ZodValidationPipe implements PipeTransform {
         const errMessage = err.errors
           .map((err) => `request.${err.path}: ${err.message}`)
           .join(', ');
-        throw PlatformError.BadRequest(errMessage);
+        throw new InvalidFormatException(null, errMessage);
       }
       throw err; // Let http-exception filter handle that...
     }

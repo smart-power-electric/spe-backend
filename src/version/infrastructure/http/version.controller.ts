@@ -3,8 +3,8 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { VersionUseCases } from '../../core/version.interfaces';
 import { Request } from 'express';
 import { ApiInternalServerErrorResponse, ApiOkResponse } from '@nestjs/swagger';
-import { ErrorFormat } from 'src/common/infrastructure/http/Error.entity';
 import { VersionResponse } from './version.dto';
+import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
 
 @Controller('version')
 export class VersionController {
@@ -17,7 +17,7 @@ export class VersionController {
   @Get()
   @ApiOkResponse({ type: VersionResponse })
   @ApiInternalServerErrorResponse({
-    type: ErrorFormat,
+    type: ApplicationExceptionResponse,
     description: 'Internal server error',
   })
   getVersion(@Req() req: Request): VersionResponse {

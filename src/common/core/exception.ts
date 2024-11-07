@@ -10,14 +10,14 @@ export const ERRORTYPE = {
 } as const;
 
 export class ApplicationException extends Error {
-  requestId: string;
+  requestId: string | null;
   timestamp: string;
   type: string;
   details: (string | number | Date | boolean | null)[];
   constructor(
     message: string,
     type: string,
-    requestId: string,
+    requestId: string | null,
     timestamp: string,
     ...details: (string | number | Date | boolean | null)[]
   ) {
@@ -40,14 +40,14 @@ export class ApplicationException extends Error {
 
 export class InvalidFormatException extends ApplicationException {
   constructor(
-    ctx: Context,
+    ctx: Context | null,
     message: string,
     ...details: (string | number | Date | boolean | null)[]
   ) {
     super(
       message,
       ERRORTYPE.INVALID_FORMAT,
-      ctx.requestId,
+      ctx?.requestId ?? null,
       new Date().toISOString(),
       ...details,
     );
@@ -56,14 +56,14 @@ export class InvalidFormatException extends ApplicationException {
 
 export class NotFoundException extends ApplicationException {
   constructor(
-    ctx: Context,
+    ctx: Context | null,
     message: string,
     ...details: (string | number | Date | boolean | null)[]
   ) {
     super(
       message,
       ERRORTYPE.NOT_FOUND,
-      ctx.requestId,
+      ctx?.requestId ?? null,
       new Date().toISOString(),
       ...details,
     );
@@ -72,14 +72,14 @@ export class NotFoundException extends ApplicationException {
 
 export class InternalErrorException extends ApplicationException {
   constructor(
-    ctx: Context,
+    ctx: Context | null,
     message: string,
     ...details: (string | number | Date | boolean | null)[]
   ) {
     super(
       message,
       ERRORTYPE.INTERNAL_ERROR,
-      ctx.requestId,
+      ctx?.requestId ?? null,
       new Date().toISOString(),
       ...details,
     );
@@ -88,14 +88,14 @@ export class InternalErrorException extends ApplicationException {
 
 export class ConflictException extends ApplicationException {
   constructor(
-    ctx: Context,
+    ctx: Context | null,
     message: string,
     ...details: (string | number | Date | boolean | null)[]
   ) {
     super(
       message,
       ERRORTYPE.CONFLICT,
-      ctx.requestId,
+      ctx?.requestId ?? null,
       new Date().toISOString(),
       ...details,
     );
@@ -104,14 +104,14 @@ export class ConflictException extends ApplicationException {
 
 export class NotAuthorizedException extends ApplicationException {
   constructor(
-    ctx: Context,
+    ctx: Context | null,
     message: string,
     ...details: (string | number | Date | boolean | null)[]
   ) {
     super(
       message,
       ERRORTYPE.NOT_AUTHORIZED,
-      ctx.requestId,
+      ctx?.requestId ?? null,
       new Date().toISOString(),
       ...details,
     );
@@ -120,14 +120,14 @@ export class NotAuthorizedException extends ApplicationException {
 
 export class ForbiddenException extends ApplicationException {
   constructor(
-    ctx: Context,
+    ctx: Context | null,
     message: string,
     ...details: (string | number | Date | boolean | null)[]
   ) {
     super(
       message,
       ERRORTYPE.FORBIDDEN,
-      ctx.requestId,
+      ctx?.requestId ?? null,
       new Date().toISOString(),
       ...details,
     );

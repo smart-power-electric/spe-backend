@@ -12,6 +12,7 @@ import { StageModule } from './stage/stage.module';
 import { ProjectQuotationModule } from './projectQuotation/projectQuotation.module';
 import { WorkerAssignmentModule } from './workerAssignment/workerAssignment.module';
 import { WorkerModule } from './worker/worker.module';
+import { WorkerRatesModule } from './workerRates/workerRates.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { WorkerModule } from './worker/worker.module';
     ProjectQuotationModule,
     WorkerAssignmentModule,
     WorkerModule,
+    WorkerRatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

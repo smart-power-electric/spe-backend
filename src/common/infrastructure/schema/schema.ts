@@ -194,7 +194,7 @@ export const workerAssignment = main.table(
 export const workers = main.table('workers', {
   id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
   name: varchar(),
-  specialty: varchar(),
+  speciality: varchar(),
   contact: varchar(),
   address: varchar(),
   phone: varchar(),

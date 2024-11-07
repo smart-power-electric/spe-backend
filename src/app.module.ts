@@ -10,6 +10,7 @@ import { ProjectModule } from './project/project.module';
 import { MaterialModule } from './material/material.module';
 import { StageModule } from './stage/stage.module';
 import { ProjectQuotationModule } from './projectQuotation/projectQuotation.module';
+import { WorkerAssignmentModule } from './workerAssignment/workerAssignment.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ProjectQuotationModule } from './projectQuotation/projectQuotation.modu
     MaterialModule,
     StageModule,
     ProjectQuotationModule,
+    WorkerAssignmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

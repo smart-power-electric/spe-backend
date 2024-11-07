@@ -1,6 +1,6 @@
 export class Client {
+  id: string;
   name: string | null;
-  id: number;
   address: string | null;
   contact: string | null;
   email: string | null;
@@ -13,7 +13,7 @@ export class Client {
 
   constructor(params: {
     name: string | null;
-    id: number;
+    id: string | undefined;
     address: string | null;
     contact: string | null;
     email: string | null;
@@ -25,7 +25,7 @@ export class Client {
     updatedAt: Date | null;
   }) {
     this.name = params.name;
-    this.id = params.id;
+    this.id = params.id ?? '';
     this.address = params.address;
     this.contact = params.contact;
     this.email = params.email;

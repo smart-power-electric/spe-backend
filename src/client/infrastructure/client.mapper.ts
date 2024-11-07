@@ -1,7 +1,23 @@
+import { CreateClientDto } from '../core/client.dto';
 import { Client } from '../core/client.entity';
 import { ClientNew, ClientRow } from './client.repository';
 
-export function toClient(row: ClientRow): Client {
+export function CreateDtoToClient(dto: CreateClientDto): Client {
+  return new Client({
+    id: undefined,
+    name: dto.name,
+    address: dto.address,
+    contact: dto.contact,
+    email: dto.email,
+    phone: dto.phone,
+    city: dto.city,
+    state: dto.state,
+    zip: dto.zip,
+    createdAt: null,
+    updatedAt: null,
+  });
+}
+export function RowtoClient(row: ClientRow): Client {
   return new Client({
     id: row.id,
     name: row.name,

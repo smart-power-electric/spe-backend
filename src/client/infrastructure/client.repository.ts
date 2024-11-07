@@ -4,9 +4,9 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 import { clients } from 'src/common/infrastructure/schema/schema';
 import { Client } from '../core/client.entity';
-import { toClient } from './client.mapper';
 import { count, eq } from 'drizzle-orm';
 import { ClientRepository } from '../core/client.interface';
+import { RowtoClient } from './client.mapper';
 
 export type ClientRow = typeof clients.$inferSelect;
 export type ClientNew = typeof clients.$inferInsert;
@@ -41,7 +41,7 @@ export class DrizzleClientRepository implements ClientRepository {
       .values(newRow)
       .returning()
       .execute();
-    return result.map(toClient).at(0) ?? null;
+    return result.map(RowtoClient).at(0) ?? null;
   }
 
   async getAll(ctx: Context, limit: number, offset: number) {
@@ -64,10 +64,10 @@ export class DrizzleClientRepository implements ClientRepository {
       .from(clients)
       .limit(1)
       .execute();
-    return { data: result.map(toClient), total: total[0].count };
+    return { data: result.map(RowtoClient), total: total[0].count };
   }
 
-  async getById(ctx: Context, id: number) {
+  async getById(ctx: Context, id: string) {
     this.logger.info(
       ctx,
       DrizzleClientRepository.name,
@@ -80,10 +80,24 @@ export class DrizzleClientRepository implements ClientRepository {
       .from(clients)
       .where(eq(clients.id, id))
       .execute();
-    return result.map(toClient).at(0) ?? null;
+    return result.map(RowtoClient).at(0) ?? null;
   }
-
-  async update(ctx: Context, id: number, row: Client) {
+  async getByEmail(ctx: Context, email: string): Promise<Client | null> {
+    this.logger.info(
+      ctx,
+      DrizzleClientRepository.name,
+      'getByEmail',
+      'Getting client by email',
+    );
+    const result = await this.db
+      .getDb()
+      .select()
+      .from(clients)
+      .where(eq(clients.email, email))
+      .execute();
+    return result.map(RowtoClient).at(0) ?? null;
+  }
+  async update(ctx: Context, id: string, row: Client) {
     this.logger.info(
       ctx,
       DrizzleClientRepository.name,
@@ -105,10 +119,10 @@ export class DrizzleClientRepository implements ClientRepository {
       .where(eq(clients.id, id))
       .returning()
       .execute();
-    return result.map(toClient).at(0) ?? null;
+    return result.map(RowtoClient).at(0) ?? null;
   }
 
-  async delete(ctx: Context, id: number) {
+  async delete(ctx: Context, id: string) {
     this.logger.info(
       ctx,
       DrizzleClientRepository.name,
@@ -121,6 +135,6 @@ export class DrizzleClientRepository implements ClientRepository {
       .where(eq(clients.id, id))
       .returning()
       .execute();
-    return result.map(toClient).at(0) ?? null;
+    return result.map(RowtoClient).at(0) ?? null;
   }
 }

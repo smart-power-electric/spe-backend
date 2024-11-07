@@ -9,31 +9,16 @@ import {
   doublePrecision,
   boolean,
   timestamp,
+  uuid,
 } from 'drizzle-orm/pg-core';
-
+import { v7 as uuidv7 } from 'uuid';
 export const main = pgSchema('main');
-
-export const projectQuotationIdSeq = main.sequence('project_quotation_id_seq', {
-  startWith: '1',
-  increment: '1',
-  minValue: '1',
-  maxValue: '2147483647',
-  cache: '1',
-  cycle: false,
-});
 
 export const projects = main.table(
   'projects',
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity({
-      name: 'main.projects_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-    clientId: integer('client_id'),
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    clientId: uuid('client_id'),
     name: varchar(),
     description: text(),
     location: varchar(),
@@ -62,14 +47,7 @@ export const projects = main.table(
 );
 
 export const materials = main.table('materials', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity({
-    name: 'main.materials_id_seq',
-    startWith: 1,
-    increment: 1,
-    minValue: 1,
-    maxValue: 2147483647,
-    cache: 1,
-  }),
+  id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
   name: varchar(),
   unitCost: numeric('unit_cost'),
   createdAt: timestamp('created_at', {
@@ -87,15 +65,8 @@ export const materials = main.table('materials', {
 export const stages = main.table(
   'stages',
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity({
-      name: 'main.stages_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-    projectId: integer('project_id'),
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    projectId: uuid('project_id'),
     name: varchar(),
     description: text(),
     percentage: doublePrecision(),
@@ -127,16 +98,10 @@ export const stages = main.table(
 export const projectQuotation = main.table(
   'project_quotation',
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity({
-      name: 'main.project_quotation_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-    }),
-    projectId: integer('project_id'),
-    materialId: integer('material_id'),
-    serviceId: integer('service_id'),
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    projectId: uuid('project_id'),
+    materialId: uuid('material_id'),
+    serviceId: uuid('service_id'),
     quantity: integer(),
     totalCost: numeric('total_cost'),
     createdAt: timestamp('created_at', {
@@ -172,14 +137,7 @@ export const projectQuotation = main.table(
 );
 
 export const services = main.table('services', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity({
-    name: 'main.services_id_seq',
-    startWith: 1,
-    increment: 1,
-    minValue: 1,
-    maxValue: 2147483647,
-    cache: 1,
-  }),
+  id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
   name: varchar(),
   unitCost: numeric('unit_cost', { precision: 10, scale: 2 }),
   description: varchar(),
@@ -198,17 +156,10 @@ export const services = main.table('services', {
 export const workerAssignment = main.table(
   'worker_assignment',
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity({
-      name: 'main.worker_assignment_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-    workerId: integer('worker_id'),
-    projectId: integer('project_id'),
-    stageId: integer('stage_id'),
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    workerId: uuid('worker_id'),
+    projectId: uuid('project_id'),
+    stageId: uuid('stage_id'),
     createdAt: timestamp('created_at', {
       precision: 6,
       withTimezone: true,
@@ -242,14 +193,7 @@ export const workerAssignment = main.table(
 );
 
 export const workers = main.table('workers', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity({
-    name: 'main.workers_id_seq',
-    startWith: 1,
-    increment: 1,
-    minValue: 1,
-    maxValue: 2147483647,
-    cache: 1,
-  }),
+  id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
   name: varchar(),
   specialty: varchar(),
   contact: varchar(),
@@ -273,15 +217,8 @@ export const workers = main.table('workers', {
 export const workerRates = main.table(
   'worker_rates',
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity({
-      name: 'main.worker_rates_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-    workerId: integer('worker_id'),
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    workerId: uuid('worker_id'),
     rate: numeric(),
     effectiveDate: date('effective_date'),
     createdAt: timestamp('created_at', {
@@ -309,16 +246,9 @@ export const workerRates = main.table(
 export const serviceSheets = main.table(
   'service_sheets',
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity({
-      name: 'main.service_sheets_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-    workerId: integer('worker_id'),
-    projectId: integer('project_id'),
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    workerId: uuid('worker_id'),
+    projectId: uuid('project_id'),
     weekStartDate: date('week_start_date'),
     totalHours: integer('total_hours'),
     createdAt: timestamp('created_at', {
@@ -351,16 +281,9 @@ export const serviceSheets = main.table(
 export const workerPayments = main.table(
   'worker_payments',
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity({
-      name: 'main.worker_payments_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-    workerId: integer('worker_id'),
-    serviceSheetId: integer('service_sheet_id'),
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    workerId: uuid('worker_id'),
+    serviceSheetId: uuid('service_sheet_id'),
     totalPayment: numeric('total_payment'),
     paymentDate: date('payment_date'),
     isExtra: boolean('is_extra'),
@@ -394,16 +317,9 @@ export const workerPayments = main.table(
 export const notifications = main.table(
   'notifications',
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity({
-      name: 'main.notifications_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-    invoiceId: integer('invoice_id'),
-    clientId: integer('client_id'),
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    invoiceId: uuid('invoice_id'),
+    clientId: uuid('client_id'),
     status: varchar(),
     createdAt: timestamp('created_at', {
       precision: 6,
@@ -435,15 +351,8 @@ export const notifications = main.table(
 export const invoices = main.table(
   'invoices',
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity({
-      name: 'main.invoices_id_seq',
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-    stageId: integer('stage_id'),
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    stageId: uuid('stage_id'),
     invoiceNumber: varchar('invoice_number'),
     date: date(),
     totalAmount: numeric('total_amount'),
@@ -471,14 +380,7 @@ export const invoices = main.table(
 );
 
 export const clients = main.table('clients', {
-  id: integer().primaryKey().generatedByDefaultAsIdentity({
-    name: 'main.clients_id_seq',
-    startWith: 1,
-    increment: 1,
-    minValue: 1,
-    maxValue: 2147483647,
-    cache: 1,
-  }),
+  id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
   name: varchar(),
   address: varchar(),
   contact: varchar(),

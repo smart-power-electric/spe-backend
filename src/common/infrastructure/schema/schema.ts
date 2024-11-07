@@ -382,13 +382,13 @@ export const invoices = main.table(
 export const clients = main.table('clients', {
   id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
   name: varchar(),
-  address: varchar(),
-  contact: varchar(),
   email: varchar(),
   phone: varchar(),
+  address: varchar(),
   city: varchar(),
   state: varchar(),
   zip: varchar(),
+  contact: varchar(),
   createdAt: timestamp('created_at', {
     precision: 6,
     withTimezone: true,

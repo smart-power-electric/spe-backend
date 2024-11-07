@@ -1,0 +1,115 @@
+import { Inject, Injectable } from '@nestjs/common';
+import { Context } from 'src/common/core/context.entity';
+import { ILogger } from 'src/common/core/logger.interface';
+import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
+import { projects } from 'src/common/infrastructure/schema/schema';
+import { Project } from '../core/project.entity';
+import { count, eq } from 'drizzle-orm';
+import { ProjectRepository } from '../core/project.interface';
+import {
+  ProjectToProjectNew,
+  ProjectToRow,
+  RowToProject,
+} from './project.mapper';
+
+export type ProjectRow = typeof projects.$inferSelect;
+export type ProjectNew = typeof projects.$inferInsert;
+
+@Injectable()
+export class DrizzleProjectRepository implements ProjectRepository {
+  constructor(
+    private readonly db: DrizzleDb,
+    @Inject(ILogger) private readonly logger: ILogger,
+  ) {
+    this.logger.init(DrizzleProjectRepository.name, 'info');
+  }
+
+  async insert(ctx: Context, row: Project) {
+    this.logger.info(
+      ctx,
+      DrizzleProjectRepository.name,
+      'insert',
+      'Inserting client',
+    );
+    const newRow: ProjectNew = ProjectToProjectNew(row);
+    const result = await this.db
+      .getDb()
+      .insert(projects)
+      .values(newRow)
+      .returning()
+      .execute();
+    return result.map(RowToProject).at(0) ?? null;
+  }
+
+  async getAll(ctx: Context, limit: number, offset: number) {
+    this.logger.info(
+      ctx,
+      DrizzleProjectRepository.name,
+      'getAll',
+      'Getting all clients',
+    );
+    const result = await this.db
+      .getDb()
+      .select()
+      .from(projects)
+      .limit(limit)
+      .offset(offset)
+      .execute();
+    const total = await this.db
+      .getDb()
+      .select({ count: count() })
+      .from(projects)
+      .limit(1)
+      .execute();
+    return { data: result.map(RowToProject), total: total[0].count };
+  }
+
+  async getById(ctx: Context, id: string) {
+    this.logger.info(
+      ctx,
+      DrizzleProjectRepository.name,
+      'getById',
+      'Getting client by id',
+    );
+    const result = await this.db
+      .getDb()
+      .select()
+      .from(projects)
+      .where(eq(projects.id, id))
+      .execute();
+    return result.map(RowToProject).at(0) ?? null;
+  }
+  async update(ctx: Context, id: string, row: Project) {
+    this.logger.info(
+      ctx,
+      DrizzleProjectRepository.name,
+      'update',
+      'Updating client',
+    );
+    const newRow = ProjectToRow(row);
+    const result = await this.db
+      .getDb()
+      .update(projects)
+      .set(newRow)
+      .where(eq(projects.id, id))
+      .returning()
+      .execute();
+    return result.map(RowToProject).at(0) ?? null;
+  }
+
+  async delete(ctx: Context, id: string) {
+    this.logger.info(
+      ctx,
+      DrizzleProjectRepository.name,
+      'delete',
+      'Deleting client',
+    );
+    const result = await this.db
+      .getDb()
+      .delete(projects)
+      .where(eq(projects.id, id))
+      .returning()
+      .execute();
+    return result.map(RowToProject).at(0) ?? null;
+  }
+}

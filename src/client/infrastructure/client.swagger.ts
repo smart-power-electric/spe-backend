@@ -9,7 +9,7 @@ export class CreateClientRequest implements CreateClientDto {
     description: 'Name of the client',
     nullable: true,
   })
-  name: string | null;
+  name: string;
   @ApiProperty({
     type: 'string',
     description: 'Address of the client',
@@ -27,7 +27,7 @@ export class CreateClientRequest implements CreateClientDto {
     description: 'Email of the client',
     nullable: true,
   })
-  email: string | null;
+  email: string;
   @ApiProperty({
     type: 'string',
     description: 'Phone of the client',

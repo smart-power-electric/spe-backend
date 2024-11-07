@@ -29,6 +29,8 @@ import {
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
+import { ZodValidationPipe } from 'src/common/application/pipes/ZodValidationPipe';
+import { createClientSchema, UpdateClientSchema } from '../core/client.zod';
 
 @Controller('client')
 export class ClientController {
@@ -56,7 +58,8 @@ export class ClientController {
   })
   create(
     @Req() req: Request,
-    @Body() createClientDto: CreateClientRequest,
+    @Body(new ZodValidationPipe(createClientSchema))
+    createClientDto: CreateClientRequest,
   ): Promise<ClientResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -147,7 +150,8 @@ export class ClientController {
   update(
     @Req() req: Request,
     @Param('id') id: string,
-    @Body() updateClientDto: UpdateClientRequest,
+    @Body(new ZodValidationPipe(UpdateClientSchema))
+    updateClientDto: UpdateClientRequest,
   ) {
     const ctx = req.appContext;
     this.logger.info(ctx, ClientController.name, 'update', 'Updating client');

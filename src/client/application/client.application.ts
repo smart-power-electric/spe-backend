@@ -5,6 +5,11 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { Context } from 'src/common/core/context.entity';
 import { Client } from '../core/client.entity';
 import { CreateDtoToClient } from '../infrastructure/client.mapper';
+import {
+  ConflictException,
+  InternalErrorException,
+  NotFoundException,
+} from 'src/common/core/exception';
 
 @Injectable()
 export class ClientApplication implements ClientUseCases {
@@ -27,12 +32,12 @@ export class ClientApplication implements ClientUseCases {
       newClient.email ?? '',
     );
     if (existUser) {
-      throw new Error('Client already exists');
+      throw new ConflictException(ctx, 'Client already exists');
     }
     const client = CreateDtoToClient(newClient);
     const newclient = await this.repository.insert(ctx, client);
     if (!newclient) {
-      throw new Error('Client not created');
+      throw new InternalErrorException(ctx, 'Client not created');
     }
     return newclient;
   }
@@ -56,7 +61,7 @@ export class ClientApplication implements ClientUseCases {
     this.logger.info(ctx, ClientApplication.name, 'getById', 'Getting client');
     const client = await this.repository.getById(ctx, id);
     if (!client) {
-      throw new Error('Client not found');
+      throw new NotFoundException(ctx, 'Client not found');
     }
     return client;
   }
@@ -69,7 +74,7 @@ export class ClientApplication implements ClientUseCases {
     this.logger.info(ctx, ClientApplication.name, 'update', 'Updating client');
     const client = await this.repository.getById(ctx, id);
     if (!client) {
-      throw new Error('Client not found');
+      throw new NotFoundException(ctx, 'Client not found');
     }
     const updatedClient = new Client({
       ...client,
@@ -77,7 +82,7 @@ export class ClientApplication implements ClientUseCases {
     });
     const updated = await this.repository.update(ctx, id, updatedClient);
     if (!updated) {
-      throw new Error('Client not updated');
+      throw new InternalErrorException(ctx, 'Client not updated');
     }
     return updated;
   }
@@ -86,11 +91,11 @@ export class ClientApplication implements ClientUseCases {
     this.logger.info(ctx, ClientApplication.name, 'delete', 'Deleting client');
     const client = await this.repository.getById(ctx, id);
     if (!client) {
-      throw new Error('Client not found');
+      throw new NotFoundException(ctx, 'Client not found');
     }
     const deleted = await this.repository.delete(ctx, id);
     if (!deleted) {
-      throw new Error('Client not deleted');
+      throw new InternalErrorException(ctx, 'Client not deleted');
     }
     return deleted;
   }

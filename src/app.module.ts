@@ -9,6 +9,7 @@ import { ClientModule } from './client/client.module';
 import { ProjectModule } from './project/project.module';
 import { MaterialModule } from './material/material.module';
 import { StageModule } from './stage/material.module';
+import { ProjectQuotationModule } from './projectQuotation/projectQuotation.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { StageModule } from './stage/material.module';
     ProjectModule,
     MaterialModule,
     StageModule,
+    ProjectQuotationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

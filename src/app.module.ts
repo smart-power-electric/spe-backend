@@ -15,6 +15,7 @@ import { WorkerModule } from './worker/worker.module';
 import { WorkerRatesModule } from './workerRates/workerRates.module';
 import { ServiceSheetsModule } from './serviceSheets/serviceSheets.module';
 import { WorkerPaymentsModule } from './workerPayments/workerPayments.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { WorkerPaymentsModule } from './workerPayments/workerPayments.module';
     WorkerRatesModule,
     ServiceSheetsModule,
     WorkerPaymentsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

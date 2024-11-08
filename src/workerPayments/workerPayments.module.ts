@@ -6,8 +6,10 @@ import {
   WorkerPaymentsUseCases,
 } from './core/workerPayments.interface';
 import { WorkerPaymentsController } from './infrastructure/workerPayments.controller';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [WorkerPaymentsController],
   providers: [
     {

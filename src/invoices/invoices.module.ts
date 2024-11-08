@@ -6,8 +6,10 @@ import {
   InvoicesUseCases,
 } from './core/invoices.interface';
 import { InvoicesController } from './infrastructure/invoices.controller';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [InvoicesController],
   providers: [
     {

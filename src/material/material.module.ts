@@ -6,8 +6,10 @@ import {
   MaterialUseCases,
 } from './core/material.interface';
 import { MaterialController } from './infrastructure/material.controller';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [MaterialController],
   providers: [
     {

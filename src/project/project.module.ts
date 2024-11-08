@@ -3,8 +3,10 @@ import { ProjectApplication } from './application/project.application';
 import { DrizzleProjectRepository } from './infrastructure/project.repository';
 import { ProjectRepository, ProjectUseCases } from './core/project.interface';
 import { ProjectController } from './infrastructure/project.controller';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [ProjectController],
   providers: [
     {

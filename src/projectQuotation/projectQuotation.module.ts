@@ -6,8 +6,10 @@ import {
   ProjectQuotationUseCases,
 } from './core/projectQuotation.interface';
 import { ProjectQuotationController } from './infrastructure/projectQuotation.controller';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [ProjectQuotationController],
   providers: [
     {

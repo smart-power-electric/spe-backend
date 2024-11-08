@@ -6,8 +6,10 @@ import {
   ServiceSheetsUseCases,
 } from './core/serviceSheets.interface';
 import { ServiceSheetsController } from './infrastructure/serviceSheets.controller';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [ServiceSheetsController],
   providers: [
     {

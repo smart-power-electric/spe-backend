@@ -6,8 +6,10 @@ import {
   NotificationsUseCases,
 } from './core/notifications.interface';
 import { NotificationsController } from './infrastructure/notifications.controller';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
+  imports: [CommonModule],
   controllers: [NotificationsController],
   providers: [
     {

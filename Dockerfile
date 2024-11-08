@@ -1,5 +1,5 @@
 # ---- Base ----
-FROM node:22-alpine AS base
+FROM node:20-alpine AS base
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN apk update && apk add curl bash && rm -rf /var/cache/apk/*  
@@ -24,7 +24,7 @@ RUN /usr/local/bin/node-prune
 
 
 # ---- Release ----
-FROM node:22-alpine AS release
+FROM node:20-alpine AS release
 WORKDIR /usr/src/app
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/migrations ./migrations

@@ -13,6 +13,8 @@ import { ProjectQuotationModule } from './projectQuotation/projectQuotation.modu
 import { WorkerAssignmentModule } from './workerAssignment/workerAssignment.module';
 import { WorkerModule } from './worker/worker.module';
 import { WorkerRatesModule } from './workerRates/workerRates.module';
+import { ServiceSheetsModule } from './serviceSheets/serviceSheets.module';
+import { WorkerPaymentsModule } from './workerPayments/workerPayments.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { WorkerRatesModule } from './workerRates/workerRates.module';
     WorkerAssignmentModule,
     WorkerModule,
     WorkerRatesModule,
+    ServiceSheetsModule,
+    WorkerPaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

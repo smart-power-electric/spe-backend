@@ -18,25 +18,32 @@ export class CreateWorkerPaymentsRequest implements CreateWorkerPaymentsDto {
     description: 'Speciality of the workerPayments',
     nullable: true,
   })
-  projectId: string | null;
+  serviceSheetId: string | null;
   @ApiProperty({
     type: 'string',
     description: 'Contact of the workerPayments',
     nullable: true,
   })
-  weekStartDate: Date | null;
+  totalPayment: number | null;
   @ApiProperty({
     type: 'string',
     description: 'Email of the workerPayments',
     nullable: true,
   })
-  totalHours: number | null;
+  paymentDate: Date | null;
+  @ApiProperty({
+    type: 'string',
+    description: 'Is extra of the workerPayments',
+    nullable: true,
+  })
+  isExtra: boolean | null;
 
   constructor(data: CreateWorkerPaymentsDto) {
     this.workerId = data.workerId;
-    this.projectId = data.projectId;
-    this.weekStartDate = data.weekStartDate;
-    this.totalHours = data.totalHours;
+    this.serviceSheetId = data.serviceSheetId;
+    this.totalPayment = data.totalPayment;
+    this.paymentDate = data.paymentDate;
+    this.isExtra = data.isExtra;
   }
 }
 
@@ -52,25 +59,32 @@ export class UpdateWorkerPaymentsRequest implements UpdateWorkerPaymentsDto {
     description: 'Speciality of the workerPayments',
     nullable: true,
   })
-  projectId: string | null;
+  serviceSheetId: string | null;
   @ApiProperty({
     type: 'string',
     description: 'Contact of the workerPayments',
     nullable: true,
   })
-  weekStartDate: Date | null;
+  totalPayment: number | null;
   @ApiProperty({
     type: 'string',
     description: 'Email of the workerPayments',
     nullable: true,
   })
-  totalHours: number | null;
+  paymentDate: Date | null;
+  @ApiProperty({
+    type: 'string',
+    description: 'Is extra of the workerPayments',
+    nullable: true,
+  })
+  isExtra: boolean | null;
 
   constructor(data: UpdateWorkerPaymentsDto) {
     this.workerId = data.workerId;
-    this.projectId = data.projectId;
-    this.weekStartDate = data.weekStartDate;
-    this.totalHours = data.totalHours;
+    this.serviceSheetId = data.serviceSheetId;
+    this.totalPayment = data.totalPayment;
+    this.paymentDate = data.paymentDate;
+    this.isExtra = data.isExtra;
   }
 }
 
@@ -92,19 +106,25 @@ export class WorkerPaymentsResponse implements WorkerPaymentsRow {
     description: 'Speciality of the workerPayments',
     nullable: true,
   })
-  projectId: string | null;
+  serviceSheetId: string | null;
   @ApiProperty({
     type: 'string',
     description: 'Contact of the workerPayments',
     nullable: true,
   })
-  weekStartDate: Date | null;
+  totalPayment: number | null;
   @ApiProperty({
     type: 'string',
     description: 'Email of the workerPayments',
     nullable: true,
   })
-  totalHours: number | null;
+  paymentDate: Date | null;
+  @ApiProperty({
+    type: 'string',
+    description: 'Is extra of the workerPayments',
+    nullable: true,
+  })
+  isExtra: boolean | null;
   @ApiProperty({
     type: 'string',
     description: 'Created at of the workerPayments',
@@ -121,9 +141,10 @@ export class WorkerPaymentsResponse implements WorkerPaymentsRow {
   constructor(data: WorkerPayments) {
     this.id = data.id;
     this.workerId = data.workerId;
-    this.projectId = data.projectId;
-    this.weekStartDate = data.weekStartDate;
-    this.totalHours = data.totalHours;
+    this.serviceSheetId = data.serviceSheetId;
+    this.totalPayment = data.totalPayment;
+    this.paymentDate = data.paymentDate;
+    this.isExtra = data.isExtra;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }

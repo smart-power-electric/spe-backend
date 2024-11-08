@@ -16,6 +16,8 @@ import { WorkerRatesModule } from './workerRates/workerRates.module';
 import { ServiceSheetsModule } from './serviceSheets/serviceSheets.module';
 import { WorkerPaymentsModule } from './workerPayments/workerPayments.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { InvoicesModule } from './invoices/invoices.module';
+import { ServiceModule } from './service/service.module';
 
 @Module({
   imports: [
@@ -23,16 +25,18 @@ import { NotificationsModule } from './notifications/notifications.module';
     CommonModule,
     VersionModule,
     ClientModule,
-    ProjectModule,
+    InvoicesModule,
     MaterialModule,
-    StageModule,
-    ProjectQuotationModule,
-    WorkerAssignmentModule,
-    WorkerModule,
-    WorkerRatesModule,
-    ServiceSheetsModule,
-    WorkerPaymentsModule,
     NotificationsModule,
+    ProjectModule,
+    ProjectQuotationModule,
+    ServiceModule,
+    ServiceSheetsModule,
+    StageModule,
+    WorkerModule,
+    WorkerAssignmentModule,
+    WorkerPaymentsModule,
+    WorkerRatesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,7 +6,7 @@ services:
     ports:
       - ${PORT} # Ensure the port mapping is correct
     deploy:
-      replicas: 2
+      replicas: 1
     environment:
       - NODE_ENV=production
       - HOST=${HOST}

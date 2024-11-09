@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
@@ -36,12 +37,15 @@ import {
   UpdateNotificationsSchema,
 } from '../core/notifications.zod';
 
+@ApiTags('notifications')
 @Controller('notifications')
 export class NotificationsController {
   constructor(
     private readonly application: NotificationsUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
-  ) {}
+  ) {
+    this.logger.init(NotificationsController.name, 'info');
+  }
 
   @Post()
   @HttpCode(201)

@@ -26,18 +26,22 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
 import { ZodValidationPipe } from 'src/common/application/pipes/ZodValidationPipe';
 import { createClientSchema, UpdateClientSchema } from '../core/client.zod';
 
+@ApiTags('client')
 @Controller('client')
 export class ClientController {
   constructor(
     private readonly application: ClientUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
-  ) {}
+  ) {
+    this.logger.init(ClientController.name, 'info');
+  }
 
   @Post()
   @HttpCode(201)

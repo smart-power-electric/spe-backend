@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
@@ -33,12 +34,15 @@ import {
 } from './service.swagger';
 import { createServiceSchema, UpdateServiceSchema } from '../core/service.zod';
 
+@ApiTags('service')
 @Controller('service')
 export class ServiceController {
   constructor(
     private readonly application: ServiceUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
-  ) {}
+  ) {
+    this.logger.init(ServiceController.name, 'info');
+  }
 
   @Post()
   @HttpCode(201)

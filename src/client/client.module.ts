@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CommonModule } from 'src/common/common.module';
 import configuration from 'src/common/application/application-config/configuration';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),

@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
@@ -36,12 +37,15 @@ import {
   UpdateMaterialSchema,
 } from '../core/material.zod';
 
+@ApiTags('material')
 @Controller('material')
 export class MaterialController {
   constructor(
     private readonly application: MaterialUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
-  ) {}
+  ) {
+    this.logger.init(MaterialController.name, 'info');
+  }
 
   @Post()
   @HttpCode(201)

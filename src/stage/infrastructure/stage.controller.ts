@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
@@ -33,12 +34,15 @@ import {
 } from './stage.swagger';
 import { createStageSchema, UpdateStageSchema } from '../core/stage.zod';
 
+@ApiTags('stage')
 @Controller('stage')
 export class StageController {
   constructor(
     private readonly application: StageUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
-  ) {}
+  ) {
+    this.logger.init(StageController.name, 'info');
+  }
 
   @Post()
   @HttpCode(201)
@@ -155,12 +159,7 @@ export class StageController {
     updateStageDto: UpdateStageRequest,
   ) {
     const ctx = req.appContext;
-    this.logger.info(
-      ctx,
-      StageController.name,
-      'update',
-      'Updating stage',
-    );
+    this.logger.info(ctx, StageController.name, 'update', 'Updating stage');
     return this.application.update(ctx, id, updateStageDto);
   }
 
@@ -180,12 +179,7 @@ export class StageController {
   @ApiParam({ name: 'id', type: Number })
   remove(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
-    this.logger.info(
-      ctx,
-      StageController.name,
-      'remove',
-      'Deleting stage',
-    );
+    this.logger.info(ctx, StageController.name, 'remove', 'Deleting stage');
     return this.application.delete(ctx, id);
   }
 }

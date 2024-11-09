@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
@@ -36,12 +37,15 @@ import {
   UpdateInvoicesSchema,
 } from '../core/invoices.zod';
 
+@ApiTags('invoices')
 @Controller('invoices')
 export class InvoicesController {
   constructor(
     private readonly application: InvoicesUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
-  ) {}
+  ) {
+    this.logger.init(InvoicesController.name, 'info');
+  }
 
   @Post()
   @HttpCode(201)

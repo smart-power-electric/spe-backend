@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
@@ -36,12 +37,15 @@ import {
   UpdateProjectQuotationSchema,
 } from '../core/projectQuotation.zod';
 
+@ApiTags('projectQuotation')
 @Controller('project-quotation')
 export class ProjectQuotationController {
   constructor(
     private readonly application: ProjectQuotationUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
-  ) {}
+  ) {
+    this.logger.init(ProjectQuotationController.name, 'info');
+  }
 
   @Post()
   @HttpCode(201)

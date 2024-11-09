@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
@@ -30,18 +31,21 @@ import {
   WorkerAssignmentPaginationResponse,
   WorkerAssignmentResponse,
   UpdateWorkerAssignmentRequest,
-} from './service.swagger';
+} from './workerAssignment.swagger';
 import {
   createWorkerAssignmentSchema,
   UpdateWorkerAssignmentSchema,
 } from '../core/workerAssignment.zod';
 
+@ApiTags('workerAssignment')
 @Controller('workerAssignment')
 export class WorkerAssignmentController {
   constructor(
     private readonly application: WorkerAssignmentUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
-  ) {}
+  ) {
+    this.logger.init(WorkerAssignmentController.name, 'info');
+  }
 
   @Post()
   @HttpCode(201)

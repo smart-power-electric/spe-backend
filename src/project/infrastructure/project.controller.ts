@@ -25,6 +25,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
@@ -32,12 +33,15 @@ import { ProjectUseCases } from '../core/project.interface';
 import { ZodValidationPipe } from 'src/common/application/pipes/ZodValidationPipe';
 import { createProjectSchema, UpdateProjectSchema } from '../core/project.zod';
 
+@ApiTags('project')
 @Controller('project')
 export class ProjectController {
   constructor(
     private readonly application: ProjectUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
-  ) {}
+  ) {
+    this.logger.init(ProjectController.name, 'info');
+  }
 
   @Post()
   @HttpCode(201)

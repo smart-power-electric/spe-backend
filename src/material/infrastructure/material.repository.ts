@@ -14,7 +14,7 @@ import {
   MaterialToRow,
   RowToMaterial,
 } from './material.mapper';
-import { and, count, eq, ilike, sql, SQLWrapper } from 'drizzle-orm';
+import { and, count, eq, ilike, SQLWrapper } from 'drizzle-orm';
 
 export type MaterialRow = typeof materials.$inferSelect;
 export type MaterialNew = typeof materials.$inferInsert;

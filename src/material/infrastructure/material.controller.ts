@@ -64,7 +64,7 @@ export class MaterialController {
   @ApiOperation({
     summary: 'Create a new material',
   })
-  create(
+  createMaterial(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createMaterialSchema))
     createMaterialDto: CreateMaterialRequest,
@@ -97,7 +97,7 @@ export class MaterialController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllMaterial(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -129,7 +129,7 @@ export class MaterialController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneMaterial(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -155,7 +155,7 @@ export class MaterialController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateMaterialRequest })
-  update(
+  updateMaterial(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateMaterialSchema))
@@ -185,7 +185,7 @@ export class MaterialController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeMaterial(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       ctx,

@@ -67,7 +67,7 @@ export class NotificationsController {
   @ApiOperation({
     summary: 'Create a new notifications',
   })
-  create(
+  createNotification(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createNotificationsSchema))
     createNotificationsDto: CreateNotificationsRequest,
@@ -103,7 +103,7 @@ export class NotificationsController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllNotification(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -138,7 +138,7 @@ export class NotificationsController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneNotification(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -167,7 +167,7 @@ export class NotificationsController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateNotificationsRequest })
-  update(
+  updateNotification(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateNotificationsSchema))
@@ -197,7 +197,7 @@ export class NotificationsController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeNotification(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       ctx,

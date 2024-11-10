@@ -61,7 +61,7 @@ export class ServiceController {
   @ApiOperation({
     summary: 'Create a new service',
   })
-  create(
+  createService(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createServiceSchema))
     createServiceDto: CreateServiceRequest,
@@ -94,7 +94,7 @@ export class ServiceController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllService(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -126,7 +126,7 @@ export class ServiceController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneService(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -152,7 +152,7 @@ export class ServiceController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateServiceRequest })
-  update(
+  updateService(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateServiceSchema))
@@ -177,7 +177,7 @@ export class ServiceController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeService(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, ServiceController.name, 'remove', 'Deleting service');
     return this.application.delete(ctx, id);

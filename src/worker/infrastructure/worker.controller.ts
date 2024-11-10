@@ -61,7 +61,7 @@ export class WorkerController {
   @ApiOperation({
     summary: 'Create a new worker',
   })
-  create(
+  createWorker(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createWorkerSchema))
     createWorkerDto: CreateWorkerRequest,
@@ -94,7 +94,7 @@ export class WorkerController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllWorker(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -126,7 +126,7 @@ export class WorkerController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneWorker(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -152,7 +152,7 @@ export class WorkerController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateWorkerRequest })
-  update(
+  updateWorker(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateWorkerSchema))
@@ -177,7 +177,7 @@ export class WorkerController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeWorker(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, WorkerController.name, 'remove', 'Deleting worker');
     return this.application.delete(ctx, id);

@@ -51,5 +51,5 @@
     "./build",
     "./dist"
   ],
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*", "test/app.e2e.spec.ts"]
 }

@@ -28,6 +28,7 @@ export type JwtConfig = {
  * @type Config
  */
 export type Config = {
+  environment: string;
   port: number;
   host: string;
   applicationName: string;

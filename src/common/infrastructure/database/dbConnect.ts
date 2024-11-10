@@ -1,6 +1,11 @@
 /* eslint-disable no-console */
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { Pool, PoolConfig, QueryResult } from 'pg';
+import {
+  Inject,
+  Injectable,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
+import { Client, Pool, PoolConfig, QueryResult } from 'pg';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
 import { ConnectionOptions } from 'tls';
@@ -8,8 +13,8 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { DatabaseConfig } from 'src/common/core/configuration.entity';
 
 @Injectable()
-export class Database implements OnModuleInit {
-  private pool: Pool | null = null; //PostgreSQL client instance.
+export class Database implements OnModuleInit, OnModuleDestroy {
+  private conn: Pool | Client | null = null; //PostgreSQL client instance.
   private isConnected: boolean = false; //Flag indicating whether the client is connected.
 
   constructor(
@@ -30,7 +35,7 @@ export class Database implements OnModuleInit {
    * @throws {Error} Throws an error if the connection fails.
    */
 
-  private async connectToDB(): Promise<Pool> {
+  private async connectToDB(): Promise<Pool | Client> {
     const enabledSSL =
       this.configService.get<DatabaseConfig>('database')?.sslmode == 'required';
     let sslConfig: boolean | ConnectionOptions = false;
@@ -40,7 +45,7 @@ export class Database implements OnModuleInit {
         cert: fs.readFileSync('database-ca-certificate.crt').toString(),
       };
     }
-    if (!this.pool || !this.isConnected) {
+    if (!this.conn || !this.isConnected) {
       const connectionObject: PoolConfig = {
         user:
           this.configService.get<DatabaseConfig>('database')?.user ?? 'admin',
@@ -56,9 +61,13 @@ export class Database implements OnModuleInit {
         port: this.configService.get<DatabaseConfig>('database')?.port ?? 5432,
         ssl: sslConfig,
       };
-      this.pool = new Pool(connectionObject);
+      if (this.configService.get<string>('environment') === 'test') {
+        this.conn = new Client(connectionObject);
+      } else {
+        this.conn = new Pool(connectionObject);
+      }
       try {
-        await this.pool.connect();
+        await this.conn.connect();
         this.isConnected = true;
         console.log('Connected to PostgreSQL');
       } catch (error) {
@@ -66,7 +75,7 @@ export class Database implements OnModuleInit {
         throw error;
       }
     }
-    return this.pool;
+    return this.conn;
   }
 
   /**
@@ -76,11 +85,11 @@ export class Database implements OnModuleInit {
    * @throws {Error} Throws an error if query execution fails.
    */
   async executeQuery(query: string): Promise<QueryResult[]> {
-    if (!this.pool || !this.isConnected) {
+    if (!this.conn || !this.isConnected) {
       await this.connectToDB();
     }
     try {
-      const result: QueryResult = await this.pool!.query(query);
+      const result: QueryResult = await this.conn!.query(query);
       return result.rows;
     } catch (error) {
       console.error('Error executing query:', error);
@@ -99,10 +108,26 @@ export class Database implements OnModuleInit {
     // Return a default value or handle the case where the query result is empty
     return 0;
   }
-  async getClient(): Promise<Pool> {
-    if (!this.pool || !this.isConnected) {
+  async getClient(): Promise<Pool | Client> {
+    if (!this.conn || !this.isConnected) {
       await this.connectToDB();
     }
-    return this.pool!;
+    return this.conn!;
+  }
+  async closeConnection(): Promise<void> {
+    if (this.conn) {
+      await this.conn.end();
+      this.isConnected = false;
+    }
+  }
+  async onModuleDestroy() {
+    if (this.conn instanceof Pool) {
+      await this.conn.end();
+      this.isConnected = false;
+    }
+    if (this.conn instanceof Client) {
+      await this.conn.end();
+      this.isConnected = false;
+    }
   }
 }

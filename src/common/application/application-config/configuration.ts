@@ -1,7 +1,9 @@
+import { env } from 'process';
 import { Config } from '../../core/configuration.entity';
 
 export default function Config(): Config {
   const config = {
+    environment: env.NODE_ENV ?? 'development',
     applicationName: process.env.APPLICATION_NAME ?? 'NestJS Application',
     host: process.env.HOST ?? '127.0.0.1',
     port: parseInt(process.env.PORT ?? '3000', 10),

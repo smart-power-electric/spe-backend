@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from 'src/common/core/exception';
 import {
+  ServiceSheetsFilter,
   ServiceSheetsRepository,
   ServiceSheetsUseCases,
 } from '../core/serviceSheets.interface';
@@ -48,6 +49,7 @@ export class ServiceSheetsApplication implements ServiceSheetsUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ServiceSheetsFilter,
   ): Promise<{ data: ServiceSheets[]; total: number }> {
     this.logger.info(
       ctx,
@@ -55,7 +57,7 @@ export class ServiceSheetsApplication implements ServiceSheetsUseCases {
       'getAll',
       'Getting all serviceSheetss',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

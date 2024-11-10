@@ -5,8 +5,11 @@ import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { serviceSheets } from 'src/common/infrastructure/schema/schema';
 
-import { count, eq } from 'drizzle-orm';
-import { ServiceSheetsRepository } from '../core/serviceSheets.interface';
+import { and, count, eq, SQLWrapper } from 'drizzle-orm';
+import {
+  ServiceSheetsFilter,
+  ServiceSheetsRepository,
+} from '../core/serviceSheets.interface';
 import {
   RowToServiceSheets,
   ServiceSheetsToRow,
@@ -43,17 +46,30 @@ export class DrizzleServiceSheetsRepository implements ServiceSheetsRepository {
     return result.map(RowToServiceSheets).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filters: ServiceSheetsFilter,
+  ) {
     this.logger.info(
       ctx,
       DrizzleServiceSheetsRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const sqlFilters: SQLWrapper[] = [];
+    if (filters.workerId) {
+      sqlFilters.push(eq(serviceSheets.workerId, filters.workerId));
+    }
+    if (filters.projectId) {
+      sqlFilters.push(eq(serviceSheets.projectId, filters.projectId));
+    }
     const result = await this.db
       .getDb()
       .select()
       .from(serviceSheets)
+      .where(and(...sqlFilters))
       .limit(limit)
       .offset(offset)
       .execute();
@@ -61,6 +77,7 @@ export class DrizzleServiceSheetsRepository implements ServiceSheetsRepository {
       .getDb()
       .select({ count: count() })
       .from(serviceSheets)
+      .where(and(...sqlFilters))
       .limit(1)
       .execute();
     return { data: result.map(RowToServiceSheets), total: total[0].count };

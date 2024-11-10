@@ -5,12 +5,17 @@ import {
 } from './serviceSheets.dto';
 import { ServiceSheets } from './serviceSheets.entity';
 
+export type ServiceSheetsFilter = {
+  workerId?: string;
+  projectId?: string;
+};
 export interface ServiceSheetsRepository {
   insert(ctx: Context, row: ServiceSheets): Promise<ServiceSheets | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filter: ServiceSheetsFilter,
   ): Promise<{
     data: ServiceSheets[];
     total: number;
@@ -31,6 +36,7 @@ export interface ServiceSheetsUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filter: ServiceSheetsFilter,
   ): Promise<{
     data: ServiceSheets[];
     total: number;

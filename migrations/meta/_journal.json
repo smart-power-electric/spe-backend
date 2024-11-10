@@ -15,6 +15,13 @@
       "when": 1731268181280,
       "tag": "0001_fair_adam_warlock",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1731268460241,
+      "tag": "0002_round_nick_fury",
+      "breakpoints": true
     }
   ]
 }

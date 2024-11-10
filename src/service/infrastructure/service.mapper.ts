@@ -13,6 +13,7 @@ export function CreateDtoToService(dto: CreateServiceDto): Service {
 export function RowToService(row: ServiceRow): Service {
   return new Service({
     ...row,
+    createdAt: row.createdAt ?? new Date(),
   });
 }
 

@@ -85,7 +85,7 @@ export class ServiceResponse implements ServiceRow {
     description: 'Created at of the service',
     nullable: true,
   })
-  createdAt: Date | null;
+  createdAt: Date;
   @ApiProperty({
     type: 'string',
     description: 'Updated at of the service',

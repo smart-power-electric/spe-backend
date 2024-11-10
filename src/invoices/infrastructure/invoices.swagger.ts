@@ -127,7 +127,7 @@ export class InvoicesResponse implements InvoicesRow {
     description: 'Created at of the invoices',
     nullable: true,
   })
-  createdAt: Date | null;
+  createdAt: Date;
   @ApiProperty({
     type: 'string',
     description: 'Updated at of the invoices',

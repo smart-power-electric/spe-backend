@@ -31,7 +31,7 @@ export class ErrorHandlerFilter extends BaseExceptionFilter {
       message: errorParsed.error.message,
       name: errorParsed.error.type,
       path: request.url,
-      requestId: errorParsed.error.requestId ?? request.appContext.requestId,
+      requestId: errorParsed.error.requestId ?? request.appContext?.requestId,
     };
     if (responseBody.statusCode === 500) {
       const message = exception['message'] || null;

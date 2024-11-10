@@ -5,7 +5,7 @@ export class ProjectQuotation {
   serviceId: string | null;
   quantity: number | null;
   totalCost: number | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
@@ -15,7 +15,7 @@ export class ProjectQuotation {
     serviceId: string | null;
     quantity: number | null;
     totalCost: number | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';

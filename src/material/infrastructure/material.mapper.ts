@@ -13,6 +13,7 @@ export function CreateDtoToMaterial(dto: CreateMaterialDto): Material {
 export function RowToMaterial(row: MaterialRow): Material {
   return new Material({
     ...row,
+    createdAt: row.createdAt ?? new Date(),
   });
 }
 

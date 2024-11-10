@@ -5,7 +5,7 @@ export class WorkerPayments {
   totalPayment: number | null;
   paymentDate: Date | null;
   isExtra: boolean | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
@@ -15,7 +15,7 @@ export class WorkerPayments {
     totalPayment: number | null;
     paymentDate: Date | null;
     isExtra: boolean | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';

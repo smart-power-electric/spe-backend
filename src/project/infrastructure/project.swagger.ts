@@ -146,7 +146,7 @@ export class ProjectResponse implements ProjectRow {
     description: 'Created at of the project',
     nullable: true,
   })
-  createdAt: Date | null;
+  createdAt: Date;
   @ApiProperty({
     type: 'string',
     description: 'Updated at of the project',

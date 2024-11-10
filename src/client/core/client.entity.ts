@@ -8,7 +8,7 @@ export class Client {
   city: string | null;
   state: string | null;
   zip: string | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
@@ -21,7 +21,7 @@ export class Client {
     city: string | null;
     state: string | null;
     zip: string | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.name = params.name;

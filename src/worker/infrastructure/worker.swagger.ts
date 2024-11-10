@@ -187,7 +187,7 @@ export class WorkerResponse implements WorkerRow {
     description: 'Created at of the worker',
     nullable: true,
   })
-  createdAt: Date | null;
+  createdAt: Date;
   @ApiProperty({
     type: 'string',
     description: 'Updated at of the worker',

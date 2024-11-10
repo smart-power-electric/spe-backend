@@ -14,6 +14,7 @@ export function CreateDtoToWorker(dto: CreateWorkerDto): Worker {
 export function RowToWorker(row: WorkerRow): Worker {
   return new Worker({
     ...row,
+    createdAt: row.createdAt ?? new Date(),
   });
 }
 

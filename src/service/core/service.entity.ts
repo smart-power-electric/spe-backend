@@ -3,7 +3,7 @@ export class Service {
   name: string | null;
   description: string | null;
   unitCost: number | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
@@ -11,7 +11,7 @@ export class Service {
     name: string | null;
     description: string | null;
     unitCost: number | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';

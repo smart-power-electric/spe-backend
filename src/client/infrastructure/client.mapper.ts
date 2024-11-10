@@ -13,7 +13,7 @@ export function CreateDtoToClient(dto: CreateClientDto): Client {
     city: dto.city,
     state: dto.state,
     zip: dto.zip,
-    createdAt: null,
+    createdAt: new Date(),
     updatedAt: null,
   });
 }
@@ -28,7 +28,7 @@ export function RowtoClient(row: ClientRow): Client {
     city: row.city,
     state: row.state,
     zip: row.zip,
-    createdAt: row.createdAt,
+    createdAt: row.createdAt ?? new Date(),
     updatedAt: row.updatedAt,
   });
 }

@@ -92,7 +92,7 @@ export class WorkerAssignmentResponse implements WorkerAssignmentRow {
     description: 'Created at of the workerAssignment',
     nullable: true,
   })
-  createdAt: Date | null;
+  createdAt: Date;
   @ApiProperty({
     type: 'string',
     description: 'Updated at of the workerAssignment',

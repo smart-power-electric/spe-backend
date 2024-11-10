@@ -66,7 +66,7 @@ export class MaterialResponse implements MaterialRow {
     description: 'Created at of the material',
     nullable: true,
   })
-  createdAt: Date | null;
+  createdAt: Date;
   @ApiProperty({
     type: 'string',
     description: 'Updated at of the material',

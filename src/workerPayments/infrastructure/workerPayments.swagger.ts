@@ -130,7 +130,7 @@ export class WorkerPaymentsResponse implements WorkerPaymentsRow {
     description: 'Created at of the workerPayments',
     nullable: true,
   })
-  createdAt: Date | null;
+  createdAt: Date;
   @ApiProperty({
     type: 'string',
     description: 'Updated at of the workerPayments',

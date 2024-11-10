@@ -134,7 +134,7 @@ export class ProjectQuotationResponse implements ProjectQuotationRow {
     description: 'Created at of the projectQuotation',
     nullable: true,
   })
-  createdAt: Date | null;
+  createdAt: Date;
   @ApiProperty({
     type: Date,
     description: 'Updated at of the projectQuotation',

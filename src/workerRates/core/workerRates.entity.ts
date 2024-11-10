@@ -3,7 +3,7 @@ export class WorkerRates {
   workerId: string | null;
   rate: number | null;
   effectiveDate: Date | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
@@ -11,14 +11,14 @@ export class WorkerRates {
     workerId: string | null;
     rate: number | null;
     effectiveDate: Date | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';
     this.workerId = params.workerId;
     this.rate = params.rate;
     this.effectiveDate = params.effectiveDate;
-    this.createdAt = params.createdAt;
-    this.updatedAt = params.updatedAt;
+    this.createdAt = params.createdAt ?? new Date();
+    this.updatedAt = params.updatedAt ?? new Date();
   }
 }

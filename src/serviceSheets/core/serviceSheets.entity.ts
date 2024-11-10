@@ -4,7 +4,7 @@ export class ServiceSheets {
   projectId: string | null;
   weekStartDate: Date | null;
   totalHours: number | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
@@ -13,7 +13,7 @@ export class ServiceSheets {
     projectId: string | null;
     weekStartDate: Date | null;
     totalHours: number | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';

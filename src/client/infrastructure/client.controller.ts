@@ -9,6 +9,7 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ClientUseCases } from '../core/client.interface';
 import { ILogger } from 'src/common/core/logger.interface';
@@ -95,8 +96,8 @@ export class ClientController {
   @ApiQuery({ name: 'offset', required: false, type: Number })
   findAllClient(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
   ): Promise<ClientPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -124,7 +125,7 @@ export class ClientController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneClient(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -149,7 +150,7 @@ export class ClientController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateClientRequest })
   updateClient(
     @Req() req: Request,
@@ -175,7 +176,7 @@ export class ClientController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeClient(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, ClientController.name, 'remove', 'Deleting client');

@@ -27,7 +27,9 @@ export const projects = main.table(
       precision: 6,
       withTimezone: true,
       mode: 'date',
-    }),
+    })
+      .defaultNow()
+      .notNull(),
     updatedAt: timestamp('updated_at', {
       precision: 6,
       withTimezone: true,
@@ -53,7 +55,7 @@ export const materials = main.table('materials', {
     precision: 6,
     withTimezone: true,
     mode: 'date',
-  }),
+  }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', {
     precision: 6,
     withTimezone: true,
@@ -76,7 +78,9 @@ export const stages = main.table(
       precision: 6,
       withTimezone: true,
       mode: 'date',
-    }),
+    })
+      .defaultNow()
+      .notNull(),
     updatedAt: timestamp('updated_at', {
       precision: 6,
       withTimezone: true,
@@ -107,7 +111,9 @@ export const projectQuotation = main.table(
       precision: 6,
       withTimezone: true,
       mode: 'date',
-    }),
+    })
+      .defaultNow()
+      .notNull(),
     updatedAt: timestamp('updated_at', {
       precision: 6,
       withTimezone: true,
@@ -144,7 +150,7 @@ export const services = main.table('services', {
     precision: 6,
     withTimezone: true,
     mode: 'date',
-  }),
+  }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', {
     precision: 6,
     withTimezone: true,
@@ -163,7 +169,9 @@ export const workerAssignment = main.table(
       precision: 6,
       withTimezone: true,
       mode: 'date',
-    }),
+    })
+      .defaultNow()
+      .notNull(),
     updatedAt: timestamp('updated_at', {
       precision: 6,
       withTimezone: true,
@@ -205,7 +213,7 @@ export const workers = main.table('workers', {
     precision: 6,
     withTimezone: true,
     mode: 'date',
-  }),
+  }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', {
     precision: 6,
     withTimezone: true,
@@ -224,7 +232,9 @@ export const workerRates = main.table(
       precision: 6,
       withTimezone: true,
       mode: 'date',
-    }),
+    })
+      .defaultNow()
+      .notNull(),
     updatedAt: timestamp('updated_at', {
       precision: 6,
       withTimezone: true,
@@ -254,7 +264,9 @@ export const serviceSheets = main.table(
       precision: 6,
       withTimezone: true,
       mode: 'date',
-    }),
+    })
+      .defaultNow()
+      .notNull(),
     updatedAt: timestamp('updated_at', {
       precision: 6,
       withTimezone: true,
@@ -290,7 +302,9 @@ export const workerPayments = main.table(
       precision: 6,
       withTimezone: true,
       mode: 'date',
-    }),
+    })
+      .defaultNow()
+      .notNull(),
     updatedAt: timestamp('updated_at', {
       precision: 6,
       withTimezone: true,
@@ -324,7 +338,9 @@ export const notifications = main.table(
       precision: 6,
       withTimezone: true,
       mode: 'date',
-    }),
+    })
+      .defaultNow()
+      .notNull(),
     updatedAt: timestamp('updated_at', {
       precision: 6,
       withTimezone: true,
@@ -360,7 +376,9 @@ export const invoices = main.table(
       precision: 6,
       withTimezone: true,
       mode: 'date',
-    }),
+    })
+      .defaultNow()
+      .notNull(),
     updatedAt: timestamp('updated_at', {
       precision: 6,
       withTimezone: true,
@@ -392,7 +410,7 @@ export const clients = main.table('clients', {
     precision: 6,
     withTimezone: true,
     mode: 'date',
-  }),
+  }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', {
     precision: 6,
     withTimezone: true,

@@ -5,7 +5,7 @@ export class Invoices {
   invoiceNumber: string | null;
   totalAmount: number | null;
   showMaterials: boolean | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
@@ -15,7 +15,7 @@ export class Invoices {
     invoiceNumber: string | null;
     totalAmount: number | null;
     showMaterials: boolean | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';

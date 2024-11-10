@@ -3,7 +3,7 @@ export class Notifications {
   invoiceId: string | null;
   clientId: string | null;
   status: string | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
@@ -11,7 +11,7 @@ export class Notifications {
     invoiceId: string | null;
     clientId: string | null;
     status: string | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';

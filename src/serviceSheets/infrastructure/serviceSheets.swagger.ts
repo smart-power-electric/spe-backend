@@ -110,7 +110,7 @@ export class ServiceSheetsResponse implements ServiceSheetsRow {
     description: 'Created at of the serviceSheets',
     nullable: true,
   })
-  createdAt: Date | null;
+  createdAt: Date;
   @ApiProperty({
     type: 'string',
     description: 'Updated at of the serviceSheets',

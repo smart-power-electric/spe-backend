@@ -8,7 +8,7 @@ export class Worker {
   startDate: Date | null;
   endDate: Date | null;
   speciality: string | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
@@ -21,7 +21,7 @@ export class Worker {
     startDate: Date | null;
     endDate: Date | null;
     speciality: string | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';

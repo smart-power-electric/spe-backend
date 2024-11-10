@@ -6,7 +6,7 @@ import { clients } from 'src/common/infrastructure/schema/schema';
 import { Client } from '../core/client.entity';
 import { count, eq } from 'drizzle-orm';
 import { ClientRepository } from '../core/client.interface';
-import { RowtoClient } from './client.mapper';
+import { RowtoClient, toClientNew, toClientRow } from './client.mapper';
 
 export type ClientRow = typeof clients.$inferSelect;
 export type ClientNew = typeof clients.$inferInsert;
@@ -27,14 +27,7 @@ export class DrizzleClientRepository implements ClientRepository {
       'insert',
       'Inserting client',
     );
-    const newRow: ClientNew = {
-      name: row.name,
-      email: row.email,
-      phone: row.phone,
-      address: row.address,
-      createdAt: row.createdAt,
-      updatedAt: row.updatedAt,
-    };
+    const newRow = toClientNew(row);
     const result = await this.db
       .getDb()
       .insert(clients)
@@ -104,14 +97,7 @@ export class DrizzleClientRepository implements ClientRepository {
       'update',
       'Updating client',
     );
-    const newRow: ClientNew = {
-      name: row.name,
-      email: row.email,
-      phone: row.phone,
-      address: row.address,
-      createdAt: row.createdAt,
-      updatedAt: row.updatedAt,
-    };
+    const newRow = toClientRow(row);
     const result = await this.db
       .getDb()
       .update(clients)

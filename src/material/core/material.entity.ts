@@ -2,14 +2,14 @@ export class Material {
   id: string;
   name: string | null;
   unitCost: number | null;
-  createdAt: Date | null;
+  createdAt: Date;
   updatedAt: Date | null;
 
   constructor(params: {
     id?: string;
     name: string | null;
     unitCost: number | null;
-    createdAt: Date | null;
+    createdAt: Date;
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';

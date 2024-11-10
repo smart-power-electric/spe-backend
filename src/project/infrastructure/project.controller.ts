@@ -9,6 +9,7 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 import {
@@ -93,10 +94,12 @@ export class ProjectController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'clientId', required: false, type: String })
   findAllProject(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
+    @Query('clientId') clientId: string,
   ): Promise<ProjectPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -105,7 +108,7 @@ export class ProjectController {
       'findAll',
       'Getting all projects',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, { clientId });
   }
 
   @Get(':id')

@@ -2,12 +2,16 @@ import { Context } from 'src/common/core/context.entity';
 import { Project } from './project.entity';
 import { CreateProjectDto, UpdateProjectDto } from './project.dto';
 
+export type ProjectGetAllFilters = {
+  clientId?: string;
+};
 export interface ProjectRepository {
   insert(ctx: Context, row: Project): Promise<Project | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ProjectGetAllFilters,
   ): Promise<{
     data: Project[];
     total: number;
@@ -24,6 +28,7 @@ export interface ProjectUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ProjectGetAllFilters,
   ): Promise<{
     data: Project[];
     total: number;

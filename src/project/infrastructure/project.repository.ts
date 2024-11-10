@@ -4,8 +4,11 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 import { projects } from 'src/common/infrastructure/schema/schema';
 import { Project } from '../core/project.entity';
-import { count, eq } from 'drizzle-orm';
-import { ProjectRepository } from '../core/project.interface';
+import { and, count, eq, SQLWrapper } from 'drizzle-orm';
+import {
+  ProjectGetAllFilters,
+  ProjectRepository,
+} from '../core/project.interface';
 import {
   ProjectToProjectNew,
   ProjectToRow,
@@ -41,17 +44,27 @@ export class DrizzleProjectRepository implements ProjectRepository {
     return result.map(RowToProject).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filter: ProjectGetAllFilters,
+  ) {
     this.logger.info(
       ctx,
       DrizzleProjectRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const filters: SQLWrapper[] = [];
+    if (filter.clientId) {
+      filters.push(eq(projects.clientId, filter.clientId));
+    }
     const result = await this.db
       .getDb()
       .select()
       .from(projects)
+      .where(and(...filters))
       .limit(limit)
       .offset(offset)
       .execute();
@@ -59,6 +72,7 @@ export class DrizzleProjectRepository implements ProjectRepository {
       .getDb()
       .select({ count: count() })
       .from(projects)
+      .where(and(...filters))
       .limit(1)
       .execute();
     return { data: result.map(RowToProject), total: total[0].count };

@@ -1,12 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateProjectDto, UpdateProjectDto } from '../core/project.dto';
-import { ProjectRepository, ProjectUseCases } from '../core/project.interface';
+import {
+  ProjectGetAllFilters,
+  ProjectRepository,
+  ProjectUseCases,
+} from '../core/project.interface';
 import { ILogger } from 'src/common/core/logger.interface';
 import { Context } from 'src/common/core/context.entity';
 import { Project } from '../core/project.entity';
 import { CreateDtoToProject } from '../infrastructure/project.mapper';
 import {
-  
   InternalErrorException,
   NotFoundException,
 } from 'src/common/core/exception';
@@ -39,6 +42,7 @@ export class ProjectApplication implements ProjectUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ProjectGetAllFilters,
   ): Promise<{ data: Project[]; total: number }> {
     this.logger.info(
       ctx,
@@ -46,7 +50,7 @@ export class ProjectApplication implements ProjectUseCases {
       'getAll',
       'Getting all projects',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

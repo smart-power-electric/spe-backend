@@ -2,12 +2,16 @@ import { Context } from 'src/common/core/context.entity';
 import { CreateWorkerDto, UpdateWorkerDto } from './worker.dto';
 import { Worker } from './worker.entity';
 
+export type WorkerFilter = {
+  name?: string;
+};
 export interface WorkerRepository {
   insert(ctx: Context, row: Worker): Promise<Worker | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filter: WorkerFilter,
   ): Promise<{
     data: Worker[];
     total: number;
@@ -24,6 +28,7 @@ export interface WorkerUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filter: WorkerFilter,
   ): Promise<{
     data: Worker[];
     total: number;

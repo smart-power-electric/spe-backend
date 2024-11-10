@@ -5,7 +5,11 @@ import {
   InternalErrorException,
   NotFoundException,
 } from 'src/common/core/exception';
-import { WorkerRepository, WorkerUseCases } from '../core/worker.interface';
+import {
+  WorkerFilter,
+  WorkerRepository,
+  WorkerUseCases,
+} from '../core/worker.interface';
 import { CreateWorkerDto, UpdateWorkerDto } from '../core/worker.dto';
 import { Worker } from '../core/worker.entity';
 import { CreateDtoToWorker } from '../infrastructure/worker.mapper';
@@ -38,6 +42,7 @@ export class WorkerApplication implements WorkerUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: WorkerFilter,
   ): Promise<{ data: Worker[]; total: number }> {
     this.logger.info(
       ctx,
@@ -45,7 +50,7 @@ export class WorkerApplication implements WorkerUseCases {
       'getAll',
       'Getting all workers',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

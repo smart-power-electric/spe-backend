@@ -4,14 +4,14 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { services } from 'src/common/infrastructure/schema/schema';
-import { ServiceRepository } from '../core/service.interface';
+import { ServiceFilter, ServiceRepository } from '../core/service.interface';
 import { Service } from '../core/service.entity';
 import {
   ServiceToServiceNew,
   ServiceToRow,
   RowToService,
 } from './service.mapper';
-import { count, eq } from 'drizzle-orm';
+import { and, count, eq, SQLWrapper } from 'drizzle-orm';
 
 export type ServiceRow = typeof services.$inferSelect;
 export type ServiceNew = typeof services.$inferInsert;
@@ -42,17 +42,27 @@ export class DrizzleServiceRepository implements ServiceRepository {
     return result.map(RowToService).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filters: ServiceFilter,
+  ) {
     this.logger.info(
       ctx,
       DrizzleServiceRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const sqlFilters: SQLWrapper[] = [];
+    if (filters.name) {
+      sqlFilters.push(eq(services.name, filters.name));
+    }
     const result = await this.db
       .getDb()
       .select()
       .from(services)
+      .where(and(...sqlFilters))
       .limit(limit)
       .offset(offset)
       .execute();
@@ -60,6 +70,7 @@ export class DrizzleServiceRepository implements ServiceRepository {
       .getDb()
       .select({ count: count() })
       .from(services)
+      .where(and(...sqlFilters))
       .limit(1)
       .execute();
     return { data: result.map(RowToService), total: total[0].count };

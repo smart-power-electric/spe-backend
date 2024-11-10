@@ -9,6 +9,7 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -94,10 +95,12 @@ export class ServiceController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'name', required: false, type: String })
   findAllService(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
+    @Query('name') name?: string,
   ): Promise<ServicePaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -106,7 +109,7 @@ export class ServiceController {
       'findAll',
       'Getting all services',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, { name });
   }
 
   @Get(':id')

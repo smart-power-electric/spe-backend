@@ -2,12 +2,16 @@ import { Context } from 'src/common/core/context.entity';
 import { Service } from './service.entity';
 import { CreateServiceDto, UpdateServiceDto } from './service.dto';
 
+export type ServiceFilter = {
+  name?: string;
+};
 export interface ServiceRepository {
   insert(ctx: Context, row: Service): Promise<Service | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filter: ServiceFilter,
   ): Promise<{
     data: Service[];
     total: number;
@@ -24,6 +28,7 @@ export interface ServiceUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filter: ServiceFilter,
   ): Promise<{
     data: Service[];
     total: number;

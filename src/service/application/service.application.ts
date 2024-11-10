@@ -5,7 +5,11 @@ import {
   InternalErrorException,
   NotFoundException,
 } from 'src/common/core/exception';
-import { ServiceRepository, ServiceUseCases } from '../core/service.interface';
+import {
+  ServiceFilter,
+  ServiceRepository,
+  ServiceUseCases,
+} from '../core/service.interface';
 import { CreateServiceDto, UpdateServiceDto } from '../core/service.dto';
 import { Service } from '../core/service.entity';
 import { CreateDtoToService } from '../infrastructure/service.mapper';
@@ -38,6 +42,7 @@ export class ServiceApplication implements ServiceUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ServiceFilter,
   ): Promise<{ data: Service[]; total: number }> {
     this.logger.info(
       ctx,
@@ -45,7 +50,7 @@ export class ServiceApplication implements ServiceUseCases {
       'getAll',
       'Getting all services',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

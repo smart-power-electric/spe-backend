@@ -5,12 +5,18 @@ import {
   UpdateProjectQuotationDto,
 } from './projectQuotation.dto';
 
+export type ProjectQuotationFilters = {
+  projectId?: string;
+  materialId?: string;
+  serviceId?: string;
+};
 export interface ProjectQuotationRepository {
   insert(ctx: Context, row: ProjectQuotation): Promise<ProjectQuotation | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ProjectQuotationFilters,
   ): Promise<{
     data: ProjectQuotation[];
     total: number;
@@ -34,6 +40,7 @@ export interface ProjectQuotationUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ProjectQuotationFilters,
   ): Promise<{
     data: ProjectQuotation[];
     total: number;

@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from 'src/common/core/exception';
 import {
+  ProjectQuotationFilters,
   ProjectQuotationRepository,
   ProjectQuotationUseCases,
 } from '../core/projectQuotation.interface';
@@ -51,6 +52,7 @@ export class ProjectQuotationApplication implements ProjectQuotationUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ProjectQuotationFilters,
   ): Promise<{ data: ProjectQuotation[]; total: number }> {
     this.logger.info(
       ctx,
@@ -58,7 +60,7 @@ export class ProjectQuotationApplication implements ProjectQuotationUseCases {
       'getAll',
       'Getting all projectQuotations',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

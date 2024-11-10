@@ -37,7 +37,7 @@ import { createClientSchema, UpdateClientSchema } from '../core/client.zod';
 @Controller('client')
 export class ClientController {
   constructor(
-    private readonly application: ClientUseCases,
+    @Inject(ClientUseCases) private readonly application: ClientUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(ClientController.name, 'info');

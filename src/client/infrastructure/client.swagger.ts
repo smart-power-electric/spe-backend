@@ -1,5 +1,5 @@
 import { ClientRow } from './client.repository';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CreateClientDto, UpdateClientDto } from '../core/client.dto';
 import { Client } from '../core/client.entity';
 
@@ -64,55 +64,55 @@ export class CreateClientRequest implements CreateClientDto {
   }
 }
 
-export class UpdateClientRequest {
-  @ApiProperty({
+export class UpdateClientRequest implements UpdateClientDto {
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the client',
     nullable: true,
   })
-  name: string | null;
-  @ApiProperty({
+  name?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Address of the client',
     nullable: true,
   })
-  address: string | null;
-  @ApiProperty({
+  address?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Contact of the client',
     nullable: true,
   })
-  contact: string | null;
-  @ApiProperty({
+  contact?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Email of the client',
     nullable: true,
   })
-  email: string | null;
-  @ApiProperty({
+  email?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Phone of the client',
     nullable: true,
   })
-  phone: string | null;
-  @ApiProperty({
+  phone?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'City of the client',
     nullable: true,
   })
-  city: string | null;
-  @ApiProperty({
+  city?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'State of the client',
     nullable: true,
   })
-  state: string | null;
-  @ApiProperty({
+  state?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Zip of the client',
     nullable: true,
   })
-  zip: string | null;
+  zip?: string | null;
   constructor(data: UpdateClientDto) {
     this.name = data.name;
     this.address = data.address;

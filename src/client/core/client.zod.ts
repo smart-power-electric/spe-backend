@@ -67,28 +67,13 @@ export const createClientSchema = z.object({
 });
 
 export const UpdateClientSchema = z.object({
-  name: z
-    .string()
-    .optional()
-    .transform((x) => {
-      return x ?? null;
-    })
-    .describe('Name of client'),
-  email: z
-    .string()
-    .email()
-    .optional()
-    .transform((x) => {
-      return x ?? null;
-    })
-    .describe('Email of client'),
+  name: z.string().optional().nullable().describe('Name of client'),
+  email: z.string().email().optional().nullable().describe('Email of client'),
   phone: z
     .string()
     .max(255)
     .optional()
-    .transform((x) => {
-      return x ?? null;
-    })
+    .nullable()
     .refine(
       (phone) => {
         if (!phone) return true;
@@ -108,39 +93,9 @@ export const UpdateClientSchema = z.object({
       return phone;
     })
     .describe('Phone number'),
-  address: z
-    .string()
-    .optional()
-    .transform((x) => {
-      return x ?? null;
-    })
-    .describe('Address of client'),
-  city: z
-    .string()
-    .optional()
-    .transform((x) => {
-      return x ?? null;
-    })
-    .describe('City of client'),
-  state: z
-    .string()
-    .optional()
-    .transform((x) => {
-      return x ?? null;
-    })
-    .describe('State of client'),
-  zip: z
-    .string()
-    .optional()
-    .transform((x) => {
-      return x ?? null;
-    })
-    .describe('Zip code of client'),
-  contact: z
-    .string()
-    .optional()
-    .transform((x) => {
-      return x ?? null;
-    })
-    .describe('Contact of the client'),
+  address: z.string().optional().nullable().describe('Address of client'),
+  city: z.string().optional().nullable().describe('City of client'),
+  state: z.string().optional().nullable().describe('State of client'),
+  zip: z.string().optional().nullable().describe('Zip code of client'),
+  contact: z.string().optional().nullable().describe('Contact of the client'),
 });

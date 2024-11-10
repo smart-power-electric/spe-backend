@@ -103,7 +103,7 @@ export class InvoicesController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAllClient(
+  findAllInvoice(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,

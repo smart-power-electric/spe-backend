@@ -3,9 +3,12 @@ import { Context } from 'src/common/core/context.entity';
 import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
-import { count, eq } from 'drizzle-orm';
+import { and, count, eq, SQLWrapper } from 'drizzle-orm';
 import { workerAssignment } from 'src/common/infrastructure/schema/schema';
-import { WorkerAssignmentRepository } from '../core/workerAssignment.interface';
+import {
+  WorkerAssignmentFilter,
+  WorkerAssignmentRepository,
+} from '../core/workerAssignment.interface';
 import { WorkerAssignment } from '../core/workerAssignment.entity';
 import {
   RowToWorkerAssignment,
@@ -45,17 +48,33 @@ export class DrizzleWorkerAssignmentRepository
     return result.map(RowToWorkerAssignment).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filters: WorkerAssignmentFilter,
+  ) {
     this.logger.info(
       ctx,
       DrizzleWorkerAssignmentRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const sqlFilters: SQLWrapper[] = [];
+    if (filters.workerId) {
+      sqlFilters.push(eq(workerAssignment.workerId, filters.workerId));
+    }
+    if (filters.projectId) {
+      sqlFilters.push(eq(workerAssignment.projectId, filters.projectId));
+    }
+    if (filters.stageId) {
+      sqlFilters.push(eq(workerAssignment.stageId, filters.stageId));
+    }
     const result = await this.db
       .getDb()
       .select()
       .from(workerAssignment)
+      .where(and(...sqlFilters))
       .limit(limit)
       .offset(offset)
       .execute();
@@ -63,6 +82,7 @@ export class DrizzleWorkerAssignmentRepository
       .getDb()
       .select({ count: count() })
       .from(workerAssignment)
+      .where(and(...sqlFilters))
       .limit(1)
       .execute();
     return { data: result.map(RowToWorkerAssignment), total: total[0].count };

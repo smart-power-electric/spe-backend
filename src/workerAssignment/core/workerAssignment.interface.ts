@@ -5,12 +5,18 @@ import {
   UpdateWorkerAssignmentDto,
 } from './workerAssignment.dto';
 
+export type WorkerAssignmentFilter = {
+  workerId?: string;
+  projectId?: string;
+  stageId?: string;
+};
 export interface WorkerAssignmentRepository {
   insert(ctx: Context, row: WorkerAssignment): Promise<WorkerAssignment | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filter: WorkerAssignmentFilter,
   ): Promise<{
     data: WorkerAssignment[];
     total: number;
@@ -34,6 +40,7 @@ export interface WorkerAssignmentUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filter: WorkerAssignmentFilter,
   ): Promise<{
     data: WorkerAssignment[];
     total: number;

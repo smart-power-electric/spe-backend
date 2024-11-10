@@ -9,6 +9,7 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -104,10 +105,16 @@ export class WorkerAssignmentController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'workerId', required: false, type: String })
+  @ApiQuery({ name: 'projectId', required: false, type: String })
+  @ApiQuery({ name: 'stageId', required: false, type: String })
   findAllWorkerAssignment(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
+    @Query('workerId') workerId: string,
+    @Query('projectId') projectId: string,
+    @Query('stageId') stageId: string,
   ): Promise<WorkerAssignmentPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -116,7 +123,11 @@ export class WorkerAssignmentController {
       'findAll',
       'Getting all workerAssignments',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, {
+      workerId,
+      projectId,
+      stageId,
+    });
   }
 
   @Get(':id')

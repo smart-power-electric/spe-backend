@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from 'src/common/core/exception';
 import {
+  WorkerAssignmentFilter,
   WorkerAssignmentRepository,
   WorkerAssignmentUseCases,
 } from '../core/workerAssignment.interface';
@@ -51,6 +52,7 @@ export class WorkerAssignmentApplication implements WorkerAssignmentUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: WorkerAssignmentFilter,
   ): Promise<{ data: WorkerAssignment[]; total: number }> {
     this.logger.info(
       ctx,
@@ -58,7 +60,7 @@ export class WorkerAssignmentApplication implements WorkerAssignmentUseCases {
       'getAll',
       'Getting all workerAssignments',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from 'src/common/core/exception';
 import {
+  MaterialFilters,
   MaterialRepository,
   MaterialUseCases,
 } from '../core/material.interface';
@@ -41,6 +42,7 @@ export class MaterialApplication implements MaterialUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: MaterialFilters,
   ): Promise<{ data: Material[]; total: number }> {
     this.logger.info(
       ctx,
@@ -48,7 +50,7 @@ export class MaterialApplication implements MaterialUseCases {
       'getAll',
       'Getting all materials',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

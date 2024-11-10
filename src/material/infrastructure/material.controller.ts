@@ -9,6 +9,7 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -97,10 +98,12 @@ export class MaterialController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'name', required: false, type: String })
   findAllMaterial(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
+    @Query('name') name: string,
   ): Promise<MaterialPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -109,7 +112,7 @@ export class MaterialController {
       'findAll',
       'Getting all materials',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, { name });
   }
 
   @Get(':id')

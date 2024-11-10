@@ -4,14 +4,17 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { materials } from 'src/common/infrastructure/schema/schema';
-import { MaterialRepository } from '../core/material.interface';
+import {
+  MaterialFilters,
+  MaterialRepository,
+} from '../core/material.interface';
 import { Material } from '../core/material.entity';
 import {
   MaterialToMaterialNew,
   MaterialToRow,
   RowToMaterial,
 } from './material.mapper';
-import { count, eq } from 'drizzle-orm';
+import { and, count, eq, ilike, sql, SQLWrapper } from 'drizzle-orm';
 
 export type MaterialRow = typeof materials.$inferSelect;
 export type MaterialNew = typeof materials.$inferInsert;
@@ -42,17 +45,27 @@ export class DrizzleMaterialRepository implements MaterialRepository {
     return result.map(RowToMaterial).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filters: MaterialFilters,
+  ) {
     this.logger.info(
       ctx,
       DrizzleMaterialRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const sqlFilters: SQLWrapper[] = [];
+    if (filters.name) {
+      sqlFilters.push(ilike(materials.name, `%${filters.name}%`));
+    }
     const result = await this.db
       .getDb()
       .select()
       .from(materials)
+      .where(and(...sqlFilters))
       .limit(limit)
       .offset(offset)
       .execute();
@@ -60,6 +73,7 @@ export class DrizzleMaterialRepository implements MaterialRepository {
       .getDb()
       .select({ count: count() })
       .from(materials)
+      .where(and(...sqlFilters))
       .limit(1)
       .execute();
     return { data: result.map(RowToMaterial), total: total[0].count };

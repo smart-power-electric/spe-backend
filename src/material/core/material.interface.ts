@@ -2,12 +2,16 @@ import { Context } from 'src/common/core/context.entity';
 import { Material } from './material.entity';
 import { CreateMaterialDto, UpdateMaterialDto } from './material.dto';
 
+export type MaterialFilters = {
+  name: string;
+};
 export interface MaterialRepository {
   insert(ctx: Context, row: Material): Promise<Material | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filters: MaterialFilters,
   ): Promise<{
     data: Material[];
     total: number;
@@ -24,6 +28,7 @@ export interface MaterialUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: MaterialFilters,
   ): Promise<{
     data: Material[];
     total: number;

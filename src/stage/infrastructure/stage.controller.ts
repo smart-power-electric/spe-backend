@@ -9,6 +9,7 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -94,10 +95,14 @@ export class StageController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'projectId', required: false, type: String })
+  @ApiQuery({ name: 'name', required: false, type: String })
   findAllStage(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
+    @Query('projectId') projectId: string,
+    @Query('name') name: string,
   ): Promise<StagePaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -106,7 +111,7 @@ export class StageController {
       'findAll',
       'Getting all stages',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, { projectId, name });
   }
 
   @Get(':id')

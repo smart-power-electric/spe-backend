@@ -3,7 +3,7 @@ import { Material } from './material.entity';
 import { CreateMaterialDto, UpdateMaterialDto } from './material.dto';
 
 export type MaterialFilters = {
-  name: string;
+  name?: string;
 };
 export interface MaterialRepository {
   insert(ctx: Context, row: Material): Promise<Material | null>;

@@ -5,7 +5,11 @@ import {
   InternalErrorException,
   NotFoundException,
 } from 'src/common/core/exception';
-import { StageRepository, StageUseCases } from '../core/stage.interface';
+import {
+  StageGetAllFilters,
+  StageRepository,
+  StageUseCases,
+} from '../core/stage.interface';
 import { CreateStageDto, UpdateStageDto } from '../core/stage.dto';
 import { Stage } from '../core/stage.entity';
 import { CreateDtoToStage } from '../infrastructure/stage.mapper';
@@ -38,6 +42,7 @@ export class StageApplication implements StageUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: StageGetAllFilters,
   ): Promise<{ data: Stage[]; total: number }> {
     this.logger.info(
       ctx,
@@ -45,7 +50,7 @@ export class StageApplication implements StageUseCases {
       'getAll',
       'Getting all stages',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

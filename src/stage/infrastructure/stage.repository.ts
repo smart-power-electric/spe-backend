@@ -4,10 +4,10 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { stages } from 'src/common/infrastructure/schema/schema';
-import { StageRepository } from '../core/stage.interface';
+import { StageGetAllFilters, StageRepository } from '../core/stage.interface';
 import { Stage } from '../core/stage.entity';
 import { StageToStageNew, StageToRow, RowToStage } from './stage.mapper';
-import { count, eq } from 'drizzle-orm';
+import { and, count, eq, ilike, SQLWrapper } from 'drizzle-orm';
 
 export type StageRow = typeof stages.$inferSelect;
 export type StageNew = typeof stages.$inferInsert;
@@ -38,17 +38,30 @@ export class DrizzleStageRepository implements StageRepository {
     return result.map(RowToStage).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filters: StageGetAllFilters,
+  ) {
     this.logger.info(
       ctx,
       DrizzleStageRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const sqlFilters: SQLWrapper[] = [];
+    if (filters.projectId) {
+      sqlFilters.push(eq(stages.projectId, filters.projectId));
+    }
+    if (filters.name) {
+      sqlFilters.push(ilike(stages.name, `%${filters.name}%`));
+    }
     const result = await this.db
       .getDb()
       .select()
       .from(stages)
+      .where(and(...sqlFilters))
       .limit(limit)
       .offset(offset)
       .execute();
@@ -56,6 +69,7 @@ export class DrizzleStageRepository implements StageRepository {
       .getDb()
       .select({ count: count() })
       .from(stages)
+      .where(and(...sqlFilters))
       .limit(1)
       .execute();
     return { data: result.map(RowToStage), total: total[0].count };

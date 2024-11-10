@@ -9,6 +9,7 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -104,10 +105,12 @@ export class WorkerRatesController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'workerId', required: false, type: String })
   findAllWorkerRates(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
+    @Query('workerId') workerId: string,
   ): Promise<WorkerRatesPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -116,7 +119,7 @@ export class WorkerRatesController {
       'findAll',
       'Getting all workerRatess',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, { workerId });
   }
 
   @Get(':id')

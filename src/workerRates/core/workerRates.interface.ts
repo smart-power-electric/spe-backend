@@ -2,12 +2,16 @@ import { Context } from 'src/common/core/context.entity';
 import { WorkerRates } from './workerRates.entity';
 import { CreateWorkerRatesDto, UpdateWorkerRatesDto } from './workerRates.dto';
 
+export type WorkerRatesFilters = {
+  workerId?: string;
+};
 export interface WorkerRatesRepository {
   insert(ctx: Context, row: WorkerRates): Promise<WorkerRates | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filters: WorkerRatesFilters,
   ): Promise<{
     data: WorkerRates[];
     total: number;
@@ -28,6 +32,7 @@ export interface WorkerRatesUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: WorkerRatesFilters,
   ): Promise<{
     data: WorkerRates[];
     total: number;

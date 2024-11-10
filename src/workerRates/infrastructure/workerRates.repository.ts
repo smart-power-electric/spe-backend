@@ -5,8 +5,11 @@ import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { workerRates } from 'src/common/infrastructure/schema/schema';
 
-import { count, eq } from 'drizzle-orm';
-import { WorkerRatesRepository } from '../core/workerRates.interface';
+import { and, count, eq, SQLWrapper } from 'drizzle-orm';
+import {
+  WorkerRatesFilters,
+  WorkerRatesRepository,
+} from '../core/workerRates.interface';
 import { WorkerRates } from '../core/workerRates.entity';
 import {
   RowToWorkerRates,
@@ -43,17 +46,27 @@ export class DrizzleWorkerRatesRepository implements WorkerRatesRepository {
     return result.map(RowToWorkerRates).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filters: WorkerRatesFilters,
+  ) {
     this.logger.info(
       ctx,
       DrizzleWorkerRatesRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const sqlFilters: SQLWrapper[] = [];
+    if (filters.workerId) {
+      sqlFilters.push(eq(workerRates.workerId, filters.workerId));
+    }
     const result = await this.db
       .getDb()
       .select()
       .from(workerRates)
+      .where(and(...sqlFilters))
       .limit(limit)
       .offset(offset)
       .execute();
@@ -61,6 +74,7 @@ export class DrizzleWorkerRatesRepository implements WorkerRatesRepository {
       .getDb()
       .select({ count: count() })
       .from(workerRates)
+      .where(and(...sqlFilters))
       .limit(1)
       .execute();
     return { data: result.map(RowToWorkerRates), total: total[0].count };

@@ -41,7 +41,7 @@ import {
 @Controller('material')
 export class MaterialController {
   constructor(
-    private readonly application: MaterialUseCases,
+    @Inject(MaterialUseCases) private readonly application: MaterialUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(MaterialController.name, 'info');

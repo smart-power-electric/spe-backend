@@ -38,7 +38,7 @@ import { createStageSchema, UpdateStageSchema } from '../core/stage.zod';
 @Controller('stage')
 export class StageController {
   constructor(
-    private readonly application: StageUseCases,
+    @Inject(StageUseCases) private readonly application: StageUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(StageController.name, 'info');

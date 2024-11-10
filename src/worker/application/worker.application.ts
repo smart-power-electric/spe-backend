@@ -13,7 +13,7 @@ import { CreateDtoToWorker } from '../infrastructure/worker.mapper';
 @Injectable()
 export class WorkerApplication implements WorkerUseCases {
   constructor(
-    private readonly repository: WorkerRepository,
+    @Inject(WorkerRepository) private readonly repository: WorkerRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(WorkerApplication.name, 'info');

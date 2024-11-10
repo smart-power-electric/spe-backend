@@ -41,7 +41,7 @@ import {
 @Controller('invoices')
 export class InvoicesController {
   constructor(
-    private readonly application: InvoicesUseCases,
+    @Inject(InvoicesUseCases) private readonly application: InvoicesUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(InvoicesController.name, 'info');

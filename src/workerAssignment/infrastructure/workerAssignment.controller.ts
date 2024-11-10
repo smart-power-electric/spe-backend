@@ -41,6 +41,7 @@ import {
 @Controller('workerAssignment')
 export class WorkerAssignmentController {
   constructor(
+    @Inject(WorkerAssignmentUseCases)
     private readonly application: WorkerAssignmentUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

@@ -14,7 +14,7 @@ import {
 @Injectable()
 export class ProjectApplication implements ProjectUseCases {
   constructor(
-    private readonly repository: ProjectRepository,
+    @Inject(ProjectRepository) private readonly repository: ProjectRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(ProjectApplication.name, 'info');

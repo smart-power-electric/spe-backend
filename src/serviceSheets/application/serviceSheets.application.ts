@@ -19,6 +19,7 @@ import { CreateDtoToServiceSheets } from '../infrastructure/serviceSheets.mapper
 @Injectable()
 export class ServiceSheetsApplication implements ServiceSheetsUseCases {
   constructor(
+    @Inject(ServiceSheetsRepository)
     private readonly repository: ServiceSheetsRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

@@ -19,6 +19,7 @@ import { CreateDtoToProjectQuotation } from '../infrastructure/projectQuotation.
 @Injectable()
 export class ProjectQuotationApplication implements ProjectQuotationUseCases {
   constructor(
+    @Inject(ProjectQuotationRepository)
     private readonly repository: ProjectQuotationRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

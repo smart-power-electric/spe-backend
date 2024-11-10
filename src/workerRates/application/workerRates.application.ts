@@ -19,6 +19,7 @@ import { CreateDtoToWorkerRates } from '../infrastructure/workerRates.mapper';
 @Injectable()
 export class WorkerRatesApplication implements WorkerRatesUseCases {
   constructor(
+    @Inject(WorkerRatesRepository)
     private readonly repository: WorkerRatesRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

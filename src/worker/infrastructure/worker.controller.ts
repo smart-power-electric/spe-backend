@@ -38,7 +38,7 @@ import { createWorkerSchema, UpdateWorkerSchema } from '../core/worker.zod';
 @Controller('worker')
 export class WorkerController {
   constructor(
-    private readonly application: WorkerUseCases,
+    @Inject(WorkerUseCases) private readonly application: WorkerUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(WorkerController.name, 'info');

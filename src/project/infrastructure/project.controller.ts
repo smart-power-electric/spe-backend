@@ -37,7 +37,7 @@ import { createProjectSchema, UpdateProjectSchema } from '../core/project.zod';
 @Controller('project')
 export class ProjectController {
   constructor(
-    private readonly application: ProjectUseCases,
+    @Inject(ProjectUseCases) private readonly application: ProjectUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(ProjectController.name, 'info');

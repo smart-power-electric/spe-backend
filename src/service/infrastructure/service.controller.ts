@@ -38,7 +38,7 @@ import { createServiceSchema, UpdateServiceSchema } from '../core/service.zod';
 @Controller('service')
 export class ServiceController {
   constructor(
-    private readonly application: ServiceUseCases,
+    @Inject(ServiceUseCases) private readonly application: ServiceUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(ServiceController.name, 'info');

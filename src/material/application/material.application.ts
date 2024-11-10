@@ -16,7 +16,7 @@ import { CreateDtoToMaterial } from '../infrastructure/material.mapper';
 @Injectable()
 export class MaterialApplication implements MaterialUseCases {
   constructor(
-    private readonly repository: MaterialRepository,
+    @Inject(MaterialRepository) private readonly repository: MaterialRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(MaterialApplication.name, 'info');

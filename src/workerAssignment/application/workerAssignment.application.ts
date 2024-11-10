@@ -19,6 +19,7 @@ import {
 @Injectable()
 export class WorkerAssignmentApplication implements WorkerAssignmentUseCases {
   constructor(
+    @Inject(WorkerAssignmentRepository)
     private readonly repository: WorkerAssignmentRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

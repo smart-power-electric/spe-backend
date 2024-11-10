@@ -41,6 +41,7 @@ import {
 @Controller('notifications')
 export class NotificationsController {
   constructor(
+    @Inject(NotificationsUseCases)
     private readonly application: NotificationsUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

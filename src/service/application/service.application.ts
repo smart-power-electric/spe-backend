@@ -13,7 +13,7 @@ import { CreateDtoToService } from '../infrastructure/service.mapper';
 @Injectable()
 export class ServiceApplication implements ServiceUseCases {
   constructor(
-    private readonly repository: ServiceRepository,
+    @Inject(ServiceRepository) private readonly repository: ServiceRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(ServiceApplication.name, 'info');

@@ -41,6 +41,7 @@ import {
 @Controller('project-quotation')
 export class ProjectQuotationController {
   constructor(
+    @Inject(ProjectQuotationUseCases)
     private readonly application: ProjectQuotationUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

@@ -19,6 +19,7 @@ import { CreateDtoToNotifications } from '../infrastructure/notifications.mapper
 @Injectable()
 export class NotificationsApplication implements NotificationsUseCases {
   constructor(
+    @Inject(NotificationsRepository)
     private readonly repository: NotificationsRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

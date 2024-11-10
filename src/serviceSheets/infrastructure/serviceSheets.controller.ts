@@ -41,6 +41,7 @@ import {
 @Controller('serviceSheets')
 export class ServiceSheetsController {
   constructor(
+    @Inject(ServiceSheetsUseCases)
     private readonly application: ServiceSheetsUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

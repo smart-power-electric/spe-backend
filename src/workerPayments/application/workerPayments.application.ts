@@ -19,6 +19,7 @@ import { CreateDtoToWorkerPayments } from '../infrastructure/workerPayments.mapp
 @Injectable()
 export class WorkerPaymentsApplication implements WorkerPaymentsUseCases {
   constructor(
+    @Inject(WorkerPaymentsRepository)
     private readonly repository: WorkerPaymentsRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

@@ -13,7 +13,7 @@ import { CreateDtoToStage } from '../infrastructure/stage.mapper';
 @Injectable()
 export class StageApplication implements StageUseCases {
   constructor(
-    private readonly repository: StageRepository,
+    @Inject(StageRepository) private readonly repository: StageRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(StageApplication.name, 'info');
@@ -50,12 +50,7 @@ export class StageApplication implements StageUseCases {
   }
 
   async getById(ctx: Context, id: string): Promise<Stage> {
-    this.logger.info(
-      ctx,
-      StageApplication.name,
-      'getById',
-      'Getting stage',
-    );
+    this.logger.info(ctx, StageApplication.name, 'getById', 'Getting stage');
     const stage = await this.repository.getById(ctx, id);
     if (!stage) {
       throw new NotFoundException(ctx, 'Stage not found');
@@ -63,17 +58,8 @@ export class StageApplication implements StageUseCases {
     return stage;
   }
 
-  async update(
-    ctx: Context,
-    id: string,
-    row: UpdateStageDto,
-  ): Promise<Stage> {
-    this.logger.info(
-      ctx,
-      StageApplication.name,
-      'update',
-      'Updating stage',
-    );
+  async update(ctx: Context, id: string, row: UpdateStageDto): Promise<Stage> {
+    this.logger.info(ctx, StageApplication.name, 'update', 'Updating stage');
     const stage = await this.repository.getById(ctx, id);
     if (!stage) {
       throw new NotFoundException(ctx, 'Stage not found');
@@ -90,12 +76,7 @@ export class StageApplication implements StageUseCases {
   }
 
   async delete(ctx: Context, id: string): Promise<Stage> {
-    this.logger.info(
-      ctx,
-      StageApplication.name,
-      'delete',
-      'Deleting stage',
-    );
+    this.logger.info(ctx, StageApplication.name, 'delete', 'Deleting stage');
     const stage = await this.repository.getById(ctx, id);
     if (!stage) {
       throw new NotFoundException(ctx, 'Stage not found');

@@ -16,7 +16,7 @@ import { CreateDtoToInvoices } from '../infrastructure/invoices.mapper';
 @Injectable()
 export class InvoicesApplication implements InvoicesUseCases {
   constructor(
-    private readonly repository: InvoicesRepository,
+    @Inject(InvoicesRepository) private readonly repository: InvoicesRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(InvoicesApplication.name, 'info');

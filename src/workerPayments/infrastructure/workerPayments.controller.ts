@@ -41,6 +41,7 @@ import {
 @Controller('workerPayments')
 export class WorkerPaymentsController {
   constructor(
+    @Inject(WorkerPaymentsUseCases)
     private readonly application: WorkerPaymentsUseCases,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

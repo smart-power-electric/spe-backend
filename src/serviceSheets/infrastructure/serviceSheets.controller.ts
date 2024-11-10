@@ -67,7 +67,7 @@ export class ServiceSheetsController {
   @ApiOperation({
     summary: 'Create a new serviceSheets',
   })
-  create(
+  createServiceSheets(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createServiceSheetsSchema))
     createServiceSheetsDto: CreateServiceSheetsRequest,
@@ -103,7 +103,7 @@ export class ServiceSheetsController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllServiceSheets(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -138,7 +138,7 @@ export class ServiceSheetsController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneServiceSheets(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -167,7 +167,7 @@ export class ServiceSheetsController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateServiceSheetsRequest })
-  update(
+  updateServiceSheets(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateServiceSheetsSchema))
@@ -197,7 +197,7 @@ export class ServiceSheetsController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeServiceSheets(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       ctx,

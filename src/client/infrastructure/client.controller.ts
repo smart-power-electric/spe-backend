@@ -60,7 +60,7 @@ export class ClientController {
   @ApiOperation({
     summary: 'Create a new client',
   })
-  create(
+  createClient(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createClientSchema))
     createClientDto: CreateClientRequest,
@@ -93,7 +93,7 @@ export class ClientController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllClient(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -125,7 +125,7 @@ export class ClientController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneClient(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -151,7 +151,7 @@ export class ClientController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateClientRequest })
-  update(
+  updateClient(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateClientSchema))
@@ -176,7 +176,7 @@ export class ClientController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeClient(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, ClientController.name, 'remove', 'Deleting client');
     return this.application.delete(ctx, id);

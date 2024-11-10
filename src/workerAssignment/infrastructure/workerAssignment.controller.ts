@@ -67,7 +67,7 @@ export class WorkerAssignmentController {
   @ApiOperation({
     summary: 'Create a new workerAssignment',
   })
-  create(
+  createWorkerAssignment(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createWorkerAssignmentSchema))
     createWorkerAssignmentDto: CreateWorkerAssignmentRequest,
@@ -103,7 +103,7 @@ export class WorkerAssignmentController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllWorkerAssignment(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -138,7 +138,7 @@ export class WorkerAssignmentController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneWorkerAssignment(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -167,7 +167,7 @@ export class WorkerAssignmentController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateWorkerAssignmentRequest })
-  update(
+  updateWorkerAssignment(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateWorkerAssignmentSchema))
@@ -197,7 +197,7 @@ export class WorkerAssignmentController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeWorkerAssignment(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       ctx,

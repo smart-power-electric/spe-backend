@@ -67,7 +67,7 @@ export class ProjectQuotationController {
   @ApiOperation({
     summary: 'Create a new projectQuotation',
   })
-  create(
+  createProjectQuotation(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createProjectQuotationSchema))
     createProjectQuotationDto: CreateProjectQuotationRequest,
@@ -103,7 +103,7 @@ export class ProjectQuotationController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllProjectQuotation(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -138,7 +138,7 @@ export class ProjectQuotationController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneProjectQuotation(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -167,7 +167,7 @@ export class ProjectQuotationController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateProjectQuotationRequest })
-  update(
+  updateProjectQuotation(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateProjectQuotationSchema))
@@ -197,7 +197,7 @@ export class ProjectQuotationController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeProjectQuotation(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       ctx,

@@ -41,15 +41,11 @@ async function SwaggerSetup(app: INestApplication) {
     .setVersion('1.0')
     .addBearerAuth(
       {
-        description:
-          'Please enter token in following format: Bearer ....JWT....',
-        name: 'Authorization',
-        bearerFormat: 'Bearer',
-        scheme: 'Bearer',
+        description: 'Please enter token in following format: Bearer ....JWT....',
+        bearerFormat: 'JWT',
         type: 'http',
-        in: 'Header',
       },
-      'AUTH_TOKEN',
+      'AUTH_TOKEN', // Identificador del esquema de seguridad
     )
     .build();
   const documentV1 = SwaggerModule.createDocument(

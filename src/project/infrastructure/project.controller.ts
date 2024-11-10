@@ -60,7 +60,7 @@ export class ProjectController {
   @ApiOperation({
     summary: 'Create a new project',
   })
-  create(
+  createProject(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createProjectSchema))
     createProjectDto: CreateProjectRequest,
@@ -93,7 +93,7 @@ export class ProjectController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllProject(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -125,7 +125,7 @@ export class ProjectController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneProject(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -151,7 +151,7 @@ export class ProjectController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateProjectRequest })
-  update(
+  updateProject(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateProjectSchema))
@@ -176,7 +176,7 @@ export class ProjectController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeProject(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, ProjectController.name, 'remove', 'Deleting project');
     return this.application.delete(ctx, id);

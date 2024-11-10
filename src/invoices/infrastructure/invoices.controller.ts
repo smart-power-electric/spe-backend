@@ -67,7 +67,7 @@ export class InvoicesController {
   @ApiOperation({
     summary: 'Create a new invoices',
   })
-  create(
+  createInvoice(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createInvoicesSchema))
     createInvoicesDto: CreateInvoicesRequest,
@@ -103,7 +103,7 @@ export class InvoicesController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllInvoice(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -138,7 +138,7 @@ export class InvoicesController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneInvoice(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -167,7 +167,7 @@ export class InvoicesController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateInvoicesRequest })
-  update(
+  updateInvoice(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateInvoicesSchema))
@@ -197,7 +197,7 @@ export class InvoicesController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeInvoice(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       ctx,

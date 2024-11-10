@@ -61,7 +61,7 @@ export class StageController {
   @ApiOperation({
     summary: 'Create a new stage',
   })
-  create(
+  createStage(
     @Req() req: Request,
     @Body(new ZodValidationPipe(createStageSchema))
     createStageDto: CreateStageRequest,
@@ -94,7 +94,7 @@ export class StageController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
-  findAll(
+  findAllStage(
     @Req() req: Request,
     @Param('limit') limit: number,
     @Param('offset') offset: number,
@@ -126,7 +126,7 @@ export class StageController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  findOne(@Req() req: Request, @Param('id') id: string) {
+  findOneStage(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
       req.appContext,
@@ -152,7 +152,7 @@ export class StageController {
   })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateStageRequest })
-  update(
+  updateStage(
     @Req() req: Request,
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateStageSchema))
@@ -177,7 +177,7 @@ export class StageController {
     type: ApplicationExceptionResponse,
   })
   @ApiParam({ name: 'id', type: Number })
-  remove(@Req() req: Request, @Param('id') id: string) {
+  removeStage(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, StageController.name, 'remove', 'Deleting stage');
     return this.application.delete(ctx, id);

@@ -93,10 +93,10 @@ export class ClientController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiQuery({ name: 'limit', required: false, type: Number })
-  @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'name', required: false, type: String })
   @ApiQuery({ name: 'email', required: false, type: String })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiQuery({ name: 'offset', required: false, type: Number })
   findAllClient(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,

@@ -10,11 +10,14 @@ import {
 } from '@testcontainers/postgresql';
 // import { Wait } from 'testcontainers';
 import Config from '../src/common/application/application-config/configuration';
+import * as sysConsole from 'console';
 
 describe('AppController (e2e)', () => {
+  const jestConsole = console;
   let app: INestApplication;
   let dbContainer: StartedPostgreSqlContainer;
   beforeAll(async () => {
+    global.console = sysConsole;
     jest.setTimeout(60000);
     dbContainer = await new PostgreSqlContainer()
       .withExposedPorts(5432)
@@ -30,6 +33,7 @@ describe('AppController (e2e)', () => {
   }, 600000);
   afterAll(async () => {
     await app.close();
+    global.console = jestConsole;
   }, 600000);
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({

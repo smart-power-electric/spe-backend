@@ -21,7 +21,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --runInBand --detectOpenHandles --forceExit --config ./test/jest-e2e.json",
+    "test:e2e": "jest --maxWorkers=4 --detectOpenHandles --forceExit --config ./test/jest-e2e.json",
     "dbgen": "drizzle-kit generate --config=./drizzle.config.ts",
     "dbgenc": "drizzle-kit generate --custom --config=./drizzle.config.ts",
     "dbpull": "drizzle-kit introspect --config=./drizzle.config.ts",

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { InvoicesRow } from './invoices.repository';
 import { CreateInvoicesDto, UpdateInvoicesDto } from '../core/invoices.dto';
 import { Invoices } from '../core/invoices.entity';
@@ -45,36 +45,36 @@ export class CreateInvoicesRequest implements CreateInvoicesDto {
 }
 
 export class UpdateInvoicesRequest implements UpdateInvoicesDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Stage id of invoices',
     nullable: true,
   })
-  stageId: string | null;
-  @ApiProperty({
+  stageId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Invoice number of invoices',
     nullable: true,
   })
-  invoiceNumber: string | null;
-  @ApiProperty({
+  invoiceNumber?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Date of invoices',
     nullable: true,
   })
-  date: Date | null;
-  @ApiProperty({
+  date?: Date | null;
+  @ApiPropertyOptional({
     type: 'number',
     description: 'Total amount of invoices',
     nullable: true,
   })
-  totalAmount: number | null;
-  @ApiProperty({
+  totalAmount?: number | null;
+  @ApiPropertyOptional({
     type: 'boolean',
     description: 'Show materials of invoices',
     nullable: true,
   })
-  showMaterials: boolean | null;
+  showMaterials?: boolean | null;
 
   constructor(data: UpdateInvoicesDto) {
     this.stageId = data.stageId;

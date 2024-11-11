@@ -30,6 +30,7 @@ models/CreateWorkerAssignmentRequest.ts
 models/CreateWorkerPaymentsRequest.ts
 models/CreateWorkerRatesRequest.ts
 models/CreateWorkerRequest.ts
+models/InvoicesPaginationResponse.ts
 models/InvoicesResponse.ts
 models/MaterialResponse.ts
 models/NotificationsResponse.ts

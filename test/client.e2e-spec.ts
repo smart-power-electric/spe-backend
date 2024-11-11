@@ -10,13 +10,16 @@ import {
 import { faker } from '@faker-js/faker';
 import { ClientApi, Configuration } from '../client/api';
 import { HttpAdapterHost } from '@nestjs/core';
+import * as sysConsole from 'console';
 
 describe('ClientModule (e2e)', () => {
+  const jestConsole = console;
   let app: INestApplication;
   let dbContainer: StartedPostgreSqlContainer;
   let appPort = 0;
   let api: ClientApi;
   beforeAll(async () => {
+    global.console = sysConsole;
     jest.setTimeout(60000);
     dbContainer = await new PostgreSqlContainer()
       .withExposedPorts(5432)
@@ -50,6 +53,7 @@ describe('ClientModule (e2e)', () => {
   }, 600000);
   afterAll(async () => {
     await app.close();
+    global.console = jestConsole;
   }, 600000);
 
   it('POST /client', async () => {

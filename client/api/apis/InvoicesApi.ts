@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ApplicationExceptionResponse,
   CreateInvoicesRequest,
+  InvoicesPaginationResponse,
   InvoicesResponse,
   UpdateInvoicesRequest,
 } from '../models/index';
@@ -25,6 +26,8 @@ import {
     ApplicationExceptionResponseToJSON,
     CreateInvoicesRequestFromJSON,
     CreateInvoicesRequestToJSON,
+    InvoicesPaginationResponseFromJSON,
+    InvoicesPaginationResponseToJSON,
     InvoicesResponseFromJSON,
     InvoicesResponseToJSON,
     UpdateInvoicesRequestFromJSON,
@@ -38,18 +41,19 @@ export interface CreateInvoiceRequest {
 export interface FindAllInvoiceRequest {
     limit?: number;
     offset?: number;
+    stageId?: string;
 }
 
 export interface FindOneInvoiceRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveInvoiceRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateInvoiceRequest {
-    id: number;
+    id: string;
     updateInvoicesRequest: UpdateInvoicesRequest;
 }
 
@@ -97,7 +101,7 @@ export class InvoicesApi extends runtime.BaseAPI {
     /**
      * Get all invoicess
      */
-    async findAllInvoiceRaw(requestParameters: FindAllInvoiceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<InvoicesResponse>>> {
+    async findAllInvoiceRaw(requestParameters: FindAllInvoiceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<InvoicesPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -106,6 +110,10 @@ export class InvoicesApi extends runtime.BaseAPI {
 
         if (requestParameters['offset'] != null) {
             queryParameters['offset'] = requestParameters['offset'];
+        }
+
+        if (requestParameters['stageId'] != null) {
+            queryParameters['stageId'] = requestParameters['stageId'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -117,13 +125,13 @@ export class InvoicesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(InvoicesResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => InvoicesPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all invoicess
      */
-    async findAllInvoice(requestParameters: FindAllInvoiceRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<InvoicesResponse>> {
+    async findAllInvoice(requestParameters: FindAllInvoiceRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<InvoicesPaginationResponse> {
         const response = await this.findAllInvoiceRaw(requestParameters, initOverrides);
         return await response.value();
     }

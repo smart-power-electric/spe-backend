@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from 'src/common/core/exception';
 import {
+  InvoiceFilters,
   InvoicesRepository,
   InvoicesUseCases,
 } from '../core/invoices.interface';
@@ -41,6 +42,7 @@ export class InvoicesApplication implements InvoicesUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: InvoiceFilters,
   ): Promise<{ data: Invoices[]; total: number }> {
     this.logger.info(
       ctx,
@@ -48,7 +50,7 @@ export class InvoicesApplication implements InvoicesUseCases {
       'getAll',
       'Getting all invoicess',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

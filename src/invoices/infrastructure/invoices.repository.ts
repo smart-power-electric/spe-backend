@@ -5,8 +5,8 @@ import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { invoices } from 'src/common/infrastructure/schema/schema';
 
-import { count, eq } from 'drizzle-orm';
-import { InvoicesRepository } from '../core/invoices.interface';
+import { count, eq, SQLWrapper } from 'drizzle-orm';
+import { InvoiceFilters, InvoicesRepository } from '../core/invoices.interface';
 import {
   RowToInvoices,
   InvoicesToRow,
@@ -43,13 +43,22 @@ export class DrizzleInvoicesRepository implements InvoicesRepository {
     return result.map(RowToInvoices).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filters: InvoiceFilters,
+  ) {
     this.logger.info(
       ctx,
       DrizzleInvoicesRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const sqlFilters: SQLWrapper[] = [];
+    if (filters.stageId) {
+      sqlFilters.push(eq(invoices.stageId, filters.stageId));
+    }
     const result = await this.db
       .getDb()
       .select()

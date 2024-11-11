@@ -9,6 +9,8 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -89,7 +91,7 @@ export class InvoicesController {
   })
   @ApiOkResponse({
     description: 'All invoicess',
-    type: [InvoicesResponse],
+    type: InvoicesPaginationResponse,
   })
   @ApiBadRequestResponse({
     status: 400,
@@ -103,10 +105,12 @@ export class InvoicesController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'stageId', required: false, type: String })
   findAllInvoice(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
+    @Query('stageId') stageId: string,
   ): Promise<InvoicesPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -115,7 +119,7 @@ export class InvoicesController {
       'findAll',
       'Getting all invoicess',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, { stageId });
   }
 
   @Get(':id')
@@ -137,7 +141,7 @@ export class InvoicesController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneInvoice(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -165,7 +169,7 @@ export class InvoicesController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateInvoicesRequest })
   updateInvoice(
     @Req() req: Request,
@@ -196,7 +200,7 @@ export class InvoicesController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeInvoice(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(

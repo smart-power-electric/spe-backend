@@ -1,13 +1,16 @@
 import { Context } from 'src/common/core/context.entity';
 import { CreateInvoicesDto, UpdateInvoicesDto } from './invoices.dto';
 import { Invoices } from './invoices.entity';
-
+export type InvoiceFilters = {
+  stageId?: string;
+};
 export interface InvoicesRepository {
   insert(ctx: Context, row: Invoices): Promise<Invoices | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filters: InvoiceFilters,
   ): Promise<{
     data: Invoices[];
     total: number;
@@ -24,6 +27,7 @@ export interface InvoicesUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: InvoiceFilters,
   ): Promise<{
     data: Invoices[];
     total: number;

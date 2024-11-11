@@ -16,6 +16,7 @@ export * from './CreateWorkerAssignmentRequest';
 export * from './CreateWorkerPaymentsRequest';
 export * from './CreateWorkerRatesRequest';
 export * from './CreateWorkerRequest';
+export * from './InvoicesPaginationResponse';
 export * from './InvoicesResponse';
 export * from './MaterialResponse';
 export * from './NotificationsResponse';

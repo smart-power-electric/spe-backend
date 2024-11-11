@@ -24,42 +24,37 @@ export interface UpdateInvoicesRequest {
      * @type {string}
      * @memberof UpdateInvoicesRequest
      */
-    stageId: string | null;
+    stageId?: string | null;
     /**
      * Invoice number of invoices
      * @type {string}
      * @memberof UpdateInvoicesRequest
      */
-    invoiceNumber: string | null;
+    invoiceNumber?: string | null;
     /**
      * Date of invoices
      * @type {string}
      * @memberof UpdateInvoicesRequest
      */
-    date: string | null;
+    date?: string | null;
     /**
      * Total amount of invoices
      * @type {number}
      * @memberof UpdateInvoicesRequest
      */
-    totalAmount: number | null;
+    totalAmount?: number | null;
     /**
      * Show materials of invoices
      * @type {boolean}
      * @memberof UpdateInvoicesRequest
      */
-    showMaterials: boolean | null;
+    showMaterials?: boolean | null;
 }
 
 /**
  * Check if a given object implements the UpdateInvoicesRequest interface.
  */
 export function instanceOfUpdateInvoicesRequest(value: object): value is UpdateInvoicesRequest {
-    if (!('stageId' in value) || value['stageId'] === undefined) return false;
-    if (!('invoiceNumber' in value) || value['invoiceNumber'] === undefined) return false;
-    if (!('date' in value) || value['date'] === undefined) return false;
-    if (!('totalAmount' in value) || value['totalAmount'] === undefined) return false;
-    if (!('showMaterials' in value) || value['showMaterials'] === undefined) return false;
     return true;
 }
 
@@ -73,11 +68,11 @@ export function UpdateInvoicesRequestFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'stageId': json['stageId'],
-        'invoiceNumber': json['invoiceNumber'],
-        'date': json['date'],
-        'totalAmount': json['totalAmount'],
-        'showMaterials': json['showMaterials'],
+        'stageId': json['stageId'] == null ? undefined : json['stageId'],
+        'invoiceNumber': json['invoiceNumber'] == null ? undefined : json['invoiceNumber'],
+        'date': json['date'] == null ? undefined : json['date'],
+        'totalAmount': json['totalAmount'] == null ? undefined : json['totalAmount'],
+        'showMaterials': json['showMaterials'] == null ? undefined : json['showMaterials'],
     };
 }
 

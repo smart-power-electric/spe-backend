@@ -10,6 +10,7 @@ import {
   HttpCode,
   Req,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ClientUseCases } from '../core/client.interface';
 import { ILogger } from 'src/common/core/logger.interface';
@@ -81,7 +82,7 @@ export class ClientController {
   @ApiOperation({
     summary: 'Get all clients',
   })
-  @ApiOkResponse({ description: 'All clients', type: [ClientResponse] })
+  @ApiOkResponse({ description: 'All clients', type: ClientPaginationResponse })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -96,8 +97,8 @@ export class ClientController {
   @ApiQuery({ name: 'offset', required: false, type: Number })
   findAllClient(
     @Req() req: Request,
-    @Query('limit') limit: number,
-    @Query('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
   ): Promise<ClientPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(

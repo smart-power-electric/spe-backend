@@ -46,6 +46,7 @@ export class ClientApplication implements ClientUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: { email?: string; name?: string },
   ): Promise<{ data: Client[]; total: number }> {
     this.logger.info(
       ctx,
@@ -53,7 +54,7 @@ export class ClientApplication implements ClientUseCases {
       'getAll',
       'Getting all clients',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

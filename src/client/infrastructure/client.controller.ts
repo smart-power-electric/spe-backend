@@ -95,10 +95,14 @@ export class ClientController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'name', required: false, type: String })
+  @ApiQuery({ name: 'email', required: false, type: String })
   findAllClient(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
+    @Query('name') name: string,
+    @Query('email') email: string,
   ): Promise<ClientPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -107,7 +111,7 @@ export class ClientController {
       'findAll',
       'Getting all clients',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, { name, email });
   }
 
   @Get(':id')

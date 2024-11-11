@@ -4,8 +4,8 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 import { clients } from 'src/common/infrastructure/schema/schema';
 import { Client } from '../core/client.entity';
-import { count, eq } from 'drizzle-orm';
-import { ClientRepository } from '../core/client.interface';
+import { and, count, eq, ilike, SQLWrapper } from 'drizzle-orm';
+import { ClientFilters, ClientRepository } from '../core/client.interface';
 import { RowtoClient, toClientNew, toClientRow } from './client.mapper';
 
 export type ClientRow = typeof clients.$inferSelect;
@@ -37,17 +37,30 @@ export class DrizzleClientRepository implements ClientRepository {
     return result.map(RowtoClient).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filters: ClientFilters,
+  ) {
     this.logger.info(
       ctx,
       DrizzleClientRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const sqlFilters: SQLWrapper[] = [];
+    if (filters.email) {
+      sqlFilters.push(ilike(clients.email, `%${filters.email}%`));
+    }
+    if (filters.name) {
+      sqlFilters.push(eq(clients.name, `%${filters.name}%`));
+    }
     const result = await this.db
       .getDb()
       .select()
       .from(clients)
+      .where(and(...sqlFilters))
       .limit(limit)
       .offset(offset)
       .execute();
@@ -55,6 +68,7 @@ export class DrizzleClientRepository implements ClientRepository {
       .getDb()
       .select({ count: count() })
       .from(clients)
+      .where(and(...sqlFilters))
       .limit(1)
       .execute();
     return { data: result.map(RowtoClient), total: total[0].count };

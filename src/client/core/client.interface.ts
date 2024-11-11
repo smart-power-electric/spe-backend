@@ -2,12 +2,17 @@ import { Context } from 'src/common/core/context.entity';
 import { Client } from './client.entity';
 import { CreateClientDto, UpdateClientDto } from './client.dto';
 
+export type ClientFilters = {
+  email?: string;
+  name?: string;
+};
 export interface ClientRepository {
   insert(ctx: Context, row: Client): Promise<Client | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ClientFilters,
   ): Promise<{ data: Client[]; total: number }>;
   getById(ctx: Context, id: string): Promise<Client | null>;
   getByEmail(ctx: Context, email: string): Promise<Client | null>;
@@ -22,6 +27,7 @@ export interface ClientUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: ClientFilters,
   ): Promise<{ data: Client[]; total: number }>;
   getById(ctx: Context, id: string): Promise<Client>;
   update(ctx: Context, id: string, row: UpdateClientDto): Promise<Client>;

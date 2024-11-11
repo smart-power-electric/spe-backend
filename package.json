@@ -27,7 +27,7 @@
     "dbpull": "drizzle-kit introspect --config=./drizzle.config.ts",
     "dbcheck": "drizzle-kit check --config=./drizzle.config.ts",
     "dbdrop": "drizzle-kit drop --config=./drizzle.config.ts",
-    "gensdk": "npx openapi-generator-cli generate --generator-key v3.0 v2.0 -g typescript-axios -i https://localhost:3000/v1/api-json -o ./src/services/communication/sdk",
+    "gensdk": "npx openapi-generator-cli generate --generator-key v3.0 v2.0 -g typescript-fetch -i http://localhost:3000/v1/api-json -o ./client/api",
     "apiv": "node ./scripts/generate_apiversion.js",
     "foldering:w": "cmd /c .\\scripts\\foldering.bat",
     "foldering:l": "bash ./scripts/foldering.sh"
@@ -52,9 +52,11 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@nestjs/cli": "^10.4.5",
     "@nestjs/schematics": "^10.2.2",
     "@nestjs/testing": "^10.4.5",
+    "@openapitools/openapi-generator-cli": "^2.15.3",
     "@swc/cli": "^0.4.0",
     "@swc/core": "^1.7.36",
     "@testcontainers/postgresql": "^10.14.0",

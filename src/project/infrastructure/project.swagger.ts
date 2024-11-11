@@ -1,5 +1,5 @@
 import { ProjectRow } from './project.repository';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CreateProjectDto, UpdateProjectDto } from '../core/project.dto';
 import { Project } from '../core/project.entity';
 
@@ -52,42 +52,42 @@ export class CreateProjectRequest implements CreateProjectDto {
 }
 
 export class UpdateProjectRequest implements UpdateProjectDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Client id of the project',
     nullable: true,
   })
-  clientId: string | null;
-  @ApiProperty({
+  clientId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the project',
     nullable: true,
   })
-  name: string | null;
-  @ApiProperty({
+  name?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Description of the project',
     nullable: true,
   })
-  description: string | null;
-  @ApiProperty({
+  description?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Location of the project',
     nullable: true,
   })
-  location: string | null;
-  @ApiProperty({
+  location?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Start date of the project',
     nullable: true,
   })
-  startDate: Date | null;
-  @ApiProperty({
+  startDate?: Date | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'End date of the project',
     nullable: true,
   })
-  endDate: Date | null;
+  endDate?: Date | null;
   constructor(data: UpdateProjectDto) {
     this.clientId = data.clientId;
     this.name = data.name;

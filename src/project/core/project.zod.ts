@@ -10,10 +10,22 @@ export const createProjectSchema = z.object({
 });
 
 export const UpdateProjectSchema = z.object({
-  clientId: z.string().nullable().describe('Project ID'),
-  name: z.string().nullable().describe('Name of project'),
-  description: z.string().nullable().describe('Description of project'),
-  location: z.string().nullable().describe('Location of project'),
-  startDate: z.coerce.date().nullable().describe('Start date of project'),
-  endDate: z.coerce.date().nullable().describe('End date of project'),
+  clientId: z.string().optional().nullable().describe('Project ID'),
+  name: z.string().nullable().optional().describe('Name of project'),
+  description: z
+    .string()
+    .optional()
+    .nullable()
+    .describe('Description of project'),
+  location: z.string().optional().nullable().describe('Location of project'),
+  startDate: z.coerce
+    .date()
+    .optional()
+    .nullable()
+    .describe('Start date of project'),
+  endDate: z.coerce
+    .date()
+    .optional()
+    .nullable()
+    .describe('End date of project'),
 });

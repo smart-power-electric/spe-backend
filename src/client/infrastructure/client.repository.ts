@@ -54,7 +54,7 @@ export class DrizzleClientRepository implements ClientRepository {
       sqlFilters.push(ilike(clients.email, `%${filters.email}%`));
     }
     if (filters.name) {
-      sqlFilters.push(eq(clients.name, `%${filters.name}%`));
+      sqlFilters.push(ilike(clients.name, `%${filters.name}%`));
     }
     const result = await this.db
       .getDb()

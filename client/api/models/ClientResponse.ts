@@ -27,10 +27,10 @@ export interface ClientResponse {
     name: string | null;
     /**
      * Id of the client
-     * @type {number}
+     * @type {string}
      * @memberof ClientResponse
      */
-    id: number | null;
+    id: string | null;
     /**
      * Address of the client
      * @type {string}

@@ -133,7 +133,7 @@ export class ClientResponse implements ClientRow {
   })
   name: string | null;
   @ApiProperty({
-    type: 'number',
+    type: 'string',
     description: 'Id of the client',
     nullable: true,
   })

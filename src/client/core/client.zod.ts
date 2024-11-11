@@ -6,7 +6,7 @@ export const createClientSchema = z.object({
   phone: z
     .string()
     .max(255)
-    .optional()
+    .nullable()
     .refine(
       (phone) => {
         if (!phone) return true;
@@ -17,17 +17,6 @@ export const createClientSchema = z.object({
         message: 'Invalid phone number format',
       },
     )
-    .transform((phone) => {
-      if (phone?.startsWith('+1')) {
-        return phone
-          .replace('+1', '')
-          .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-      }
-      if (!phone) {
-        return null;
-      }
-      return phone;
-    })
     .describe('Phone number'),
   address: z
     .string()
@@ -84,14 +73,6 @@ export const UpdateClientSchema = z.object({
         message: 'Invalid phone number format',
       },
     )
-    .transform((phone) => {
-      if (phone?.startsWith('+1')) {
-        return phone
-          .replace('+1', '')
-          .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-      }
-      return phone;
-    })
     .describe('Phone number'),
   address: z.string().optional().nullable().describe('Address of client'),
   city: z.string().optional().nullable().describe('City of client'),

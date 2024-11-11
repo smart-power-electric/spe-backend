@@ -49,7 +49,8 @@
     "test",
     "./lib",
     "./build",
-    "./dist"
+    "./dist",
+    "./client/*",
   ],
   "include": ["./src/**/*", "test/app.e2e.spec.ts"]
 }

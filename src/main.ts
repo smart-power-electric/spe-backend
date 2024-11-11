@@ -12,18 +12,13 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { UserLoginInfo } from './common/core/context.entity';
+import { Context } from './common/core/context.entity';
 import { ErrorHandlerFilter } from './common/infrastructure/http/exception/http-exception.filter';
 
 declare global {
   namespace Express {
     interface Request {
-      appContext: {
-        startTime: Date;
-        requestId: string;
-        payload: any;
-        user: UserLoginInfo | null;
-      };
+      appContext: Context;
     }
   }
 }

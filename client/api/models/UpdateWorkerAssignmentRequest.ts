@@ -24,28 +24,25 @@ export interface UpdateWorkerAssignmentRequest {
      * @type {string}
      * @memberof UpdateWorkerAssignmentRequest
      */
-    workerId: string | null;
+    workerId?: string | null;
     /**
      * Project ID of the workerAssignment
      * @type {string}
      * @memberof UpdateWorkerAssignmentRequest
      */
-    projectId: string | null;
+    projectId?: string | null;
     /**
      * Stage ID of the workerAssignment
      * @type {string}
      * @memberof UpdateWorkerAssignmentRequest
      */
-    stageId: string | null;
+    stageId?: string | null;
 }
 
 /**
  * Check if a given object implements the UpdateWorkerAssignmentRequest interface.
  */
 export function instanceOfUpdateWorkerAssignmentRequest(value: object): value is UpdateWorkerAssignmentRequest {
-    if (!('workerId' in value) || value['workerId'] === undefined) return false;
-    if (!('projectId' in value) || value['projectId'] === undefined) return false;
-    if (!('stageId' in value) || value['stageId'] === undefined) return false;
     return true;
 }
 
@@ -59,9 +56,9 @@ export function UpdateWorkerAssignmentRequestFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'workerId': json['workerId'],
-        'projectId': json['projectId'],
-        'stageId': json['stageId'],
+        'workerId': json['workerId'] == null ? undefined : json['workerId'],
+        'projectId': json['projectId'] == null ? undefined : json['projectId'],
+        'stageId': json['stageId'] == null ? undefined : json['stageId'],
     };
 }
 

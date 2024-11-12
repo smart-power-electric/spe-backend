@@ -18,6 +18,7 @@ import type {
   ApplicationExceptionResponse,
   CreateWorkerAssignmentRequest,
   UpdateWorkerAssignmentRequest,
+  WorkerAssignmentPaginationResponse,
   WorkerAssignmentResponse,
 } from '../models/index';
 import {
@@ -27,6 +28,8 @@ import {
     CreateWorkerAssignmentRequestToJSON,
     UpdateWorkerAssignmentRequestFromJSON,
     UpdateWorkerAssignmentRequestToJSON,
+    WorkerAssignmentPaginationResponseFromJSON,
+    WorkerAssignmentPaginationResponseToJSON,
     WorkerAssignmentResponseFromJSON,
     WorkerAssignmentResponseToJSON,
 } from '../models/index';
@@ -44,15 +47,15 @@ export interface FindAllWorkerAssignmentRequest {
 }
 
 export interface FindOneWorkerAssignmentRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveWorkerAssignmentRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateWorkerAssignmentOperationRequest {
-    id: number;
+    id: string;
     updateWorkerAssignmentRequest: UpdateWorkerAssignmentRequest;
 }
 
@@ -100,7 +103,7 @@ export class WorkerAssignmentApi extends runtime.BaseAPI {
     /**
      * Get all workerAssignments
      */
-    async findAllWorkerAssignmentRaw(requestParameters: FindAllWorkerAssignmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<WorkerAssignmentResponse>>> {
+    async findAllWorkerAssignmentRaw(requestParameters: FindAllWorkerAssignmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WorkerAssignmentPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -132,13 +135,13 @@ export class WorkerAssignmentApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(WorkerAssignmentResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => WorkerAssignmentPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all workerAssignments
      */
-    async findAllWorkerAssignment(requestParameters: FindAllWorkerAssignmentRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<WorkerAssignmentResponse>> {
+    async findAllWorkerAssignment(requestParameters: FindAllWorkerAssignmentRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WorkerAssignmentPaginationResponse> {
         const response = await this.findAllWorkerAssignmentRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   CreateWorkerAssignmentDto,
   UpdateWorkerAssignmentDto,
@@ -37,25 +37,25 @@ export class CreateWorkerAssignmentRequest
 export class UpdateWorkerAssignmentRequest
   implements UpdateWorkerAssignmentDto
 {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the workerAssignment',
     nullable: true,
   })
-  workerId: string | null;
-  @ApiProperty({
+  workerId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Project ID of the workerAssignment',
     nullable: true,
   })
-  projectId: string | null;
-  @ApiProperty({
+  projectId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Stage ID of the workerAssignment',
     nullable: true,
   })
-  stageId: string | null;
-  constructor(data: CreateWorkerAssignmentDto) {
+  stageId?: string | null;
+  constructor(data: UpdateWorkerAssignmentDto) {
     this.workerId = data.workerId;
     this.projectId = data.projectId;
     this.stageId = data.stageId;

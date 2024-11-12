@@ -7,7 +7,7 @@ export const createWorkerAssignmentSchema = z.object({
 });
 
 export const UpdateWorkerAssignmentSchema = z.object({
-  workerId: z.string().nullable().describe('Worker ID'),
-  projectId: z.string().nullable().describe('Project ID'),
-  stageId: z.string().nullable().describe('Stage ID'),
+  workerId: z.string().nullable().optional().describe('Worker ID'),
+  projectId: z.string().nullable().optional().describe('Project ID'),
+  stageId: z.string().nullable().optional().describe('Stage ID'),
 });

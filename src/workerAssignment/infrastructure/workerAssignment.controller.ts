@@ -10,6 +10,7 @@ import {
   HttpCode,
   Req,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -91,7 +92,7 @@ export class WorkerAssignmentController {
   })
   @ApiOkResponse({
     description: 'All workerAssignments',
-    type: [WorkerAssignmentResponse],
+    type: WorkerAssignmentPaginationResponse,
   })
   @ApiBadRequestResponse({
     status: 400,
@@ -110,8 +111,8 @@ export class WorkerAssignmentController {
   @ApiQuery({ name: 'stageId', required: false, type: String })
   findAllWorkerAssignment(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('workerId') workerId: string,
     @Query('projectId') projectId: string,
     @Query('stageId') stageId: string,
@@ -149,7 +150,7 @@ export class WorkerAssignmentController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneWorkerAssignment(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -177,7 +178,7 @@ export class WorkerAssignmentController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateWorkerAssignmentRequest })
   updateWorkerAssignment(
     @Req() req: Request,
@@ -208,7 +209,7 @@ export class WorkerAssignmentController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeWorkerAssignment(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(

@@ -53,6 +53,7 @@ models/UpdateWorkerPaymentsRequest.ts
 models/UpdateWorkerRatesRequest.ts
 models/UpdateWorkerRequest.ts
 models/VersionResponse.ts
+models/WorkerAssignmentPaginationResponse.ts
 models/WorkerAssignmentResponse.ts
 models/WorkerPaginationResponse.ts
 models/WorkerPaymentsResponse.ts

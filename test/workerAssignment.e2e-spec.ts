@@ -7,12 +7,15 @@ import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
 } from '@testcontainers/postgresql';
-import { faker } from '@faker-js/faker';
+import { faker, base } from '@faker-js/faker';
 import {
   Configuration,
   WorkerApi,
   CreateWorkerRequest,
   UpdateWorkerRequest,
+  WorkerAssignmentApi,
+  CreateWorkerAssignmentRequest,
+  UpdateWorkerAssignmentRequest,
 } from '../client/api';
 import { HttpAdapterHost } from '@nestjs/core';
 import { Stage } from '../src/stage/core/stage.entity';
@@ -27,16 +30,20 @@ import { DrizzleProjectRepository } from '../src/project/infrastructure/project.
 import { DrizzleStageRepository } from '../src/stage/infrastructure/stage.repository';
 import { CommonModule } from '../src/common/common.module';
 import * as sysConsole from 'console';
+import { WorkerRepository } from '../src/worker/core/worker.interface';
+import { DrizzleWorkerRepository } from '../src/worker/infrastructure/worker.repository';
+import { Worker } from '../src/worker/core/worker.entity';
 
-describe('WprkerModule (e2e)', () => {
+describe('WorkerAssignmentModule (e2e)', () => {
   const jestConsole = console;
   let app: INestApplication;
   let dbContainer: StartedPostgreSqlContainer;
   let appPort = 0;
-  let api: WorkerApi;
+  let api: WorkerAssignmentApi;
   let baseStage: Stage;
   let baseProject: Project;
   let baseClient: Client;
+  let baseWorker: Worker;
   beforeAll(async () => {
     global.console = sysConsole;
     dbContainer = await new PostgreSqlContainer()
@@ -64,6 +71,10 @@ describe('WprkerModule (e2e)', () => {
           provide: StageRepository,
           useClass: DrizzleStageRepository,
         },
+        {
+          provide: WorkerRepository,
+          useClass: DrizzleWorkerRepository,
+        },
       ],
     }).compile();
     app = moduleFixture.createNestApplication();
@@ -79,7 +90,7 @@ describe('WprkerModule (e2e)', () => {
     appPort = dbContainer.getPort() - 10000;
     const basePath = `http://localhost:${appPort}`;
     const config = new Configuration({ basePath });
-    api = new WorkerApi(config);
+    api = new WorkerAssignmentApi(config);
 
     baseClient = new Client({
       id: undefined,
@@ -127,6 +138,23 @@ describe('WprkerModule (e2e)', () => {
       (await app
         .get<StageRepository>(StageRepository)
         .insert(newContext(), baseStage)) ?? baseStage;
+    baseWorker = new Worker({
+      id: undefined,
+      name: faker.person.fullName(),
+      contact: faker.person.fullName(),
+      address: faker.location.streetAddress(),
+      phone: faker.phone.number({ style: 'international' }),
+      socialSecurity: faker.number.int().toString(),
+      startDate: faker.date.recent(),
+      endDate: faker.date.future(),
+      speciality: faker.lorem.words(),
+      createdAt: new Date(),
+      updatedAt: null,
+    });
+    baseWorker =
+      (await app
+        .get<WorkerRepository>(WorkerRepository)
+        .insert(newContext(), baseWorker)) ?? baseWorker;
     await app.listen(appPort);
   }, 600000);
   afterAll(async () => {
@@ -134,152 +162,142 @@ describe('WprkerModule (e2e)', () => {
     global.console = jestConsole;
   }, 600000);
 
-  it('POST /worker', async () => {
-    const newItem: CreateWorkerRequest = {
-      name: faker.person.fullName(),
-      speciality: faker.lorem.words(),
-      contact: faker.person.fullName(),
-      address: faker.location.streetAddress(),
-      phone: faker.phone.number({ style: 'international' }),
-      socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+  it('POST /worker-assignment', async () => {
+    const newItem: CreateWorkerAssignmentRequest = {
+      workerId: baseWorker.id,
+      projectId: baseProject.id,
+      stageId: baseStage.id,
     };
-    const result = await api.createWorker({ createWorkerRequest: newItem });
+    const item = await api.createWorkerAssignment({
+      createWorkerAssignmentRequest: newItem,
+    });
 
-    expect(result).toBeDefined();
-    expect(result).toBeDefined();
-    expect(result.id).toBeDefined();
-    expect(result.name).toEqual(newItem.name);
-    expect(result.speciality).toEqual(newItem.speciality);
-    expect(result.contact).toEqual(newItem.contact);
-    expect(result.address).toEqual(newItem.address);
-    expect(result.phone).toEqual(newItem.phone);
-    expect(result.socialSecurity).toEqual(newItem.socialSecurity);
-    expect(result.startDate).toBeDefined();
-    expect(result.endDate).toBeDefined();
-    expect(result.createdAt).toBeDefined();
-    expect(result.updatedAt).toBeNull();
+    expect(item).toBeDefined();
+    expect(item).toBeDefined();
+    expect(item.id).toBeDefined();
+    expect(item.workerId).toEqual(newItem.workerId);
+    expect(item.projectId).toEqual(newItem.projectId);
+    expect(item.stageId).toEqual(newItem.stageId);
+    expect(item.createdAt).toBeDefined();
+    expect(item.updatedAt).toBeNull();
   }, 600000);
-  it('GET /worker', async () => {
-    const newItem: CreateWorkerRequest = {
-      name: faker.person.fullName(),
-      speciality: faker.lorem.words(),
-      contact: faker.person.fullName(),
-      address: faker.location.streetAddress(),
-      phone: faker.phone.number({ style: 'international' }),
-      socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+  it('GET /worker-assignment', async () => {
+    const newItem: CreateWorkerAssignmentRequest = {
+      workerId: baseWorker.id,
+      projectId: baseProject.id,
+      stageId: baseStage.id,
     };
-    const resultItem = await api.createWorker({ createWorkerRequest: newItem });
+    const item = await api.createWorkerAssignment({
+      createWorkerAssignmentRequest: newItem,
+    });
 
-    const result0 = await api.findAllWorker({ name: newItem.name ?? '' });
-    expect(result0).toBeDefined();
-    expect(result0.data).toBeDefined();
-    expect(result0.total).toBeGreaterThan(0);
-    expect(result0.data?.length).toEqual(result0.total);
-
-    const result = await api.findAllWorker({ name: newItem.name ?? '' });
+    const result = await api.findAllWorkerAssignment({});
     expect(result).toBeDefined();
     expect(result.data).toBeDefined();
     expect(result.total).toBeGreaterThan(0);
     expect(result.data?.length).toEqual(result.total);
-    expect(result.data?.find((x) => x.id === resultItem.id)).toBeDefined();
 
-    const result4 = await api.findAllWorker({ limit: 0 });
+    const result2 = await api.findAllWorkerAssignment({
+      projectId: baseProject.id,
+    });
+    expect(result2).toBeDefined();
+    expect(result2.data).toBeDefined();
+    expect(result2.total).toBeGreaterThan(0);
+    expect(result2.data?.length).toEqual(result.total);
+    expect(
+      result2.data.find((x) => x.projectId === baseProject.id),
+    ).toBeDefined();
+
+    const result3 = await api.findAllWorkerAssignment({
+      workerId: baseWorker.id,
+    });
+    expect(result3).toBeDefined();
+    expect(result3.data).toBeDefined();
+    expect(result3.total).toBeGreaterThan(0);
+    expect(result3.data?.length).toEqual(result.total);
+    expect(
+      result3.data.find((x) => x.workerId === baseWorker.id),
+    ).toBeDefined();
+
+    const result4 = await api.findAllWorkerAssignment({
+      stageId: baseStage.id,
+    });
     expect(result4).toBeDefined();
     expect(result4.data).toBeDefined();
     expect(result4.total).toBeGreaterThan(0);
-    expect(result4.data?.length).toEqual(0);
+    expect(result4.data?.length).toEqual(result.total);
+    expect(result4.data.find((x) => x.stageId === baseStage.id)).toBeDefined();
 
-    const result5 = await api.findAllWorker({ offset: 1000 });
+    const result5 = await api.findAllWorkerAssignment({ limit: 0 });
     expect(result5).toBeDefined();
     expect(result5.data).toBeDefined();
     expect(result5.total).toBeGreaterThan(0);
     expect(result5.data?.length).toEqual(0);
+
+    const result6 = await api.findAllWorkerAssignment({ offset: 1000 });
+    expect(result6).toBeDefined();
+    expect(result6.data).toBeDefined();
+    expect(result6.total).toBeGreaterThan(0);
+    expect(result6.data?.length).toEqual(0);
   }, 600000);
 
-  it('GET /worker/:id', async () => {
-    const newItem: CreateWorkerRequest = {
-      name: faker.person.fullName(),
-      speciality: faker.lorem.words(),
-      contact: faker.person.fullName(),
-      address: faker.location.streetAddress(),
-      phone: faker.phone.number({ style: 'international' }),
-      socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+  it('GET /worker-assignment/:id', async () => {
+    const newItem: CreateWorkerAssignmentRequest = {
+      workerId: baseWorker.id,
+      projectId: baseProject.id,
+      stageId: baseStage.id,
     };
-    const resultItem = await api.createWorker({ createWorkerRequest: newItem });
+    const item = await api.createWorkerAssignment({
+      createWorkerAssignmentRequest: newItem,
+    });
 
-    const result = await api.findOneWorker({ id: resultItem.id ?? '' });
+    const result = await api.findOneWorkerAssignment({ id: item.id ?? '' });
     expect(result).toBeDefined();
-    expect(result.id).toEqual(resultItem.id);
+    expect(result.id).toEqual(item.id);
   }, 600000);
 
-  it('PATCH /worker/:id', async () => {
-    const newItem: CreateWorkerRequest = {
-      name: faker.person.fullName(),
-      speciality: faker.lorem.words(),
-      contact: faker.person.fullName(),
-      address: faker.location.streetAddress(),
-      phone: faker.phone.number({ style: 'international' }),
-      socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+  it('PATCH /worker-assignment/:id', async () => {
+    const newItem: CreateWorkerAssignmentRequest = {
+      workerId: baseWorker.id,
+      projectId: baseProject.id,
+      stageId: baseStage.id,
     };
-    const resultItem = await api.createWorker({ createWorkerRequest: newItem });
+    const item = await api.createWorkerAssignment({
+      createWorkerAssignmentRequest: newItem,
+    });
 
-    const updatedClient: UpdateWorkerRequest = {
-      name: faker.person.fullName(),
-      speciality: faker.lorem.words(),
+    const updatedClient: UpdateWorkerAssignmentRequest = {
+      workerId: baseWorker.id,
+      projectId: baseProject.id,
+      stageId: baseStage.id,
     };
-    const result = await api.updateWorker({
-      id: resultItem.id ?? '',
-      updateWorkerRequest: updatedClient,
+    const result = await api.updateWorkerAssignment({
+      id: item.id ?? '',
+      updateWorkerAssignmentRequest: updatedClient,
     });
 
     expect(result).toBeDefined();
-    expect(result.id).toEqual(resultItem.id);
-    expect(result.name).toEqual(result.name);
-    expect(result.speciality).toEqual(result.speciality);
+    expect(result.id).toEqual(item.id);
+    expect(result.workerId).toEqual(updatedClient.workerId);
+    expect(result.projectId).toEqual(updatedClient.projectId);
+    expect(result.stageId).toEqual(updatedClient.stageId);
     expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
-
-    const updatedClient2 = {
-      address: null,
-    };
-    const result2 = await api.updateWorker({
-      id: resultItem.id ?? '',
-      updateWorkerRequest: updatedClient2,
-    });
-
-    expect(result2).toBeDefined();
-    expect(result2.id).toEqual(resultItem.id);
-    expect(result2.address).toBeNull();
-    expect(result2.createdAt).toBeDefined();
-    expect(result2.updatedAt).toBeDefined();
   });
 
-  it('DELETE /worker/:id', async () => {
-    const newItem: CreateWorkerRequest = {
-      name: faker.person.fullName(),
-      speciality: faker.lorem.words(),
-      contact: faker.person.fullName(),
-      address: faker.location.streetAddress(),
-      phone: faker.phone.number({ style: 'international' }),
-      socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+  it('DELETE /worker-assignment/:id', async () => {
+    const newItem: CreateWorkerAssignmentRequest = {
+      workerId: baseWorker.id,
+      projectId: baseProject.id,
+      stageId: baseStage.id,
     };
-    const resultItem = await api.createWorker({
-      createWorkerRequest: newItem,
+    const item = await api.createWorkerAssignment({
+      createWorkerAssignmentRequest: newItem,
     });
-    await api.removeWorker({ id: resultItem.id ?? '' });
+    await api.removeWorkerAssignment({ id: item.id ?? '' });
 
     try {
-      await api.findOneWorker({ id: resultItem.id ?? '' });
+      await api.findOneWorkerAssignment({ id: item.id ?? '' });
     } catch (error) {
       expect(error).toBeDefined();
       if (error instanceof ApplicationExceptionResponse) {

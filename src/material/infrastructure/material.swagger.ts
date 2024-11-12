@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CreateMaterialDto, UpdateMaterialDto } from '../core/material.dto';
 import { Material } from '../core/material.entity';
 import { MaterialRow } from './material.repository';
@@ -24,18 +24,18 @@ export class CreateMaterialRequest implements CreateMaterialDto {
 }
 
 export class UpdateMaterialRequest implements UpdateMaterialDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the material',
     nullable: true,
   })
-  name: string | null;
-  @ApiProperty({
+  name?: string | null;
+  @ApiPropertyOptional({
     type: 'number',
     description: 'Unit cost of the material',
     nullable: true,
   })
-  unitCost: number | null;
+  unitCost?: number | null;
   constructor(data: UpdateMaterialDto) {
     this.name = data.name;
     this.unitCost = data.unitCost;

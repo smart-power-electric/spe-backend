@@ -10,9 +10,9 @@ import {
 import { faker } from '@faker-js/faker';
 import {
   Configuration,
-  WorkerAssignmentApi,
-  CreateWorkerAssignmentRequest,
-  UpdateWorkerAssignmentRequest,
+  CreateMaterialRequest,
+  MaterialApi,
+  UpdateMaterialRequest,
 } from '../client/api';
 import { HttpAdapterHost } from '@nestjs/core';
 import { Stage } from '../src/stage/core/stage.entity';
@@ -31,12 +31,12 @@ import { WorkerRepository } from '../src/worker/core/worker.interface';
 import { DrizzleWorkerRepository } from '../src/worker/infrastructure/worker.repository';
 import { Worker } from '../src/worker/core/worker.entity';
 
-describe('WorkerAssignmentModule (e2e)', () => {
+describe('MaterialModule (e2e)', () => {
   const jestConsole = console;
   let app: INestApplication;
   let dbContainer: StartedPostgreSqlContainer;
   let appPort = 0;
-  let api: WorkerAssignmentApi;
+  let api: MaterialApi;
   let baseStage: Stage;
   let baseProject: Project;
   let baseClient: Client;
@@ -87,7 +87,7 @@ describe('WorkerAssignmentModule (e2e)', () => {
     appPort = dbContainer.getPort() - 10000;
     const basePath = `http://localhost:${appPort}`;
     const config = new Configuration({ basePath });
-    api = new WorkerAssignmentApi(config);
+    api = new MaterialApi(config);
 
     baseClient = new Client({
       id: undefined,
@@ -159,142 +159,116 @@ describe('WorkerAssignmentModule (e2e)', () => {
     global.console = jestConsole;
   }, 600000);
 
-  it('POST /worker-assignment', async () => {
-    const newItem: CreateWorkerAssignmentRequest = {
-      workerId: baseWorker.id,
-      projectId: baseProject.id,
-      stageId: baseStage.id,
+  it('POST /material', async () => {
+    const newItem: CreateMaterialRequest = {
+      name: faker.lorem.words(),
+      unitCost: faker.number.float({ min: 0, max: 1000 }),
     };
-    const item = await api.createWorkerAssignment({
-      createWorkerAssignmentRequest: newItem,
+    const item = await api.createMaterial({
+      createMaterialRequest: newItem,
     });
 
     expect(item).toBeDefined();
     expect(item).toBeDefined();
     expect(item.id).toBeDefined();
-    expect(item.workerId).toEqual(newItem.workerId);
-    expect(item.projectId).toEqual(newItem.projectId);
-    expect(item.stageId).toEqual(newItem.stageId);
+    expect(item.name).toEqual(newItem.name);
+    expect(item.unitCost).toEqual(newItem.unitCost);
     expect(item.createdAt).toBeDefined();
     expect(item.updatedAt).toBeNull();
   }, 600000);
-  it('GET /worker-assignment', async () => {
-    const newItem: CreateWorkerAssignmentRequest = {
-      workerId: baseWorker.id,
-      projectId: baseProject.id,
-      stageId: baseStage.id,
+  it('GET /material', async () => {
+    const newItem: CreateMaterialRequest = {
+      name: faker.lorem.words(),
+      unitCost: faker.number.float({ min: 0, max: 1000 }),
     };
-    const item = await api.createWorkerAssignment({
-      createWorkerAssignmentRequest: newItem,
+    const item = await api.createMaterial({
+      createMaterialRequest: newItem,
     });
 
-    const result = await api.findAllWorkerAssignment({});
+    const result = await api.findAllMaterial({});
     expect(result).toBeDefined();
     expect(result.data).toBeDefined();
     expect(result.total).toBeGreaterThan(0);
     expect(result.data?.length).toEqual(result.total);
 
-    const result2 = await api.findAllWorkerAssignment({
-      projectId: baseProject.id,
+    const result2 = await api.findAllMaterial({
+      name: newItem.name ?? '',
     });
     expect(result2).toBeDefined();
     expect(result2.data).toBeDefined();
     expect(result2.total).toBeGreaterThan(0);
-    expect(result2.data?.length).toEqual(result.total);
+    expect(result2.data?.length).toEqual(result2.total);
     expect(
-      result2.data.find((x) => x.projectId === baseProject.id),
+      result2.data.find((x) =>
+        x.name?.toLowerCase().includes(newItem.name?.toLowerCase() ?? ''),
+      ),
     ).toBeDefined();
 
-    const result3 = await api.findAllWorkerAssignment({
-      workerId: baseWorker.id,
-    });
-    expect(result3).toBeDefined();
-    expect(result3.data).toBeDefined();
-    expect(result3.total).toBeGreaterThan(0);
-    expect(result3.data?.length).toEqual(result.total);
-    expect(
-      result3.data.find((x) => x.workerId === baseWorker.id),
-    ).toBeDefined();
-
-    const result4 = await api.findAllWorkerAssignment({
-      stageId: baseStage.id,
-    });
-    expect(result4).toBeDefined();
-    expect(result4.data).toBeDefined();
-    expect(result4.total).toBeGreaterThan(0);
-    expect(result4.data?.length).toEqual(result.total);
-    expect(result4.data.find((x) => x.stageId === baseStage.id)).toBeDefined();
-
-    const result5 = await api.findAllWorkerAssignment({ limit: 0 });
+    const result5 = await api.findAllMaterial({ limit: 0 });
     expect(result5).toBeDefined();
     expect(result5.data).toBeDefined();
     expect(result5.total).toBeGreaterThan(0);
     expect(result5.data?.length).toEqual(0);
 
-    const result6 = await api.findAllWorkerAssignment({ offset: 1000 });
+    const result6 = await api.findAllMaterial({ offset: 1000 });
     expect(result6).toBeDefined();
     expect(result6.data).toBeDefined();
     expect(result6.total).toBeGreaterThan(0);
     expect(result6.data?.length).toEqual(0);
   }, 600000);
 
-  it('GET /worker-assignment/:id', async () => {
-    const newItem: CreateWorkerAssignmentRequest = {
-      workerId: baseWorker.id,
-      projectId: baseProject.id,
-      stageId: baseStage.id,
+  it('GET /material/:id', async () => {
+    const newItem: CreateMaterialRequest = {
+      name: faker.lorem.words(),
+      unitCost: faker.number.float({ min: 0, max: 1000 }),
     };
-    const item = await api.createWorkerAssignment({
-      createWorkerAssignmentRequest: newItem,
+    const item = await api.createMaterial({
+      createMaterialRequest: newItem,
     });
 
-    const result = await api.findOneWorkerAssignment({ id: item.id ?? '' });
+    const result = await api.findOneMaterial({ id: item.id ?? '' });
     expect(result).toBeDefined();
     expect(result.id).toEqual(item.id);
   }, 600000);
 
-  it('PATCH /worker-assignment/:id', async () => {
-    const newItem: CreateWorkerAssignmentRequest = {
-      workerId: baseWorker.id,
-      projectId: baseProject.id,
-      stageId: baseStage.id,
+  it('PATCH /material/:id', async () => {
+    const newItem: CreateMaterialRequest = {
+      name: faker.lorem.words(),
+      unitCost: faker.number.float({ min: 0, max: 1000 }),
     };
-    const item = await api.createWorkerAssignment({
-      createWorkerAssignmentRequest: newItem,
+    const item = await api.createMaterial({
+      createMaterialRequest: newItem,
     });
 
-    const updatedClient: UpdateWorkerAssignmentRequest = {
-      workerId: baseWorker.id,
-      projectId: baseProject.id,
-      stageId: baseStage.id,
+    const updatedClient: UpdateMaterialRequest = {
+      name: faker.lorem.words(),
+      unitCost: faker.number.float({ min: 0, max: 1000 }),
     };
-    const result = await api.updateWorkerAssignment({
+    const result = await api.updateMaterial({
       id: item.id ?? '',
-      updateWorkerAssignmentRequest: updatedClient,
+      updateMaterialRequest: updatedClient,
     });
 
     expect(result).toBeDefined();
     expect(result.id).toEqual(item.id);
-    expect(result.workerId).toEqual(updatedClient.workerId);
-    expect(result.projectId).toEqual(updatedClient.projectId);
-    expect(result.stageId).toEqual(updatedClient.stageId);
+    expect(result.name).toEqual(updatedClient.name);
+    expect(result.unitCost).toEqual(updatedClient.unitCost);
     expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
   });
 
-  it('DELETE /worker-assignment/:id', async () => {
-    const newItem: CreateWorkerAssignmentRequest = {
-      workerId: baseWorker.id,
-      projectId: baseProject.id,
-      stageId: baseStage.id,
+  it('DELETE /material/:id', async () => {
+    const newItem: CreateMaterialRequest = {
+      name: faker.lorem.words(),
+      unitCost: faker.number.float({ min: 0, max: 1000 }),
     };
-    const item = await api.createWorkerAssignment({
-      createWorkerAssignmentRequest: newItem,
+    const item = await api.createMaterial({
+      createMaterialRequest: newItem,
     });
-    await api.removeWorkerAssignment({ id: item.id ?? '' });
+    await api.removeMaterial({ id: item.id ?? '' });
 
     try {
-      await api.findOneWorkerAssignment({ id: item.id ?? '' });
+      await api.findOneMaterial({ id: item.id ?? '' });
     } catch (error) {
       expect(error).toBeDefined();
       if (error instanceof ApplicationExceptionResponse) {

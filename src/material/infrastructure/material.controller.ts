@@ -10,6 +10,7 @@ import {
   HttpCode,
   Req,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -85,7 +86,10 @@ export class MaterialController {
   @ApiOperation({
     summary: 'Get all materials',
   })
-  @ApiOkResponse({ description: 'All materials', type: [MaterialResponse] })
+  @ApiOkResponse({
+    description: 'All materials',
+    type: MaterialPaginationResponse,
+  })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -101,8 +105,8 @@ export class MaterialController {
   @ApiQuery({ name: 'name', required: false, type: String })
   findAllMaterial(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('name') name: string,
   ): Promise<MaterialPaginationResponse> {
     const ctx = req.appContext;
@@ -131,7 +135,7 @@ export class MaterialController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneMaterial(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -156,7 +160,7 @@ export class MaterialController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateMaterialRequest })
   updateMaterial(
     @Req() req: Request,
@@ -187,7 +191,7 @@ export class MaterialController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeMaterial(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(

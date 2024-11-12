@@ -18,6 +18,7 @@ export * from './CreateWorkerRatesRequest';
 export * from './CreateWorkerRequest';
 export * from './InvoicesPaginationResponse';
 export * from './InvoicesResponse';
+export * from './MaterialPaginationResponse';
 export * from './MaterialResponse';
 export * from './NotificationsResponse';
 export * from './ProjectQuotationResponse';

@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ApplicationExceptionResponse,
   CreateMaterialRequest,
+  MaterialPaginationResponse,
   MaterialResponse,
   UpdateMaterialRequest,
 } from '../models/index';
@@ -25,6 +26,8 @@ import {
     ApplicationExceptionResponseToJSON,
     CreateMaterialRequestFromJSON,
     CreateMaterialRequestToJSON,
+    MaterialPaginationResponseFromJSON,
+    MaterialPaginationResponseToJSON,
     MaterialResponseFromJSON,
     MaterialResponseToJSON,
     UpdateMaterialRequestFromJSON,
@@ -42,15 +45,15 @@ export interface FindAllMaterialRequest {
 }
 
 export interface FindOneMaterialRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveMaterialRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateMaterialOperationRequest {
-    id: number;
+    id: string;
     updateMaterialRequest: UpdateMaterialRequest;
 }
 
@@ -98,7 +101,7 @@ export class MaterialApi extends runtime.BaseAPI {
     /**
      * Get all materials
      */
-    async findAllMaterialRaw(requestParameters: FindAllMaterialRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<MaterialResponse>>> {
+    async findAllMaterialRaw(requestParameters: FindAllMaterialRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MaterialPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -122,13 +125,13 @@ export class MaterialApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(MaterialResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => MaterialPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all materials
      */
-    async findAllMaterial(requestParameters: FindAllMaterialRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<MaterialResponse>> {
+    async findAllMaterial(requestParameters: FindAllMaterialRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MaterialPaginationResponse> {
         const response = await this.findAllMaterialRaw(requestParameters, initOverrides);
         return await response.value();
     }

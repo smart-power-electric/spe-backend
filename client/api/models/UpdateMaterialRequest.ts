@@ -24,21 +24,19 @@ export interface UpdateMaterialRequest {
      * @type {string}
      * @memberof UpdateMaterialRequest
      */
-    name: string | null;
+    name?: string | null;
     /**
      * Unit cost of the material
      * @type {number}
      * @memberof UpdateMaterialRequest
      */
-    unitCost: number | null;
+    unitCost?: number | null;
 }
 
 /**
  * Check if a given object implements the UpdateMaterialRequest interface.
  */
 export function instanceOfUpdateMaterialRequest(value: object): value is UpdateMaterialRequest {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('unitCost' in value) || value['unitCost'] === undefined) return false;
     return true;
 }
 
@@ -52,8 +50,8 @@ export function UpdateMaterialRequestFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'name': json['name'],
-        'unitCost': json['unitCost'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'unitCost': json['unitCost'] == null ? undefined : json['unitCost'],
     };
 }
 

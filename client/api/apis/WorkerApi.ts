@@ -18,6 +18,7 @@ import type {
   ApplicationExceptionResponse,
   CreateWorkerRequest,
   UpdateWorkerRequest,
+  WorkerPaginationResponse,
   WorkerResponse,
 } from '../models/index';
 import {
@@ -27,6 +28,8 @@ import {
     CreateWorkerRequestToJSON,
     UpdateWorkerRequestFromJSON,
     UpdateWorkerRequestToJSON,
+    WorkerPaginationResponseFromJSON,
+    WorkerPaginationResponseToJSON,
     WorkerResponseFromJSON,
     WorkerResponseToJSON,
 } from '../models/index';
@@ -42,15 +45,15 @@ export interface FindAllWorkerRequest {
 }
 
 export interface FindOneWorkerRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveWorkerRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateWorkerOperationRequest {
-    id: number;
+    id: string;
     updateWorkerRequest: UpdateWorkerRequest;
 }
 
@@ -98,7 +101,7 @@ export class WorkerApi extends runtime.BaseAPI {
     /**
      * Get all workers
      */
-    async findAllWorkerRaw(requestParameters: FindAllWorkerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<WorkerResponse>>> {
+    async findAllWorkerRaw(requestParameters: FindAllWorkerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WorkerPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -122,13 +125,13 @@ export class WorkerApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(WorkerResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => WorkerPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all workers
      */
-    async findAllWorker(requestParameters: FindAllWorkerRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<WorkerResponse>> {
+    async findAllWorker(requestParameters: FindAllWorkerRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WorkerPaginationResponse> {
         const response = await this.findAllWorkerRaw(requestParameters, initOverrides);
         return await response.value();
     }

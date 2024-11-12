@@ -40,6 +40,7 @@ export * from './UpdateWorkerRatesRequest';
 export * from './UpdateWorkerRequest';
 export * from './VersionResponse';
 export * from './WorkerAssignmentResponse';
+export * from './WorkerPaginationResponse';
 export * from './WorkerPaymentsResponse';
 export * from './WorkerRatesResponse';
 export * from './WorkerResponse';

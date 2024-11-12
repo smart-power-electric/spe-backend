@@ -10,6 +10,7 @@ import {
   HttpCode,
   Req,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -82,7 +83,7 @@ export class WorkerController {
   @ApiOperation({
     summary: 'Get all workers',
   })
-  @ApiOkResponse({ description: 'All workers', type: [WorkerResponse] })
+  @ApiOkResponse({ description: 'All workers', type: WorkerPaginationResponse })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -98,8 +99,8 @@ export class WorkerController {
   @ApiQuery({ name: 'name', required: false, type: String })
   findAllWorker(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('name') name: string,
   ): Promise<WorkerPaginationResponse> {
     const ctx = req.appContext;
@@ -128,7 +129,7 @@ export class WorkerController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneWorker(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -153,7 +154,7 @@ export class WorkerController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateWorkerRequest })
   updateWorker(
     @Req() req: Request,
@@ -179,7 +180,7 @@ export class WorkerController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeWorker(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, WorkerController.name, 'remove', 'Deleting worker');

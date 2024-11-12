@@ -10,9 +10,9 @@ import {
 import { faker } from '@faker-js/faker';
 import {
   Configuration,
-  CreateInvoiceRequest,
-  InvoicesApi,
-  UpdateInvoiceRequest,
+  WorkerApi,
+  CreateWorkerRequest,
+  UpdateWorkerRequest,
 } from '../client/api';
 import { HttpAdapterHost } from '@nestjs/core';
 import { Stage } from '../src/stage/core/stage.entity';
@@ -28,12 +28,12 @@ import { DrizzleStageRepository } from '../src/stage/infrastructure/stage.reposi
 import { CommonModule } from '../src/common/common.module';
 import * as sysConsole from 'console';
 
-describe('InvoicesModule (e2e)', () => {
+describe('WprkerModule (e2e)', () => {
   const jestConsole = console;
   let app: INestApplication;
   let dbContainer: StartedPostgreSqlContainer;
   let appPort = 0;
-  let api: InvoicesApi;
+  let api: WorkerApi;
   let baseStage: Stage;
   let baseProject: Project;
   let baseClient: Client;
@@ -79,7 +79,7 @@ describe('InvoicesModule (e2e)', () => {
     appPort = dbContainer.getPort() - 10000;
     const basePath = `http://localhost:${appPort}`;
     const config = new Configuration({ basePath });
-    api = new InvoicesApi(config);
+    api = new WorkerApi(config);
 
     baseClient = new Client({
       id: undefined,
@@ -134,151 +134,145 @@ describe('InvoicesModule (e2e)', () => {
     global.console = jestConsole;
   }, 600000);
 
-  it('POST /invoice', async () => {
-    const newItem: CreateInvoiceRequest = {
-      createInvoicesRequest: {
-        stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
-        date: faker.date.recent().toISOString(),
-        totalAmount: +faker.finance.amount(),
-        showMaterials: true,
-      },
+  it('POST /worker', async () => {
+    const newItem: CreateWorkerRequest = {
+      name: faker.person.fullName(),
+      speciality: faker.lorem.words(),
+      contact: faker.person.fullName(),
+      address: faker.location.streetAddress(),
+      phone: faker.phone.number({ style: 'international' }),
+      socialSecurity: faker.number.int().toString(),
+      startDate: faker.date.recent().toISOString(),
+      endDate: faker.date.future().toISOString(),
     };
-    const result = await api.createInvoice(newItem);
+    const result = await api.createWorker({ createWorkerRequest: newItem });
 
     expect(result).toBeDefined();
     expect(result).toBeDefined();
     expect(result.id).toBeDefined();
-    expect(result.stageId).toBeDefined();
-    expect(result.invoiceNumber).toEqual(
-      newItem.createInvoicesRequest.invoiceNumber,
-    );
-    expect(result.date).toBeDefined();
-    expect(result.totalAmount).toEqual(
-      newItem.createInvoicesRequest.totalAmount,
-    );
-    expect(result.showMaterials).toEqual(
-      newItem.createInvoicesRequest.showMaterials,
-    );
+    expect(result.name).toEqual(newItem.name);
+    expect(result.speciality).toEqual(newItem.speciality);
+    expect(result.contact).toEqual(newItem.contact);
+    expect(result.address).toEqual(newItem.address);
+    expect(result.phone).toEqual(newItem.phone);
+    expect(result.socialSecurity).toEqual(newItem.socialSecurity);
+    expect(result.startDate).toBeDefined();
+    expect(result.endDate).toBeDefined();
     expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeNull();
   }, 600000);
-  it('GET /invoice', async () => {
-    const newItem: CreateInvoiceRequest = {
-      createInvoicesRequest: {
-        stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
-        date: faker.date.recent().toISOString(),
-        totalAmount: +faker.finance.amount(),
-        showMaterials: true,
-      },
+  it('GET /worker', async () => {
+    const newItem: CreateWorkerRequest = {
+      name: faker.person.fullName(),
+      speciality: faker.lorem.words(),
+      contact: faker.person.fullName(),
+      address: faker.location.streetAddress(),
+      phone: faker.phone.number({ style: 'international' }),
+      socialSecurity: faker.number.int().toString(),
+      startDate: faker.date.recent().toISOString(),
+      endDate: faker.date.future().toISOString(),
     };
-    await api.createInvoice(newItem);
+    const resultItem = await api.createWorker({ createWorkerRequest: newItem });
 
-    const result = await api.findAllInvoice({});
+    const result = await api.findAllWorker({ name: newItem.name ?? '' });
     expect(result).toBeDefined();
     expect(result.data).toBeDefined();
     expect(result.total).toBeGreaterThan(0);
     expect(result.data?.length).toEqual(result.total);
 
-    const result2 = await api.findAllInvoice({ stageId: baseStage.id });
-    expect(result2).toBeDefined();
-    expect(result2.data).toBeDefined();
-    expect(result2.total).toBeGreaterThan(0);
-    expect(result2.data?.length).toEqual(result2.total);
-    expect(
-      result2.data?.every((c) =>
-        c.stageId?.toLowerCase().includes(baseStage.id.toLowerCase()),
-      ),
-    ).toBeTruthy();
-
-    const result4 = await api.findAllInvoice({ limit: 0 });
+    const result4 = await api.findAllWorker({ limit: 0 });
     expect(result4).toBeDefined();
     expect(result4.data).toBeDefined();
     expect(result4.total).toBeGreaterThan(0);
     expect(result4.data?.length).toEqual(0);
 
-    const result5 = await api.findAllInvoice({ offset: 1000 });
+    const result5 = await api.findAllWorker({ offset: 1000 });
     expect(result5).toBeDefined();
     expect(result5.data).toBeDefined();
     expect(result5.total).toBeGreaterThan(0);
     expect(result5.data?.length).toEqual(0);
   }, 600000);
 
-  it('GET /invoice/:id', async () => {
-    const newItem: CreateInvoiceRequest = {
-      createInvoicesRequest: {
-        stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
-        date: faker.date.recent().toISOString(),
-        totalAmount: +faker.finance.amount(),
-        showMaterials: true,
-      },
+  it('GET /worker/:id', async () => {
+    const newItem: CreateWorkerRequest = {
+      name: faker.person.fullName(),
+      speciality: faker.lorem.words(),
+      contact: faker.person.fullName(),
+      address: faker.location.streetAddress(),
+      phone: faker.phone.number({ style: 'international' }),
+      socialSecurity: faker.number.int().toString(),
+      startDate: faker.date.recent().toISOString(),
+      endDate: faker.date.future().toISOString(),
     };
-    const item = await api.createInvoice(newItem);
+    const resultItem = await api.createWorker({ createWorkerRequest: newItem });
 
-    const result = await api.findOneInvoice({ id: item.id ?? '' });
+    const result = await api.findOneWorker({ id: resultItem.id ?? '' });
     expect(result).toBeDefined();
-    expect(result.id).toEqual(item.id);
+    expect(result.id).toEqual(resultItem.id);
   }, 600000);
 
-  it('PATCH /invoice/:id', async () => {
-    const newItem: CreateInvoiceRequest = {
-      createInvoicesRequest: {
-        stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
-        date: faker.date.recent().toISOString(),
-        totalAmount: +faker.finance.amount(),
-        showMaterials: true,
-      },
+  it('PATCH /worker/:id', async () => {
+    const newItem: CreateWorkerRequest = {
+      name: faker.person.fullName(),
+      speciality: faker.lorem.words(),
+      contact: faker.person.fullName(),
+      address: faker.location.streetAddress(),
+      phone: faker.phone.number({ style: 'international' }),
+      socialSecurity: faker.number.int().toString(),
+      startDate: faker.date.recent().toISOString(),
+      endDate: faker.date.future().toISOString(),
     };
-    const item = await api.createInvoice(newItem);
+    const resultItem = await api.createWorker({ createWorkerRequest: newItem });
 
-    const updatedClient: UpdateInvoiceRequest = {
-      id: item.id ?? '',
-      updateInvoicesRequest: {
-        totalAmount: +faker.finance.amount(),
-      },
+    const updatedClient: UpdateWorkerRequest = {
+      name: faker.person.fullName(),
+      speciality: faker.lorem.words(),
     };
-    const result = await api.updateInvoice(updatedClient);
+    const result = await api.updateWorker({
+      id: resultItem.id ?? '',
+      updateWorkerRequest: updatedClient,
+    });
 
     expect(result).toBeDefined();
-    expect(result.id).toEqual(item.id);
-    expect(result.totalAmount).toEqual(result.totalAmount);
+    expect(result.id).toEqual(resultItem.id);
+    expect(result.name).toEqual(result.name);
+    expect(result.speciality).toEqual(result.speciality);
     expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
 
     const updatedClient2 = {
-      id: item.id ?? '',
-      updateInvoicesRequest: {
-        totalAmount: null,
-      },
+      address: null,
     };
-    const result2 = await api.updateInvoice(updatedClient2);
+    const result2 = await api.updateWorker({
+      id: resultItem.id ?? '',
+      updateWorkerRequest: updatedClient2,
+    });
 
     expect(result2).toBeDefined();
-    expect(result2.id).toEqual(item.id);
-    expect(result2.totalAmount).toBeNull();
+    expect(result2.id).toEqual(resultItem.id);
+    expect(result2.address).toBeNull();
     expect(result2.createdAt).toBeDefined();
     expect(result2.updatedAt).toBeDefined();
   });
 
-  it('DELETE /invoice/:id', async () => {
-    const newItem: CreateInvoiceRequest = {
-      createInvoicesRequest: {
-        stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
-        date: faker.date.recent().toISOString(),
-        totalAmount: +faker.finance.amount(),
-        showMaterials: true,
-      },
+  it('DELETE /worker/:id', async () => {
+    const newItem: CreateWorkerRequest = {
+      name: faker.person.fullName(),
+      speciality: faker.lorem.words(),
+      contact: faker.person.fullName(),
+      address: faker.location.streetAddress(),
+      phone: faker.phone.number({ style: 'international' }),
+      socialSecurity: faker.number.int().toString(),
+      startDate: faker.date.recent().toISOString(),
+      endDate: faker.date.future().toISOString(),
     };
-    const item = await api.createInvoice(newItem);
-
-    await api.removeInvoice({ id: item.id ?? '' });
+    const resultItem = await api.createWorker({
+      createWorkerRequest: newItem,
+    });
+    await api.removeWorker({ id: resultItem.id ?? '' });
 
     try {
-      await api.findOneInvoice({ id: item.id ?? '' });
+      await api.findOneWorker({ id: resultItem.id ?? '' });
     } catch (error) {
       expect(error).toBeDefined();
       if (error instanceof ApplicationExceptionResponse) {

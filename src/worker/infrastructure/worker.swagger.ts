@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { WorkerRow } from './worker.repository';
 import { CreateWorkerDto, UpdateWorkerDto } from '../core/worker.dto';
 import { Worker } from '../core/worker.entity';
@@ -66,54 +66,54 @@ export class CreateWorkerRequest implements CreateWorkerDto {
 }
 
 export class UpdateWorkerRequest implements UpdateWorkerDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the worker',
     nullable: true,
   })
-  name: string | null;
-  @ApiProperty({
+  name?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Speciality of the worker',
     nullable: true,
   })
-  speciality: string | null;
-  @ApiProperty({
+  speciality?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Contact of the worker',
     nullable: true,
   })
-  contact: string | null;
-  @ApiProperty({
+  contact?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Email of the worker',
     nullable: true,
   })
-  address: string | null;
-  @ApiProperty({
+  address?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Phone of the worker',
     nullable: true,
   })
-  phone: string | null;
-  @ApiProperty({
+  phone?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'City of the worker',
     nullable: true,
   })
-  socialSecurity: string | null;
-  @ApiProperty({
+  socialSecurity?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'State of the worker',
     nullable: true,
   })
-  startDate: Date | null;
-  @ApiProperty({
+  startDate?: Date | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Zip of the worker',
     nullable: true,
   })
-  endDate: Date | null;
+  endDate?: Date | null;
 
   constructor(data: UpdateWorkerDto) {
     this.name = data.name;

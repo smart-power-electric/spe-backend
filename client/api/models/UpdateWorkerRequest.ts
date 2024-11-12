@@ -24,63 +24,55 @@ export interface UpdateWorkerRequest {
      * @type {string}
      * @memberof UpdateWorkerRequest
      */
-    name: string | null;
+    name?: string | null;
     /**
      * Speciality of the worker
      * @type {string}
      * @memberof UpdateWorkerRequest
      */
-    speciality: string | null;
+    speciality?: string | null;
     /**
      * Contact of the worker
      * @type {string}
      * @memberof UpdateWorkerRequest
      */
-    contact: string | null;
+    contact?: string | null;
     /**
      * Email of the worker
      * @type {string}
      * @memberof UpdateWorkerRequest
      */
-    address: string | null;
+    address?: string | null;
     /**
      * Phone of the worker
      * @type {string}
      * @memberof UpdateWorkerRequest
      */
-    phone: string | null;
+    phone?: string | null;
     /**
      * City of the worker
      * @type {string}
      * @memberof UpdateWorkerRequest
      */
-    socialSecurity: string | null;
+    socialSecurity?: string | null;
     /**
      * State of the worker
      * @type {string}
      * @memberof UpdateWorkerRequest
      */
-    startDate: string | null;
+    startDate?: string | null;
     /**
      * Zip of the worker
      * @type {string}
      * @memberof UpdateWorkerRequest
      */
-    endDate: string | null;
+    endDate?: string | null;
 }
 
 /**
  * Check if a given object implements the UpdateWorkerRequest interface.
  */
 export function instanceOfUpdateWorkerRequest(value: object): value is UpdateWorkerRequest {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('speciality' in value) || value['speciality'] === undefined) return false;
-    if (!('contact' in value) || value['contact'] === undefined) return false;
-    if (!('address' in value) || value['address'] === undefined) return false;
-    if (!('phone' in value) || value['phone'] === undefined) return false;
-    if (!('socialSecurity' in value) || value['socialSecurity'] === undefined) return false;
-    if (!('startDate' in value) || value['startDate'] === undefined) return false;
-    if (!('endDate' in value) || value['endDate'] === undefined) return false;
     return true;
 }
 
@@ -94,14 +86,14 @@ export function UpdateWorkerRequestFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'name': json['name'],
-        'speciality': json['speciality'],
-        'contact': json['contact'],
-        'address': json['address'],
-        'phone': json['phone'],
-        'socialSecurity': json['socialSecurity'],
-        'startDate': json['startDate'],
-        'endDate': json['endDate'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'speciality': json['speciality'] == null ? undefined : json['speciality'],
+        'contact': json['contact'] == null ? undefined : json['contact'],
+        'address': json['address'] == null ? undefined : json['address'],
+        'phone': json['phone'] == null ? undefined : json['phone'],
+        'socialSecurity': json['socialSecurity'] == null ? undefined : json['socialSecurity'],
+        'startDate': json['startDate'] == null ? undefined : json['startDate'],
+        'endDate': json['endDate'] == null ? undefined : json['endDate'],
     };
 }
 

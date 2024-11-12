@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { NotificationsRow } from './notifications.repository';
 import {
   CreateNotificationsDto,
@@ -34,24 +34,24 @@ export class CreateNotificationsRequest implements CreateNotificationsDto {
 }
 
 export class UpdateNotificationsRequest implements UpdateNotificationsDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Id of the notifications',
     nullable: true,
   })
-  invoiceId: string | null;
-  @ApiProperty({
+  invoiceId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Id of the notifications',
     nullable: true,
   })
-  clientId: string | null;
-  @ApiProperty({
+  clientId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Id of the notifications',
     nullable: true,
   })
-  status: string | null;
+  status?: string | null;
 
   constructor(data: UpdateNotificationsDto) {
     this.invoiceId = data.invoiceId;

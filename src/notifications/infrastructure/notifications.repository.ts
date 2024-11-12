@@ -5,8 +5,11 @@ import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { notifications } from 'src/common/infrastructure/schema/schema';
 
-import { count, eq } from 'drizzle-orm';
-import { NotificationsRepository } from '../core/notifications.interface';
+import { and, count, eq, SQLWrapper } from 'drizzle-orm';
+import {
+  NotificationsFilter,
+  NotificationsRepository,
+} from '../core/notifications.interface';
 import {
   RowToNotifications,
   NotificationsToRow,
@@ -43,17 +46,30 @@ export class DrizzleNotificationsRepository implements NotificationsRepository {
     return result.map(RowToNotifications).at(0) ?? null;
   }
 
-  async getAll(ctx: Context, limit: number, offset: number) {
+  async getAll(
+    ctx: Context,
+    limit: number,
+    offset: number,
+    filters: NotificationsFilter,
+  ) {
     this.logger.info(
       ctx,
       DrizzleNotificationsRepository.name,
       'getAll',
       'Getting all clients',
     );
+    const sqlDilters: SQLWrapper[] = [];
+    if (filters.invoiceId) {
+      sqlDilters.push(eq(notifications.invoiceId, filters.invoiceId));
+    }
+    if (filters.clientId) {
+      sqlDilters.push(eq(notifications.clientId, filters.clientId));
+    }
     const result = await this.db
       .getDb()
       .select()
       .from(notifications)
+      .where(and(...sqlDilters))
       .limit(limit)
       .offset(offset)
       .execute();
@@ -61,6 +77,7 @@ export class DrizzleNotificationsRepository implements NotificationsRepository {
       .getDb()
       .select({ count: count() })
       .from(notifications)
+      .where(and(...sqlDilters))
       .limit(1)
       .execute();
     return { data: result.map(RowToNotifications), total: total[0].count };

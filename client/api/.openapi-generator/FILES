@@ -34,6 +34,7 @@ models/InvoicesPaginationResponse.ts
 models/InvoicesResponse.ts
 models/MaterialPaginationResponse.ts
 models/MaterialResponse.ts
+models/NotificationsPaginationResponse.ts
 models/NotificationsResponse.ts
 models/ProjectQuotationResponse.ts
 models/ProjectResponse.ts

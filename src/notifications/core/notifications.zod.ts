@@ -7,7 +7,15 @@ export const createNotificationsSchema = z.object({
 });
 
 export const UpdateNotificationsSchema = z.object({
-  invoiceId: z.string().nullable().describe('Invoice id of notifications'),
-  clientId: z.string().nullable().describe('Client id of notifications'),
-  status: z.string().nullable().describe('Status of notifications'),
+  invoiceId: z
+    .string()
+    .nullable()
+    .optional()
+    .describe('Invoice id of notifications'),
+  clientId: z
+    .string()
+    .nullable()
+    .optional()
+    .describe('Client id of notifications'),
+  status: z.string().nullable().optional().describe('Status of notifications'),
 });

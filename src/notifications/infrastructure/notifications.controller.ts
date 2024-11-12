@@ -9,6 +9,8 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -90,7 +92,7 @@ export class NotificationsController {
   })
   @ApiOkResponse({
     description: 'All notificationss',
-    type: [NotificationsResponse],
+    type: NotificationsPaginationResponse,
   })
   @ApiBadRequestResponse({
     status: 400,
@@ -104,10 +106,14 @@ export class NotificationsController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'clientId', required: false, type: String })
+  @ApiQuery({ name: 'invoiceId', required: false, type: String })
   findAllNotification(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
+    @Query('clientId') clientId: string,
+    @Query('invoiceId') invoiceId: string,
   ): Promise<NotificationsPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -116,7 +122,7 @@ export class NotificationsController {
       'findAll',
       'Getting all notificationss',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, { clientId, invoiceId });
   }
 
   @Get(':id')
@@ -138,7 +144,7 @@ export class NotificationsController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneNotification(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -166,7 +172,7 @@ export class NotificationsController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateNotificationsRequest })
   updateNotification(
     @Req() req: Request,
@@ -197,7 +203,7 @@ export class NotificationsController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeNotification(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(

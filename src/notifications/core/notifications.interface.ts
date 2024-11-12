@@ -4,13 +4,17 @@ import {
   UpdateNotificationsDto,
 } from './notifications.dto';
 import { Notifications } from './notifications.entity';
-
+export type NotificationsFilter = {
+  invoiceId?: string;
+  clientId?: string;
+};
 export interface NotificationsRepository {
   insert(ctx: Context, row: Notifications): Promise<Notifications | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filters: NotificationsFilter,
   ): Promise<{
     data: Notifications[];
     total: number;
@@ -31,6 +35,7 @@ export interface NotificationsUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: NotificationsFilter,
   ): Promise<{
     data: Notifications[];
     total: number;

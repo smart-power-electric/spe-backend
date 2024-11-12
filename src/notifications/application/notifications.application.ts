@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from 'src/common/core/exception';
 import {
+  NotificationsFilter,
   NotificationsRepository,
   NotificationsUseCases,
 } from '../core/notifications.interface';
@@ -48,6 +49,7 @@ export class NotificationsApplication implements NotificationsUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: NotificationsFilter,
   ): Promise<{ data: Notifications[]; total: number }> {
     this.logger.info(
       ctx,
@@ -55,7 +57,7 @@ export class NotificationsApplication implements NotificationsUseCases {
       'getAll',
       'Getting all notificationss',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filters);
     return result;
   }
 

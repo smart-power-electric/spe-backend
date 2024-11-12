@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ApplicationExceptionResponse,
   CreateNotificationsRequest,
+  NotificationsPaginationResponse,
   NotificationsResponse,
   UpdateNotificationsRequest,
 } from '../models/index';
@@ -25,6 +26,8 @@ import {
     ApplicationExceptionResponseToJSON,
     CreateNotificationsRequestFromJSON,
     CreateNotificationsRequestToJSON,
+    NotificationsPaginationResponseFromJSON,
+    NotificationsPaginationResponseToJSON,
     NotificationsResponseFromJSON,
     NotificationsResponseToJSON,
     UpdateNotificationsRequestFromJSON,
@@ -38,18 +41,20 @@ export interface CreateNotificationRequest {
 export interface FindAllNotificationRequest {
     limit?: number;
     offset?: number;
+    clientId?: string;
+    invoiceId?: string;
 }
 
 export interface FindOneNotificationRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveNotificationRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateNotificationRequest {
-    id: number;
+    id: string;
     updateNotificationsRequest: UpdateNotificationsRequest;
 }
 
@@ -97,7 +102,7 @@ export class NotificationsApi extends runtime.BaseAPI {
     /**
      * Get all notificationss
      */
-    async findAllNotificationRaw(requestParameters: FindAllNotificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<NotificationsResponse>>> {
+    async findAllNotificationRaw(requestParameters: FindAllNotificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NotificationsPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -106,6 +111,14 @@ export class NotificationsApi extends runtime.BaseAPI {
 
         if (requestParameters['offset'] != null) {
             queryParameters['offset'] = requestParameters['offset'];
+        }
+
+        if (requestParameters['clientId'] != null) {
+            queryParameters['clientId'] = requestParameters['clientId'];
+        }
+
+        if (requestParameters['invoiceId'] != null) {
+            queryParameters['invoiceId'] = requestParameters['invoiceId'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -117,13 +130,13 @@ export class NotificationsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(NotificationsResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => NotificationsPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all notificationss
      */
-    async findAllNotification(requestParameters: FindAllNotificationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<NotificationsResponse>> {
+    async findAllNotification(requestParameters: FindAllNotificationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NotificationsPaginationResponse> {
         const response = await this.findAllNotificationRaw(requestParameters, initOverrides);
         return await response.value();
     }

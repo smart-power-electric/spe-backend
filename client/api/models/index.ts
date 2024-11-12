@@ -20,6 +20,7 @@ export * from './InvoicesPaginationResponse';
 export * from './InvoicesResponse';
 export * from './MaterialPaginationResponse';
 export * from './MaterialResponse';
+export * from './NotificationsPaginationResponse';
 export * from './NotificationsResponse';
 export * from './ProjectQuotationResponse';
 export * from './ProjectResponse';

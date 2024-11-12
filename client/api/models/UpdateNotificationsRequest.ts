@@ -24,28 +24,25 @@ export interface UpdateNotificationsRequest {
      * @type {string}
      * @memberof UpdateNotificationsRequest
      */
-    invoiceId: string | null;
+    invoiceId?: string | null;
     /**
      * Id of the notifications
      * @type {string}
      * @memberof UpdateNotificationsRequest
      */
-    clientId: string | null;
+    clientId?: string | null;
     /**
      * Id of the notifications
      * @type {string}
      * @memberof UpdateNotificationsRequest
      */
-    status: string | null;
+    status?: string | null;
 }
 
 /**
  * Check if a given object implements the UpdateNotificationsRequest interface.
  */
 export function instanceOfUpdateNotificationsRequest(value: object): value is UpdateNotificationsRequest {
-    if (!('invoiceId' in value) || value['invoiceId'] === undefined) return false;
-    if (!('clientId' in value) || value['clientId'] === undefined) return false;
-    if (!('status' in value) || value['status'] === undefined) return false;
     return true;
 }
 
@@ -59,9 +56,9 @@ export function UpdateNotificationsRequestFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
-        'invoiceId': json['invoiceId'],
-        'clientId': json['clientId'],
-        'status': json['status'],
+        'invoiceId': json['invoiceId'] == null ? undefined : json['invoiceId'],
+        'clientId': json['clientId'] == null ? undefined : json['clientId'],
+        'status': json['status'] == null ? undefined : json['status'],
     };
 }
 

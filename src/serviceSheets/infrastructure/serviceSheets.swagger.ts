@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ServiceSheetsRow } from './serviceSheets.repository';
 import {
   CreateServiceSheetsDto,
@@ -26,7 +26,7 @@ export class CreateServiceSheetsRequest implements CreateServiceSheetsDto {
   })
   weekStartDate: Date | null;
   @ApiProperty({
-    type: 'string',
+    type: 'number',
     description: 'Email of the serviceSheets',
     nullable: true,
   })
@@ -41,30 +41,30 @@ export class CreateServiceSheetsRequest implements CreateServiceSheetsDto {
 }
 
 export class UpdateServiceSheetsRequest implements UpdateServiceSheetsDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the serviceSheets',
     nullable: true,
   })
-  workerId: string | null;
-  @ApiProperty({
+  workerId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Speciality of the serviceSheets',
     nullable: true,
   })
-  projectId: string | null;
-  @ApiProperty({
+  projectId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Contact of the serviceSheets',
     nullable: true,
   })
-  weekStartDate: Date | null;
-  @ApiProperty({
-    type: 'string',
+  weekStartDate?: Date | null;
+  @ApiPropertyOptional({
+    type: 'number',
     description: 'Email of the serviceSheets',
     nullable: true,
   })
-  totalHours: number | null;
+  totalHours?: number | null;
 
   constructor(data: UpdateServiceSheetsDto) {
     this.workerId = data.workerId;
@@ -100,7 +100,7 @@ export class ServiceSheetsResponse implements ServiceSheetsRow {
   })
   weekStartDate: Date | null;
   @ApiProperty({
-    type: 'string',
+    type: 'number',
     description: 'Email of the serviceSheets',
     nullable: true,
   })

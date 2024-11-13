@@ -39,10 +39,10 @@ export interface CreateServiceSheetsRequest {
     weekStartDate: string | null;
     /**
      * Email of the serviceSheets
-     * @type {string}
+     * @type {number}
      * @memberof CreateServiceSheetsRequest
      */
-    totalHours: string | null;
+    totalHours: number | null;
 }
 
 /**

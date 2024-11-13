@@ -24,35 +24,31 @@ export interface UpdateServiceSheetsRequest {
      * @type {string}
      * @memberof UpdateServiceSheetsRequest
      */
-    workerId: string | null;
+    workerId?: string | null;
     /**
      * Speciality of the serviceSheets
      * @type {string}
      * @memberof UpdateServiceSheetsRequest
      */
-    projectId: string | null;
+    projectId?: string | null;
     /**
      * Contact of the serviceSheets
      * @type {string}
      * @memberof UpdateServiceSheetsRequest
      */
-    weekStartDate: string | null;
+    weekStartDate?: string | null;
     /**
      * Email of the serviceSheets
-     * @type {string}
+     * @type {number}
      * @memberof UpdateServiceSheetsRequest
      */
-    totalHours: string | null;
+    totalHours?: number | null;
 }
 
 /**
  * Check if a given object implements the UpdateServiceSheetsRequest interface.
  */
 export function instanceOfUpdateServiceSheetsRequest(value: object): value is UpdateServiceSheetsRequest {
-    if (!('workerId' in value) || value['workerId'] === undefined) return false;
-    if (!('projectId' in value) || value['projectId'] === undefined) return false;
-    if (!('weekStartDate' in value) || value['weekStartDate'] === undefined) return false;
-    if (!('totalHours' in value) || value['totalHours'] === undefined) return false;
     return true;
 }
 
@@ -66,10 +62,10 @@ export function UpdateServiceSheetsRequestFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
-        'workerId': json['workerId'],
-        'projectId': json['projectId'],
-        'weekStartDate': json['weekStartDate'],
-        'totalHours': json['totalHours'],
+        'workerId': json['workerId'] == null ? undefined : json['workerId'],
+        'projectId': json['projectId'] == null ? undefined : json['projectId'],
+        'weekStartDate': json['weekStartDate'] == null ? undefined : json['weekStartDate'],
+        'totalHours': json['totalHours'] == null ? undefined : json['totalHours'],
     };
 }
 

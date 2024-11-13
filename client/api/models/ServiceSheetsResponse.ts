@@ -45,10 +45,10 @@ export interface ServiceSheetsResponse {
     weekStartDate: string | null;
     /**
      * Email of the serviceSheets
-     * @type {string}
+     * @type {number}
      * @memberof ServiceSheetsResponse
      */
-    totalHours: string | null;
+    totalHours: number | null;
     /**
      * Created at of the serviceSheets
      * @type {string}

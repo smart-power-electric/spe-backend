@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ApplicationExceptionResponse,
   CreateServiceSheetsRequest,
+  ServiceSheetsPaginationResponse,
   ServiceSheetsResponse,
   UpdateServiceSheetsRequest,
 } from '../models/index';
@@ -25,6 +26,8 @@ import {
     ApplicationExceptionResponseToJSON,
     CreateServiceSheetsRequestFromJSON,
     CreateServiceSheetsRequestToJSON,
+    ServiceSheetsPaginationResponseFromJSON,
+    ServiceSheetsPaginationResponseToJSON,
     ServiceSheetsResponseFromJSON,
     ServiceSheetsResponseToJSON,
     UpdateServiceSheetsRequestFromJSON,
@@ -43,15 +46,15 @@ export interface FindAllServiceSheetsRequest {
 }
 
 export interface FindOneServiceSheetsRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveServiceSheetsRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateServiceSheetsOperationRequest {
-    id: number;
+    id: string;
     updateServiceSheetsRequest: UpdateServiceSheetsRequest;
 }
 
@@ -99,7 +102,7 @@ export class ServiceSheetsApi extends runtime.BaseAPI {
     /**
      * Get all serviceSheetss
      */
-    async findAllServiceSheetsRaw(requestParameters: FindAllServiceSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ServiceSheetsResponse>>> {
+    async findAllServiceSheetsRaw(requestParameters: FindAllServiceSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ServiceSheetsPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -127,13 +130,13 @@ export class ServiceSheetsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ServiceSheetsResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ServiceSheetsPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all serviceSheetss
      */
-    async findAllServiceSheets(requestParameters: FindAllServiceSheetsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ServiceSheetsResponse>> {
+    async findAllServiceSheets(requestParameters: FindAllServiceSheetsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ServiceSheetsPaginationResponse> {
         const response = await this.findAllServiceSheetsRaw(requestParameters, initOverrides);
         return await response.value();
     }

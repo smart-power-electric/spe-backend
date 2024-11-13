@@ -28,6 +28,7 @@ export * from './ProjectQuotationResponse';
 export * from './ProjectResponse';
 export * from './ServicePaginationResponse';
 export * from './ServiceResponse';
+export * from './ServiceSheetsPaginationResponse';
 export * from './ServiceSheetsResponse';
 export * from './StageResponse';
 export * from './UpdateClientRequest';

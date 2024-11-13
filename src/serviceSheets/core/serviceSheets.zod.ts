@@ -11,11 +11,24 @@ export const createServiceSheetsSchema = z.object({
 });
 
 export const UpdateServiceSheetsSchema = z.object({
-  workerId: z.string().nullable().describe('Worker id of serviceSheets'),
-  projectId: z.string().nullable().describe('Project id of serviceSheets'),
+  workerId: z
+    .string()
+    .optional()
+    .nullable()
+    .describe('Worker id of serviceSheets'),
+  projectId: z
+    .string()
+    .optional()
+    .nullable()
+    .describe('Project id of serviceSheets'),
   weekStartDate: z.coerce
     .date()
+    .optional()
     .nullable()
     .describe('Week start date of serviceSheets'),
-  totalHours: z.number().nullable().describe('Total hours of serviceSheets'),
+  totalHours: z
+    .number()
+    .optional()
+    .nullable()
+    .describe('Total hours of serviceSheets'),
 });

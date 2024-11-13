@@ -10,6 +10,7 @@ import {
   HttpCode,
   Req,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -91,7 +92,7 @@ export class ServiceSheetsController {
   })
   @ApiOkResponse({
     description: 'All serviceSheetss',
-    type: [ServiceSheetsResponse],
+    type: ServiceSheetsPaginationResponse,
   })
   @ApiBadRequestResponse({
     status: 400,
@@ -109,8 +110,8 @@ export class ServiceSheetsController {
   @ApiQuery({ name: 'projectId', required: false, type: String })
   findAllServiceSheets(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('workerId') workerId: string,
     @Query('projectId') projectId: string,
   ): Promise<ServiceSheetsPaginationResponse> {
@@ -143,7 +144,7 @@ export class ServiceSheetsController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneServiceSheets(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -171,7 +172,7 @@ export class ServiceSheetsController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateServiceSheetsRequest })
   updateServiceSheets(
     @Req() req: Request,
@@ -202,7 +203,7 @@ export class ServiceSheetsController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeServiceSheets(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(

@@ -10,6 +10,7 @@ import {
   HttpCode,
   Req,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -82,7 +83,7 @@ export class StageController {
   @ApiOperation({
     summary: 'Get all stages',
   })
-  @ApiOkResponse({ description: 'All stages', type: [StageResponse] })
+  @ApiOkResponse({ description: 'All stages', type: StagePaginationResponse })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -99,8 +100,8 @@ export class StageController {
   @ApiQuery({ name: 'name', required: false, type: String })
   findAllStage(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('projectId') projectId: string,
     @Query('name') name: string,
   ): Promise<StagePaginationResponse> {
@@ -130,7 +131,7 @@ export class StageController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneStage(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -155,7 +156,7 @@ export class StageController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateStageRequest })
   updateStage(
     @Req() req: Request,
@@ -181,7 +182,7 @@ export class StageController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeStage(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, StageController.name, 'remove', 'Deleting stage');

@@ -30,6 +30,7 @@ export * from './ServicePaginationResponse';
 export * from './ServiceResponse';
 export * from './ServiceSheetsPaginationResponse';
 export * from './ServiceSheetsResponse';
+export * from './StagePaginationResponse';
 export * from './StageResponse';
 export * from './UpdateClientRequest';
 export * from './UpdateInvoicesRequest';

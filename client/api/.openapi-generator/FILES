@@ -44,6 +44,7 @@ models/ServicePaginationResponse.ts
 models/ServiceResponse.ts
 models/ServiceSheetsPaginationResponse.ts
 models/ServiceSheetsResponse.ts
+models/StagePaginationResponse.ts
 models/StageResponse.ts
 models/UpdateClientRequest.ts
 models/UpdateInvoicesRequest.ts

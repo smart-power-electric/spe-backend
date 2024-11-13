@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ApplicationExceptionResponse,
   CreateStageRequest,
+  StagePaginationResponse,
   StageResponse,
   UpdateStageRequest,
 } from '../models/index';
@@ -25,6 +26,8 @@ import {
     ApplicationExceptionResponseToJSON,
     CreateStageRequestFromJSON,
     CreateStageRequestToJSON,
+    StagePaginationResponseFromJSON,
+    StagePaginationResponseToJSON,
     StageResponseFromJSON,
     StageResponseToJSON,
     UpdateStageRequestFromJSON,
@@ -43,15 +46,15 @@ export interface FindAllStageRequest {
 }
 
 export interface FindOneStageRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveStageRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateStageOperationRequest {
-    id: number;
+    id: string;
     updateStageRequest: UpdateStageRequest;
 }
 
@@ -99,7 +102,7 @@ export class StageApi extends runtime.BaseAPI {
     /**
      * Get all stages
      */
-    async findAllStageRaw(requestParameters: FindAllStageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<StageResponse>>> {
+    async findAllStageRaw(requestParameters: FindAllStageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<StagePaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -127,13 +130,13 @@ export class StageApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(StageResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => StagePaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all stages
      */
-    async findAllStage(requestParameters: FindAllStageRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<StageResponse>> {
+    async findAllStage(requestParameters: FindAllStageRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<StagePaginationResponse> {
         const response = await this.findAllStageRaw(requestParameters, initOverrides);
         return await response.value();
     }

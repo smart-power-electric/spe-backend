@@ -51,10 +51,10 @@ export interface StageResponse {
     percentage: number | null;
     /**
      * Adjusted percentage of the stage
-     * @type {Date}
+     * @type {number}
      * @memberof StageResponse
      */
-    adjustedPercentage: Date | null;
+    adjustedPercentage: number | null;
     /**
      * Start date of the stage
      * @type {Date}
@@ -113,7 +113,7 @@ export function StageResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': json['description'],
         'projectId': json['projectId'],
         'percentage': json['percentage'],
-        'adjustedPercentage': (json['adjustedPercentage'] == null ? null : new Date(json['adjustedPercentage'])),
+        'adjustedPercentage': json['adjustedPercentage'],
         'startDate': (json['startDate'] == null ? null : new Date(json['startDate'])),
         'endDate': json['endDate'],
         'createdAt': json['createdAt'],
@@ -137,7 +137,7 @@ export function StageResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': value['description'],
         'projectId': value['projectId'],
         'percentage': value['percentage'],
-        'adjustedPercentage': (value['adjustedPercentage'] == null ? null : (value['adjustedPercentage'] as any).toISOString()),
+        'adjustedPercentage': value['adjustedPercentage'],
         'startDate': (value['startDate'] == null ? null : (value['startDate'] as any).toISOString()),
         'endDate': value['endDate'],
         'createdAt': value['createdAt'],

@@ -24,56 +24,49 @@ export interface UpdateStageRequest {
      * @type {string}
      * @memberof UpdateStageRequest
      */
-    name: string | null;
+    name?: string | null;
     /**
      * Description of the stage
      * @type {string}
      * @memberof UpdateStageRequest
      */
-    description: string | null;
+    description?: string | null;
     /**
      * Project ID of the stage
      * @type {string}
      * @memberof UpdateStageRequest
      */
-    projectId: string | null;
+    projectId?: string | null;
     /**
      * Percentage of the stage
      * @type {number}
      * @memberof UpdateStageRequest
      */
-    percentage: number | null;
+    percentage?: number | null;
     /**
      * Adjusted percentage of the stage
      * @type {number}
      * @memberof UpdateStageRequest
      */
-    adjustedPercentage: number | null;
+    adjustedPercentage?: number | null;
     /**
      * Start date of the stage
      * @type {Date}
      * @memberof UpdateStageRequest
      */
-    startDate: Date | null;
+    startDate?: Date | null;
     /**
      * End date of the stage
      * @type {Date}
      * @memberof UpdateStageRequest
      */
-    endDate: Date | null;
+    endDate?: Date | null;
 }
 
 /**
  * Check if a given object implements the UpdateStageRequest interface.
  */
 export function instanceOfUpdateStageRequest(value: object): value is UpdateStageRequest {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('description' in value) || value['description'] === undefined) return false;
-    if (!('projectId' in value) || value['projectId'] === undefined) return false;
-    if (!('percentage' in value) || value['percentage'] === undefined) return false;
-    if (!('adjustedPercentage' in value) || value['adjustedPercentage'] === undefined) return false;
-    if (!('startDate' in value) || value['startDate'] === undefined) return false;
-    if (!('endDate' in value) || value['endDate'] === undefined) return false;
     return true;
 }
 
@@ -87,13 +80,13 @@ export function UpdateStageRequestFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'name': json['name'],
-        'description': json['description'],
-        'projectId': json['projectId'],
-        'percentage': json['percentage'],
-        'adjustedPercentage': json['adjustedPercentage'],
-        'startDate': (json['startDate'] == null ? null : new Date(json['startDate'])),
-        'endDate': (json['endDate'] == null ? null : new Date(json['endDate'])),
+        'name': json['name'] == null ? undefined : json['name'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'projectId': json['projectId'] == null ? undefined : json['projectId'],
+        'percentage': json['percentage'] == null ? undefined : json['percentage'],
+        'adjustedPercentage': json['adjustedPercentage'] == null ? undefined : json['adjustedPercentage'],
+        'startDate': json['startDate'] == null ? undefined : (new Date(json['startDate'])),
+        'endDate': json['endDate'] == null ? undefined : (new Date(json['endDate'])),
     };
 }
 
@@ -113,8 +106,8 @@ export function UpdateStageRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'projectId': value['projectId'],
         'percentage': value['percentage'],
         'adjustedPercentage': value['adjustedPercentage'],
-        'startDate': (value['startDate'] == null ? null : (value['startDate'] as any).toISOString()),
-        'endDate': (value['endDate'] == null ? null : (value['endDate'] as any).toISOString()),
+        'startDate': value['startDate'] == null ? undefined : ((value['startDate'] as any).toISOString()),
+        'endDate': value['endDate'] == null ? undefined : ((value['endDate'] as any).toISOString()),
     };
 }
 

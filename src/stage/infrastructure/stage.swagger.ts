@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CreateStageDto, UpdateStageDto } from '../core/stage.dto';
 import { Stage } from '../core/stage.entity';
 import { StageRow } from './stage.repository';
@@ -59,48 +59,48 @@ export class CreateStageRequest implements CreateStageDto {
 }
 
 export class UpdateStageRequest implements UpdateStageDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the stage',
     nullable: true,
   })
-  name: string | null;
-  @ApiProperty({
+  name?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Description of the stage',
     nullable: true,
   })
-  description: string | null;
-  @ApiProperty({
+  description?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Project ID of the stage',
     nullable: true,
   })
-  projectId: string | null;
-  @ApiProperty({
+  projectId?: string | null;
+  @ApiPropertyOptional({
     type: 'number',
     description: 'Percentage of the stage',
     nullable: true,
   })
-  percentage: number | null;
-  @ApiProperty({
+  percentage?: number | null;
+  @ApiPropertyOptional({
     type: 'number',
     description: 'Adjusted percentage of the stage',
     nullable: true,
   })
-  adjustedPercentage: number | null;
-  @ApiProperty({
+  adjustedPercentage?: number | null;
+  @ApiPropertyOptional({
     type: Date,
     description: 'Start date of the stage',
     nullable: true,
   })
-  startDate: Date | null;
-  @ApiProperty({
+  startDate?: Date | null;
+  @ApiPropertyOptional({
     type: Date,
     description: 'End date of the stage',
     nullable: true,
   })
-  endDate: Date | null;
+  endDate?: Date | null;
 
   constructor(data: UpdateStageDto) {
     this.name = data.name;
@@ -145,7 +145,7 @@ export class StageResponse implements StageRow {
   })
   percentage: number | null;
   @ApiProperty({
-    type: Date,
+    type: Number,
     description: 'Adjusted percentage of the stage',
     nullable: true,
   })

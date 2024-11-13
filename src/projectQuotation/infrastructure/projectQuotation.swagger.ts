@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   CreateProjectQuotationDto,
   UpdateProjectQuotationDto,
@@ -52,36 +52,36 @@ export class CreateProjectQuotationRequest
 export class UpdateProjectQuotationRequest
   implements UpdateProjectQuotationDto
 {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the projectQuotation',
     nullable: true,
   })
-  projectId: string | null;
-  @ApiProperty({
+  projectId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Material ID of the projectQuotation',
     nullable: true,
   })
-  materialId: string | null;
-  @ApiProperty({
+  materialId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Service ID of the projectQuotation',
     nullable: true,
   })
-  serviceId: string | null;
-  @ApiProperty({
+  serviceId?: string | null;
+  @ApiPropertyOptional({
     type: 'number',
     description: 'Quantity of the projectQuotation',
     nullable: true,
   })
-  quantity: number | null;
-  @ApiProperty({
+  quantity?: number | null;
+  @ApiPropertyOptional({
     type: 'number',
     description: 'Total cost of the projectQuotation',
     nullable: true,
   })
-  totalCost: number | null;
+  totalCost?: number | null;
 
   constructor(data: UpdateProjectQuotationDto) {
     this.projectId = data.projectId;

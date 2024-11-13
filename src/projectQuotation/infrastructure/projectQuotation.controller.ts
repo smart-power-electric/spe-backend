@@ -10,6 +10,7 @@ import {
   HttpCode,
   Req,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -91,7 +92,7 @@ export class ProjectQuotationController {
   })
   @ApiOkResponse({
     description: 'All projectQuotations',
-    type: [ProjectQuotationResponse],
+    type: ProjectQuotationPaginationResponse,
   })
   @ApiBadRequestResponse({
     status: 400,
@@ -110,8 +111,8 @@ export class ProjectQuotationController {
   @ApiQuery({ name: 'serviceId', required: false, type: String })
   findAllProjectQuotation(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('projectId') projectId: string,
     @Query('materialId') materialId: string,
     @Query('serviceId') serviceId: string,
@@ -149,7 +150,7 @@ export class ProjectQuotationController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneProjectQuotation(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -177,7 +178,7 @@ export class ProjectQuotationController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateProjectQuotationRequest })
   updateProjectQuotation(
     @Req() req: Request,
@@ -208,7 +209,7 @@ export class ProjectQuotationController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeProjectQuotation(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(

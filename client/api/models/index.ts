@@ -23,6 +23,7 @@ export * from './MaterialResponse';
 export * from './NotificationsPaginationResponse';
 export * from './NotificationsResponse';
 export * from './ProjectPaginationResponse';
+export * from './ProjectQuotationPaginationResponse';
 export * from './ProjectQuotationResponse';
 export * from './ProjectResponse';
 export * from './ServiceResponse';

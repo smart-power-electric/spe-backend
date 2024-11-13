@@ -24,42 +24,37 @@ export interface UpdateProjectQuotationRequest {
      * @type {string}
      * @memberof UpdateProjectQuotationRequest
      */
-    projectId: string | null;
+    projectId?: string | null;
     /**
      * Material ID of the projectQuotation
      * @type {string}
      * @memberof UpdateProjectQuotationRequest
      */
-    materialId: string | null;
+    materialId?: string | null;
     /**
      * Service ID of the projectQuotation
      * @type {string}
      * @memberof UpdateProjectQuotationRequest
      */
-    serviceId: string | null;
+    serviceId?: string | null;
     /**
      * Quantity of the projectQuotation
      * @type {number}
      * @memberof UpdateProjectQuotationRequest
      */
-    quantity: number | null;
+    quantity?: number | null;
     /**
      * Total cost of the projectQuotation
      * @type {number}
      * @memberof UpdateProjectQuotationRequest
      */
-    totalCost: number | null;
+    totalCost?: number | null;
 }
 
 /**
  * Check if a given object implements the UpdateProjectQuotationRequest interface.
  */
 export function instanceOfUpdateProjectQuotationRequest(value: object): value is UpdateProjectQuotationRequest {
-    if (!('projectId' in value) || value['projectId'] === undefined) return false;
-    if (!('materialId' in value) || value['materialId'] === undefined) return false;
-    if (!('serviceId' in value) || value['serviceId'] === undefined) return false;
-    if (!('quantity' in value) || value['quantity'] === undefined) return false;
-    if (!('totalCost' in value) || value['totalCost'] === undefined) return false;
     return true;
 }
 
@@ -73,11 +68,11 @@ export function UpdateProjectQuotationRequestFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'projectId': json['projectId'],
-        'materialId': json['materialId'],
-        'serviceId': json['serviceId'],
-        'quantity': json['quantity'],
-        'totalCost': json['totalCost'],
+        'projectId': json['projectId'] == null ? undefined : json['projectId'],
+        'materialId': json['materialId'] == null ? undefined : json['materialId'],
+        'serviceId': json['serviceId'] == null ? undefined : json['serviceId'],
+        'quantity': json['quantity'] == null ? undefined : json['quantity'],
+        'totalCost': json['totalCost'] == null ? undefined : json['totalCost'],
     };
 }
 

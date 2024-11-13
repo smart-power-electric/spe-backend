@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ApplicationExceptionResponse,
   CreateProjectQuotationRequest,
+  ProjectQuotationPaginationResponse,
   ProjectQuotationResponse,
   UpdateProjectQuotationRequest,
 } from '../models/index';
@@ -25,6 +26,8 @@ import {
     ApplicationExceptionResponseToJSON,
     CreateProjectQuotationRequestFromJSON,
     CreateProjectQuotationRequestToJSON,
+    ProjectQuotationPaginationResponseFromJSON,
+    ProjectQuotationPaginationResponseToJSON,
     ProjectQuotationResponseFromJSON,
     ProjectQuotationResponseToJSON,
     UpdateProjectQuotationRequestFromJSON,
@@ -44,15 +47,15 @@ export interface FindAllProjectQuotationRequest {
 }
 
 export interface FindOneProjectQuotationRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveProjectQuotationRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateProjectQuotationOperationRequest {
-    id: number;
+    id: string;
     updateProjectQuotationRequest: UpdateProjectQuotationRequest;
 }
 
@@ -100,7 +103,7 @@ export class ProjectQuotationApi extends runtime.BaseAPI {
     /**
      * Get all projectQuotations
      */
-    async findAllProjectQuotationRaw(requestParameters: FindAllProjectQuotationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectQuotationResponse>>> {
+    async findAllProjectQuotationRaw(requestParameters: FindAllProjectQuotationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectQuotationPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -132,13 +135,13 @@ export class ProjectQuotationApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProjectQuotationResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProjectQuotationPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all projectQuotations
      */
-    async findAllProjectQuotation(requestParameters: FindAllProjectQuotationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ProjectQuotationResponse>> {
+    async findAllProjectQuotation(requestParameters: FindAllProjectQuotationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectQuotationPaginationResponse> {
         const response = await this.findAllProjectQuotationRaw(requestParameters, initOverrides);
         return await response.value();
     }

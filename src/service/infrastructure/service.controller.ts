@@ -10,6 +10,7 @@ import {
   HttpCode,
   Req,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -82,7 +83,10 @@ export class ServiceController {
   @ApiOperation({
     summary: 'Get all services',
   })
-  @ApiOkResponse({ description: 'All services', type: [ServiceResponse] })
+  @ApiOkResponse({
+    description: 'All services',
+    type: ServicePaginationResponse,
+  })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -98,8 +102,8 @@ export class ServiceController {
   @ApiQuery({ name: 'name', required: false, type: String })
   findAllService(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('name') name?: string,
   ): Promise<ServicePaginationResponse> {
     const ctx = req.appContext;
@@ -128,7 +132,7 @@ export class ServiceController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneService(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -153,7 +157,7 @@ export class ServiceController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateServiceRequest })
   updateService(
     @Req() req: Request,
@@ -179,7 +183,7 @@ export class ServiceController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeService(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, ServiceController.name, 'remove', 'Deleting service');

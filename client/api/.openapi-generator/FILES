@@ -40,6 +40,7 @@ models/ProjectPaginationResponse.ts
 models/ProjectQuotationPaginationResponse.ts
 models/ProjectQuotationResponse.ts
 models/ProjectResponse.ts
+models/ServicePaginationResponse.ts
 models/ServiceResponse.ts
 models/ServiceSheetsResponse.ts
 models/StageResponse.ts

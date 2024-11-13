@@ -24,28 +24,25 @@ export interface UpdateServiceRequest {
      * @type {string}
      * @memberof UpdateServiceRequest
      */
-    name: string | null;
+    name?: string | null;
     /**
      * Description of the service
      * @type {string}
      * @memberof UpdateServiceRequest
      */
-    description: string | null;
+    description?: string | null;
     /**
      * Project ID of the service
-     * @type {string}
+     * @type {number}
      * @memberof UpdateServiceRequest
      */
-    unitCost: string | null;
+    unitCost?: number | null;
 }
 
 /**
  * Check if a given object implements the UpdateServiceRequest interface.
  */
 export function instanceOfUpdateServiceRequest(value: object): value is UpdateServiceRequest {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('description' in value) || value['description'] === undefined) return false;
-    if (!('unitCost' in value) || value['unitCost'] === undefined) return false;
     return true;
 }
 
@@ -59,9 +56,9 @@ export function UpdateServiceRequestFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'name': json['name'],
-        'description': json['description'],
-        'unitCost': json['unitCost'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'unitCost': json['unitCost'] == null ? undefined : json['unitCost'],
     };
 }
 

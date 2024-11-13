@@ -26,6 +26,7 @@ export * from './ProjectPaginationResponse';
 export * from './ProjectQuotationPaginationResponse';
 export * from './ProjectQuotationResponse';
 export * from './ProjectResponse';
+export * from './ServicePaginationResponse';
 export * from './ServiceResponse';
 export * from './ServiceSheetsResponse';
 export * from './StageResponse';

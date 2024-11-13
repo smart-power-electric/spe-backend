@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ApplicationExceptionResponse,
   CreateServiceRequest,
+  ServicePaginationResponse,
   ServiceResponse,
   UpdateServiceRequest,
 } from '../models/index';
@@ -25,6 +26,8 @@ import {
     ApplicationExceptionResponseToJSON,
     CreateServiceRequestFromJSON,
     CreateServiceRequestToJSON,
+    ServicePaginationResponseFromJSON,
+    ServicePaginationResponseToJSON,
     ServiceResponseFromJSON,
     ServiceResponseToJSON,
     UpdateServiceRequestFromJSON,
@@ -42,15 +45,15 @@ export interface FindAllServiceRequest {
 }
 
 export interface FindOneServiceRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveServiceRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateServiceOperationRequest {
-    id: number;
+    id: string;
     updateServiceRequest: UpdateServiceRequest;
 }
 
@@ -98,7 +101,7 @@ export class ServiceApi extends runtime.BaseAPI {
     /**
      * Get all services
      */
-    async findAllServiceRaw(requestParameters: FindAllServiceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ServiceResponse>>> {
+    async findAllServiceRaw(requestParameters: FindAllServiceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ServicePaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -122,13 +125,13 @@ export class ServiceApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ServiceResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ServicePaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all services
      */
-    async findAllService(requestParameters: FindAllServiceRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ServiceResponse>> {
+    async findAllService(requestParameters: FindAllServiceRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ServicePaginationResponse> {
         const response = await this.findAllServiceRaw(requestParameters, initOverrides);
         return await response.value();
     }

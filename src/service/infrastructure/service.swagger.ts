@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CreateServiceDto, UpdateServiceDto } from '../core/service.dto';
 import { Service } from '../core/service.entity';
 import { ServiceRow } from './service.repository';
@@ -17,7 +17,7 @@ export class CreateServiceRequest implements CreateServiceDto {
   })
   description: string | null;
   @ApiProperty({
-    type: 'string',
+    type: 'number',
     description: 'Project ID of the service',
     nullable: true,
   })
@@ -30,25 +30,25 @@ export class CreateServiceRequest implements CreateServiceDto {
 }
 
 export class UpdateServiceRequest implements UpdateServiceDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the service',
     nullable: true,
   })
-  name: string | null;
-  @ApiProperty({
+  name?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Description of the service',
     nullable: true,
   })
-  description: string | null;
-  @ApiProperty({
-    type: 'string',
+  description?: string | null;
+  @ApiPropertyOptional({
+    type: 'number',
     description: 'Project ID of the service',
     nullable: true,
   })
-  unitCost: number | null;
-  constructor(data: CreateServiceDto) {
+  unitCost?: number | null;
+  constructor(data: UpdateServiceDto) {
     this.name = data.name;
     this.description = data.description;
     this.unitCost = data.unitCost;

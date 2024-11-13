@@ -33,10 +33,10 @@ export interface CreateServiceRequest {
     description: string | null;
     /**
      * Project ID of the service
-     * @type {string}
+     * @type {number}
      * @memberof CreateServiceRequest
      */
-    unitCost: string | null;
+    unitCost: number | null;
 }
 
 /**

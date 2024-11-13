@@ -82,7 +82,10 @@ export class ProjectController {
   @ApiOperation({
     summary: 'Get all projects',
   })
-  @ApiOkResponse({ description: 'All projects', type: [ProjectResponse] })
+  @ApiOkResponse({
+    description: 'All projects',
+    type: ProjectPaginationResponse,
+  })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -128,7 +131,7 @@ export class ProjectController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneProject(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -153,7 +156,7 @@ export class ProjectController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateProjectRequest })
   updateProject(
     @Req() req: Request,
@@ -179,7 +182,7 @@ export class ProjectController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeProject(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(ctx, ProjectController.name, 'remove', 'Deleting project');

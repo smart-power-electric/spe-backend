@@ -27,7 +27,7 @@ export class Project {
     this.location = params.location;
     this.startDate = params.startDate;
     this.endDate = params.endDate;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
+    this.createdAt = params.createdAt;
+    this.updatedAt = params.updatedAt;
   }
 }

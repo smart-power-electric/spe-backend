@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ApplicationExceptionResponse,
   CreateProjectRequest,
+  ProjectPaginationResponse,
   ProjectResponse,
   UpdateProjectRequest,
 } from '../models/index';
@@ -25,6 +26,8 @@ import {
     ApplicationExceptionResponseToJSON,
     CreateProjectRequestFromJSON,
     CreateProjectRequestToJSON,
+    ProjectPaginationResponseFromJSON,
+    ProjectPaginationResponseToJSON,
     ProjectResponseFromJSON,
     ProjectResponseToJSON,
     UpdateProjectRequestFromJSON,
@@ -42,15 +45,15 @@ export interface FindAllProjectRequest {
 }
 
 export interface FindOneProjectRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveProjectRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateProjectOperationRequest {
-    id: number;
+    id: string;
     updateProjectRequest: UpdateProjectRequest;
 }
 
@@ -98,7 +101,7 @@ export class ProjectApi extends runtime.BaseAPI {
     /**
      * Get all projects
      */
-    async findAllProjectRaw(requestParameters: FindAllProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectResponse>>> {
+    async findAllProjectRaw(requestParameters: FindAllProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -122,13 +125,13 @@ export class ProjectApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProjectResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProjectPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all projects
      */
-    async findAllProject(requestParameters: FindAllProjectRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ProjectResponse>> {
+    async findAllProject(requestParameters: FindAllProjectRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectPaginationResponse> {
         const response = await this.findAllProjectRaw(requestParameters, initOverrides);
         return await response.value();
     }

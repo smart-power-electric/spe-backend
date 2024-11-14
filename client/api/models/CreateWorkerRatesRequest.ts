@@ -33,10 +33,10 @@ export interface CreateWorkerRatesRequest {
     rate: number | null;
     /**
      * Effective date of the workerRates
-     * @type {string}
+     * @type {Date}
      * @memberof CreateWorkerRatesRequest
      */
-    effectiveDate: string | null;
+    effectiveDate: Date | null;
 }
 
 /**
@@ -61,7 +61,7 @@ export function CreateWorkerRatesRequestFromJSONTyped(json: any, ignoreDiscrimin
         
         'workerId': json['workerId'],
         'rate': json['rate'],
-        'effectiveDate': json['effectiveDate'],
+        'effectiveDate': (json['effectiveDate'] == null ? null : new Date(json['effectiveDate'])),
     };
 }
 
@@ -78,7 +78,7 @@ export function CreateWorkerRatesRequestFromJSONTyped(json: any, ignoreDiscrimin
         
         'workerId': value['workerId'],
         'rate': value['rate'],
-        'effectiveDate': value['effectiveDate'],
+        'effectiveDate': (value['effectiveDate'] == null ? null : (value['effectiveDate'] as any).toISOString()),
     };
 }
 

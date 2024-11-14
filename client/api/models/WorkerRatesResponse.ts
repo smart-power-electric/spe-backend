@@ -39,22 +39,22 @@ export interface WorkerRatesResponse {
     rate: number | null;
     /**
      * Effective date of the workerRates
-     * @type {string}
+     * @type {Date}
      * @memberof WorkerRatesResponse
      */
-    effectiveDate: string | null;
+    effectiveDate: Date | null;
     /**
      * Created at of the workerRates
-     * @type {string}
+     * @type {Date}
      * @memberof WorkerRatesResponse
      */
-    createdAt: string | null;
+    createdAt: Date | null;
     /**
      * Updated at of the workerRates
-     * @type {string}
+     * @type {Date}
      * @memberof WorkerRatesResponse
      */
-    updatedAt: string | null;
+    updatedAt: Date | null;
 }
 
 /**
@@ -83,9 +83,9 @@ export function WorkerRatesResponseFromJSONTyped(json: any, ignoreDiscriminator:
         'id': json['id'],
         'workerId': json['workerId'],
         'rate': json['rate'],
-        'effectiveDate': json['effectiveDate'],
-        'createdAt': json['createdAt'],
-        'updatedAt': json['updatedAt'],
+        'effectiveDate': (json['effectiveDate'] == null ? null : new Date(json['effectiveDate'])),
+        'createdAt': (json['createdAt'] == null ? null : new Date(json['createdAt'])),
+        'updatedAt': (json['updatedAt'] == null ? null : new Date(json['updatedAt'])),
     };
 }
 
@@ -103,9 +103,9 @@ export function WorkerRatesResponseFromJSONTyped(json: any, ignoreDiscriminator:
         'id': value['id'],
         'workerId': value['workerId'],
         'rate': value['rate'],
-        'effectiveDate': value['effectiveDate'],
-        'createdAt': value['createdAt'],
-        'updatedAt': value['updatedAt'],
+        'effectiveDate': (value['effectiveDate'] == null ? null : (value['effectiveDate'] as any).toISOString()),
+        'createdAt': (value['createdAt'] == null ? null : (value['createdAt'] as any).toISOString()),
+        'updatedAt': (value['updatedAt'] == null ? null : (value['updatedAt'] as any).toISOString()),
     };
 }
 

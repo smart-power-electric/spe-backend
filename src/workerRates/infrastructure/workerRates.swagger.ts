@@ -20,7 +20,7 @@ export class CreateWorkerRatesRequest implements CreateWorkerRatesDto {
   })
   rate: number | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Effective date of the workerRates',
     nullable: true,
   })
@@ -47,7 +47,7 @@ export class UpdateWorkerRatesRequest implements UpdateWorkerRatesDto {
   })
   rate?: number | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: Date,
     description: 'Effective date of the workerRates',
     nullable: true,
   })
@@ -79,19 +79,19 @@ export class WorkerRatesResponse implements WorkerRatesRow {
   })
   rate: number | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Effective date of the workerRates',
     nullable: true,
   })
   effectiveDate: Date | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Created at of the workerRates',
     nullable: true,
   })
   createdAt: Date;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Updated at of the workerRates',
     nullable: true,
   })

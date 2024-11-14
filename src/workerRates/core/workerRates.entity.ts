@@ -19,6 +19,6 @@ export class WorkerRates {
     this.rate = params.rate;
     this.effectiveDate = params.effectiveDate;
     this.createdAt = params.createdAt ?? new Date();
-    this.updatedAt = params.updatedAt ?? new Date();
+    this.updatedAt = params.updatedAt;
   }
 }

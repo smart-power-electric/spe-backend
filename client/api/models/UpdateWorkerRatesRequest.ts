@@ -33,10 +33,10 @@ export interface UpdateWorkerRatesRequest {
     rate?: number | null;
     /**
      * Effective date of the workerRates
-     * @type {string}
+     * @type {Date}
      * @memberof UpdateWorkerRatesRequest
      */
-    effectiveDate?: string | null;
+    effectiveDate?: Date | null;
 }
 
 /**
@@ -58,7 +58,7 @@ export function UpdateWorkerRatesRequestFromJSONTyped(json: any, ignoreDiscrimin
         
         'workerId': json['workerId'] == null ? undefined : json['workerId'],
         'rate': json['rate'] == null ? undefined : json['rate'],
-        'effectiveDate': json['effectiveDate'] == null ? undefined : json['effectiveDate'],
+        'effectiveDate': json['effectiveDate'] == null ? undefined : (new Date(json['effectiveDate'])),
     };
 }
 
@@ -75,7 +75,7 @@ export function UpdateWorkerRatesRequestFromJSONTyped(json: any, ignoreDiscrimin
         
         'workerId': value['workerId'],
         'rate': value['rate'],
-        'effectiveDate': value['effectiveDate'],
+        'effectiveDate': value['effectiveDate'] == null ? undefined : ((value['effectiveDate'] as any).toISOString()),
     };
 }
 

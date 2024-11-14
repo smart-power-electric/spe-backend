@@ -10,6 +10,7 @@ import {
   HttpCode,
   Req,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -39,7 +40,7 @@ import {
 } from '../core/workerRates.zod';
 
 @ApiTags('workerRates')
-@Controller('workerRates')
+@Controller('worker-rates')
 export class WorkerRatesController {
   constructor(
     @Inject(WorkerRatesUseCases)
@@ -91,7 +92,7 @@ export class WorkerRatesController {
   })
   @ApiOkResponse({
     description: 'All workerRatess',
-    type: [WorkerRatesResponse],
+    type: WorkerRatesPaginationResponse,
   })
   @ApiBadRequestResponse({
     status: 400,
@@ -108,8 +109,8 @@ export class WorkerRatesController {
   @ApiQuery({ name: 'workerId', required: false, type: String })
   findAllWorkerRates(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('workerId') workerId: string,
   ): Promise<WorkerRatesPaginationResponse> {
     const ctx = req.appContext;
@@ -141,7 +142,7 @@ export class WorkerRatesController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneWorkerRates(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -169,7 +170,7 @@ export class WorkerRatesController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateWorkerRatesRequest })
   updateWorkerRates(
     @Req() req: Request,
@@ -200,7 +201,7 @@ export class WorkerRatesController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeWorkerRates(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(

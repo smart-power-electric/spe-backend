@@ -24,28 +24,25 @@ export interface UpdateWorkerRatesRequest {
      * @type {string}
      * @memberof UpdateWorkerRatesRequest
      */
-    workerId: string | null;
+    workerId?: string | null;
     /**
      * Rate of the workerRates
      * @type {number}
      * @memberof UpdateWorkerRatesRequest
      */
-    rate: number | null;
+    rate?: number | null;
     /**
      * Effective date of the workerRates
      * @type {string}
      * @memberof UpdateWorkerRatesRequest
      */
-    effectiveDate: string | null;
+    effectiveDate?: string | null;
 }
 
 /**
  * Check if a given object implements the UpdateWorkerRatesRequest interface.
  */
 export function instanceOfUpdateWorkerRatesRequest(value: object): value is UpdateWorkerRatesRequest {
-    if (!('workerId' in value) || value['workerId'] === undefined) return false;
-    if (!('rate' in value) || value['rate'] === undefined) return false;
-    if (!('effectiveDate' in value) || value['effectiveDate'] === undefined) return false;
     return true;
 }
 
@@ -59,9 +56,9 @@ export function UpdateWorkerRatesRequestFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'workerId': json['workerId'],
-        'rate': json['rate'],
-        'effectiveDate': json['effectiveDate'],
+        'workerId': json['workerId'] == null ? undefined : json['workerId'],
+        'rate': json['rate'] == null ? undefined : json['rate'],
+        'effectiveDate': json['effectiveDate'] == null ? undefined : json['effectiveDate'],
     };
 }
 

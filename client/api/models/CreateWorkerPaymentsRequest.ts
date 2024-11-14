@@ -33,22 +33,22 @@ export interface CreateWorkerPaymentsRequest {
     serviceSheetId: string | null;
     /**
      * Contact of the workerPayments
-     * @type {string}
+     * @type {number}
      * @memberof CreateWorkerPaymentsRequest
      */
-    totalPayment: string | null;
+    totalPayment: number | null;
     /**
      * Email of the workerPayments
-     * @type {string}
+     * @type {Date}
      * @memberof CreateWorkerPaymentsRequest
      */
-    paymentDate: string | null;
+    paymentDate: Date | null;
     /**
      * Is extra of the workerPayments
-     * @type {string}
+     * @type {boolean}
      * @memberof CreateWorkerPaymentsRequest
      */
-    isExtra: string | null;
+    isExtra: boolean | null;
 }
 
 /**
@@ -76,7 +76,7 @@ export function CreateWorkerPaymentsRequestFromJSONTyped(json: any, ignoreDiscri
         'workerId': json['workerId'],
         'serviceSheetId': json['serviceSheetId'],
         'totalPayment': json['totalPayment'],
-        'paymentDate': json['paymentDate'],
+        'paymentDate': (json['paymentDate'] == null ? null : new Date(json['paymentDate'])),
         'isExtra': json['isExtra'],
     };
 }
@@ -95,7 +95,7 @@ export function CreateWorkerPaymentsRequestFromJSONTyped(json: any, ignoreDiscri
         'workerId': value['workerId'],
         'serviceSheetId': value['serviceSheetId'],
         'totalPayment': value['totalPayment'],
-        'paymentDate': value['paymentDate'],
+        'paymentDate': (value['paymentDate'] == null ? null : (value['paymentDate'] as any).toISOString()),
         'isExtra': value['isExtra'],
     };
 }

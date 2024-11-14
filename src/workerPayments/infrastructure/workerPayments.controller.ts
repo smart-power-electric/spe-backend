@@ -9,6 +9,8 @@ import {
   Inject,
   HttpCode,
   Req,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -38,7 +40,7 @@ import {
 } from '../core/workerPayments.zod';
 
 @ApiTags('workerPayments')
-@Controller('workerPayments')
+@Controller('worker-payments')
 export class WorkerPaymentsController {
   constructor(
     @Inject(WorkerPaymentsUseCases)
@@ -90,7 +92,7 @@ export class WorkerPaymentsController {
   })
   @ApiOkResponse({
     description: 'All workerPaymentss',
-    type: [WorkerPaymentsResponse],
+    type: WorkerPaymentsPaginationResponse,
   })
   @ApiBadRequestResponse({
     status: 400,
@@ -104,10 +106,14 @@ export class WorkerPaymentsController {
   })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'workerId', required: false, type: String })
+  @ApiQuery({ name: 'serviceSheetId', required: false, type: String })
   findAllWorkerPayments(
     @Req() req: Request,
-    @Param('limit') limit: number,
-    @Param('offset') offset: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
+    @Query('workerId') workerId: string,
+    @Query('serviceSheetId') serviceSheetId: string,
   ): Promise<WorkerPaymentsPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -116,7 +122,10 @@ export class WorkerPaymentsController {
       'findAll',
       'Getting all workerPaymentss',
     );
-    return this.application.getAll(ctx, limit, offset);
+    return this.application.getAll(ctx, limit, offset, {
+      workerId,
+      serviceSheetId,
+    });
   }
 
   @Get(':id')
@@ -138,7 +147,7 @@ export class WorkerPaymentsController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   findOneWorkerPayments(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -166,7 +175,7 @@ export class WorkerPaymentsController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({ type: UpdateWorkerPaymentsRequest })
   updateWorkerPayments(
     @Req() req: Request,
@@ -197,7 +206,7 @@ export class WorkerPaymentsController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   removeWorkerPayments(@Req() req: Request, @Param('id') id: string) {
     const ctx = req.appContext;
     this.logger.info(

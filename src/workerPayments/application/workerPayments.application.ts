@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from 'src/common/core/exception';
 import {
+  WorkerPaymentsFilters,
   WorkerPaymentsRepository,
   WorkerPaymentsUseCases,
 } from '../core/workerPayments.interface';
@@ -48,6 +49,7 @@ export class WorkerPaymentsApplication implements WorkerPaymentsUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filter: WorkerPaymentsFilters,
   ): Promise<{ data: WorkerPayments[]; total: number }> {
     this.logger.info(
       ctx,
@@ -55,7 +57,7 @@ export class WorkerPaymentsApplication implements WorkerPaymentsUseCases {
       'getAll',
       'Getting all workerPaymentss',
     );
-    const result = await this.repository.getAll(ctx, limit, offset);
+    const result = await this.repository.getAll(ctx, limit, offset, filter);
     return result;
   }
 

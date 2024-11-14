@@ -18,6 +18,7 @@ import type {
   ApplicationExceptionResponse,
   CreateWorkerPaymentsRequest,
   UpdateWorkerPaymentsRequest,
+  WorkerPaymentsPaginationResponse,
   WorkerPaymentsResponse,
 } from '../models/index';
 import {
@@ -27,6 +28,8 @@ import {
     CreateWorkerPaymentsRequestToJSON,
     UpdateWorkerPaymentsRequestFromJSON,
     UpdateWorkerPaymentsRequestToJSON,
+    WorkerPaymentsPaginationResponseFromJSON,
+    WorkerPaymentsPaginationResponseToJSON,
     WorkerPaymentsResponseFromJSON,
     WorkerPaymentsResponseToJSON,
 } from '../models/index';
@@ -38,18 +41,20 @@ export interface CreateWorkerPaymentsOperationRequest {
 export interface FindAllWorkerPaymentsRequest {
     limit?: number;
     offset?: number;
+    workerId?: string;
+    serviceSheetId?: string;
 }
 
 export interface FindOneWorkerPaymentsRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveWorkerPaymentsRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateWorkerPaymentsOperationRequest {
-    id: number;
+    id: string;
     updateWorkerPaymentsRequest: UpdateWorkerPaymentsRequest;
 }
 
@@ -76,7 +81,7 @@ export class WorkerPaymentsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/v1/workerPayments`,
+            path: `/v1/worker-payments`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -97,7 +102,7 @@ export class WorkerPaymentsApi extends runtime.BaseAPI {
     /**
      * Get all workerPaymentss
      */
-    async findAllWorkerPaymentsRaw(requestParameters: FindAllWorkerPaymentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<WorkerPaymentsResponse>>> {
+    async findAllWorkerPaymentsRaw(requestParameters: FindAllWorkerPaymentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WorkerPaymentsPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -108,22 +113,30 @@ export class WorkerPaymentsApi extends runtime.BaseAPI {
             queryParameters['offset'] = requestParameters['offset'];
         }
 
+        if (requestParameters['workerId'] != null) {
+            queryParameters['workerId'] = requestParameters['workerId'];
+        }
+
+        if (requestParameters['serviceSheetId'] != null) {
+            queryParameters['serviceSheetId'] = requestParameters['serviceSheetId'];
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/v1/workerPayments`,
+            path: `/v1/worker-payments`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(WorkerPaymentsResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => WorkerPaymentsPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all workerPaymentss
      */
-    async findAllWorkerPayments(requestParameters: FindAllWorkerPaymentsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<WorkerPaymentsResponse>> {
+    async findAllWorkerPayments(requestParameters: FindAllWorkerPaymentsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WorkerPaymentsPaginationResponse> {
         const response = await this.findAllWorkerPaymentsRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -144,7 +157,7 @@ export class WorkerPaymentsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/v1/workerPayments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/v1/worker-payments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -176,7 +189,7 @@ export class WorkerPaymentsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/v1/workerPayments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/v1/worker-payments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -215,7 +228,7 @@ export class WorkerPaymentsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/v1/workerPayments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/v1/worker-payments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,

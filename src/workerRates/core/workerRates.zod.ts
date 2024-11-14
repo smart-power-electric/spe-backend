@@ -10,10 +10,11 @@ export const createWorkerRatesSchema = z.object({
 });
 
 export const UpdateWorkerRatesSchema = z.object({
-  workerId: z.string().nullable().describe('Worker ID'),
-  rate: z.number().nullable().describe('Rate of workerRates'),
+  workerId: z.string().optional().nullable().describe('Worker ID'),
+  rate: z.number().optional().nullable().describe('Rate of workerRates'),
   effectiveDate: z.coerce
     .date()
+    .optional()
     .nullable()
     .describe('Effective date of workerRates'),
 });

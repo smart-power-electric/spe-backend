@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   CreateWorkerRatesDto,
   UpdateWorkerRatesDto,
@@ -34,24 +34,24 @@ export class CreateWorkerRatesRequest implements CreateWorkerRatesDto {
 }
 
 export class UpdateWorkerRatesRequest implements UpdateWorkerRatesDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the workerRates',
     nullable: true,
   })
-  workerId: string | null;
-  @ApiProperty({
+  workerId?: string | null;
+  @ApiPropertyOptional({
     type: 'number',
     description: 'Rate of the workerRates',
     nullable: true,
   })
-  rate: number | null;
-  @ApiProperty({
+  rate?: number | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Effective date of the workerRates',
     nullable: true,
   })
-  effectiveDate: Date | null;
+  effectiveDate?: Date | null;
   constructor(data: UpdateWorkerRatesDto) {
     this.workerId = data.workerId;
     this.rate = data.rate;

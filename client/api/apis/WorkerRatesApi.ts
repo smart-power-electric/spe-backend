@@ -18,6 +18,7 @@ import type {
   ApplicationExceptionResponse,
   CreateWorkerRatesRequest,
   UpdateWorkerRatesRequest,
+  WorkerRatesPaginationResponse,
   WorkerRatesResponse,
 } from '../models/index';
 import {
@@ -27,6 +28,8 @@ import {
     CreateWorkerRatesRequestToJSON,
     UpdateWorkerRatesRequestFromJSON,
     UpdateWorkerRatesRequestToJSON,
+    WorkerRatesPaginationResponseFromJSON,
+    WorkerRatesPaginationResponseToJSON,
     WorkerRatesResponseFromJSON,
     WorkerRatesResponseToJSON,
 } from '../models/index';
@@ -42,15 +45,15 @@ export interface FindAllWorkerRatesRequest {
 }
 
 export interface FindOneWorkerRatesRequest {
-    id: number;
+    id: string;
 }
 
 export interface RemoveWorkerRatesRequest {
-    id: number;
+    id: string;
 }
 
 export interface UpdateWorkerRatesOperationRequest {
-    id: number;
+    id: string;
     updateWorkerRatesRequest: UpdateWorkerRatesRequest;
 }
 
@@ -77,7 +80,7 @@ export class WorkerRatesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/v1/workerRates`,
+            path: `/v1/worker-rates`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -98,7 +101,7 @@ export class WorkerRatesApi extends runtime.BaseAPI {
     /**
      * Get all workerRatess
      */
-    async findAllWorkerRatesRaw(requestParameters: FindAllWorkerRatesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<WorkerRatesResponse>>> {
+    async findAllWorkerRatesRaw(requestParameters: FindAllWorkerRatesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WorkerRatesPaginationResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -116,19 +119,19 @@ export class WorkerRatesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/v1/workerRates`,
+            path: `/v1/worker-rates`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(WorkerRatesResponseFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => WorkerRatesPaginationResponseFromJSON(jsonValue));
     }
 
     /**
      * Get all workerRatess
      */
-    async findAllWorkerRates(requestParameters: FindAllWorkerRatesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<WorkerRatesResponse>> {
+    async findAllWorkerRates(requestParameters: FindAllWorkerRatesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WorkerRatesPaginationResponse> {
         const response = await this.findAllWorkerRatesRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -149,7 +152,7 @@ export class WorkerRatesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/v1/workerRates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/v1/worker-rates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -181,7 +184,7 @@ export class WorkerRatesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/v1/workerRates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/v1/worker-rates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -220,7 +223,7 @@ export class WorkerRatesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/v1/workerRates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/v1/worker-rates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,

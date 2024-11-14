@@ -49,6 +49,8 @@ export * from './VersionResponse';
 export * from './WorkerAssignmentPaginationResponse';
 export * from './WorkerAssignmentResponse';
 export * from './WorkerPaginationResponse';
+export * from './WorkerPaymentsPaginationResponse';
 export * from './WorkerPaymentsResponse';
+export * from './WorkerRatesPaginationResponse';
 export * from './WorkerRatesResponse';
 export * from './WorkerResponse';

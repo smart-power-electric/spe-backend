@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { WorkerPaymentsRow } from './workerPayments.repository';
 import {
   CreateWorkerPaymentsDto,
@@ -20,19 +20,19 @@ export class CreateWorkerPaymentsRequest implements CreateWorkerPaymentsDto {
   })
   serviceSheetId: string | null;
   @ApiProperty({
-    type: 'string',
+    type: 'number',
     description: 'Contact of the workerPayments',
     nullable: true,
   })
   totalPayment: number | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Email of the workerPayments',
     nullable: true,
   })
   paymentDate: Date | null;
   @ApiProperty({
-    type: 'string',
+    type: 'boolean',
     description: 'Is extra of the workerPayments',
     nullable: true,
   })
@@ -48,36 +48,36 @@ export class CreateWorkerPaymentsRequest implements CreateWorkerPaymentsDto {
 }
 
 export class UpdateWorkerPaymentsRequest implements UpdateWorkerPaymentsDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Name of the workerPayments',
     nullable: true,
   })
-  workerId: string | null;
-  @ApiProperty({
+  workerId?: string | null;
+  @ApiPropertyOptional({
     type: 'string',
     description: 'Speciality of the workerPayments',
     nullable: true,
   })
-  serviceSheetId: string | null;
-  @ApiProperty({
-    type: 'string',
+  serviceSheetId?: string | null;
+  @ApiPropertyOptional({
+    type: 'number',
     description: 'Contact of the workerPayments',
     nullable: true,
   })
-  totalPayment: number | null;
-  @ApiProperty({
-    type: 'string',
+  totalPayment?: number | null;
+  @ApiPropertyOptional({
+    type: Date,
     description: 'Email of the workerPayments',
     nullable: true,
   })
-  paymentDate: Date | null;
-  @ApiProperty({
-    type: 'string',
+  paymentDate?: Date | null;
+  @ApiPropertyOptional({
+    type: 'boolean',
     description: 'Is extra of the workerPayments',
     nullable: true,
   })
-  isExtra: boolean | null;
+  isExtra?: boolean | null;
 
   constructor(data: UpdateWorkerPaymentsDto) {
     this.workerId = data.workerId;
@@ -108,31 +108,31 @@ export class WorkerPaymentsResponse implements WorkerPaymentsRow {
   })
   serviceSheetId: string | null;
   @ApiProperty({
-    type: 'string',
+    type: 'number',
     description: 'Contact of the workerPayments',
     nullable: true,
   })
   totalPayment: number | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Email of the workerPayments',
     nullable: true,
   })
   paymentDate: Date | null;
   @ApiProperty({
-    type: 'string',
+    type: 'boolean',
     description: 'Is extra of the workerPayments',
     nullable: true,
   })
   isExtra: boolean | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Created at of the workerPayments',
     nullable: true,
   })
   createdAt: Date;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Updated at of the workerPayments',
     nullable: true,
   })

@@ -24,42 +24,37 @@ export interface UpdateWorkerPaymentsRequest {
      * @type {string}
      * @memberof UpdateWorkerPaymentsRequest
      */
-    workerId: string | null;
+    workerId?: string | null;
     /**
      * Speciality of the workerPayments
      * @type {string}
      * @memberof UpdateWorkerPaymentsRequest
      */
-    serviceSheetId: string | null;
+    serviceSheetId?: string | null;
     /**
      * Contact of the workerPayments
-     * @type {string}
+     * @type {number}
      * @memberof UpdateWorkerPaymentsRequest
      */
-    totalPayment: string | null;
+    totalPayment?: number | null;
     /**
      * Email of the workerPayments
-     * @type {string}
+     * @type {Date}
      * @memberof UpdateWorkerPaymentsRequest
      */
-    paymentDate: string | null;
+    paymentDate?: Date | null;
     /**
      * Is extra of the workerPayments
-     * @type {string}
+     * @type {boolean}
      * @memberof UpdateWorkerPaymentsRequest
      */
-    isExtra: string | null;
+    isExtra?: boolean | null;
 }
 
 /**
  * Check if a given object implements the UpdateWorkerPaymentsRequest interface.
  */
 export function instanceOfUpdateWorkerPaymentsRequest(value: object): value is UpdateWorkerPaymentsRequest {
-    if (!('workerId' in value) || value['workerId'] === undefined) return false;
-    if (!('serviceSheetId' in value) || value['serviceSheetId'] === undefined) return false;
-    if (!('totalPayment' in value) || value['totalPayment'] === undefined) return false;
-    if (!('paymentDate' in value) || value['paymentDate'] === undefined) return false;
-    if (!('isExtra' in value) || value['isExtra'] === undefined) return false;
     return true;
 }
 
@@ -73,11 +68,11 @@ export function UpdateWorkerPaymentsRequestFromJSONTyped(json: any, ignoreDiscri
     }
     return {
         
-        'workerId': json['workerId'],
-        'serviceSheetId': json['serviceSheetId'],
-        'totalPayment': json['totalPayment'],
-        'paymentDate': json['paymentDate'],
-        'isExtra': json['isExtra'],
+        'workerId': json['workerId'] == null ? undefined : json['workerId'],
+        'serviceSheetId': json['serviceSheetId'] == null ? undefined : json['serviceSheetId'],
+        'totalPayment': json['totalPayment'] == null ? undefined : json['totalPayment'],
+        'paymentDate': json['paymentDate'] == null ? undefined : (new Date(json['paymentDate'])),
+        'isExtra': json['isExtra'] == null ? undefined : json['isExtra'],
     };
 }
 
@@ -95,7 +90,7 @@ export function UpdateWorkerPaymentsRequestFromJSONTyped(json: any, ignoreDiscri
         'workerId': value['workerId'],
         'serviceSheetId': value['serviceSheetId'],
         'totalPayment': value['totalPayment'],
-        'paymentDate': value['paymentDate'],
+        'paymentDate': value['paymentDate'] == null ? undefined : ((value['paymentDate'] as any).toISOString()),
         'isExtra': value['isExtra'],
     };
 }

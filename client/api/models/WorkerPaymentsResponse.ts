@@ -39,34 +39,34 @@ export interface WorkerPaymentsResponse {
     serviceSheetId: string | null;
     /**
      * Contact of the workerPayments
-     * @type {string}
+     * @type {number}
      * @memberof WorkerPaymentsResponse
      */
-    totalPayment: string | null;
+    totalPayment: number | null;
     /**
      * Email of the workerPayments
-     * @type {string}
+     * @type {Date}
      * @memberof WorkerPaymentsResponse
      */
-    paymentDate: string | null;
+    paymentDate: Date | null;
     /**
      * Is extra of the workerPayments
-     * @type {string}
+     * @type {boolean}
      * @memberof WorkerPaymentsResponse
      */
-    isExtra: string | null;
+    isExtra: boolean | null;
     /**
      * Created at of the workerPayments
-     * @type {string}
+     * @type {Date}
      * @memberof WorkerPaymentsResponse
      */
-    createdAt: string | null;
+    createdAt: Date | null;
     /**
      * Updated at of the workerPayments
-     * @type {string}
+     * @type {Date}
      * @memberof WorkerPaymentsResponse
      */
-    updatedAt: string | null;
+    updatedAt: Date | null;
 }
 
 /**
@@ -98,10 +98,10 @@ export function WorkerPaymentsResponseFromJSONTyped(json: any, ignoreDiscriminat
         'workerId': json['workerId'],
         'serviceSheetId': json['serviceSheetId'],
         'totalPayment': json['totalPayment'],
-        'paymentDate': json['paymentDate'],
+        'paymentDate': (json['paymentDate'] == null ? null : new Date(json['paymentDate'])),
         'isExtra': json['isExtra'],
-        'createdAt': json['createdAt'],
-        'updatedAt': json['updatedAt'],
+        'createdAt': (json['createdAt'] == null ? null : new Date(json['createdAt'])),
+        'updatedAt': (json['updatedAt'] == null ? null : new Date(json['updatedAt'])),
     };
 }
 
@@ -120,10 +120,10 @@ export function WorkerPaymentsResponseFromJSONTyped(json: any, ignoreDiscriminat
         'workerId': value['workerId'],
         'serviceSheetId': value['serviceSheetId'],
         'totalPayment': value['totalPayment'],
-        'paymentDate': value['paymentDate'],
+        'paymentDate': (value['paymentDate'] == null ? null : (value['paymentDate'] as any).toISOString()),
         'isExtra': value['isExtra'],
-        'createdAt': value['createdAt'],
-        'updatedAt': value['updatedAt'],
+        'createdAt': (value['createdAt'] == null ? null : (value['createdAt'] as any).toISOString()),
+        'updatedAt': (value['updatedAt'] == null ? null : (value['updatedAt'] as any).toISOString()),
     };
 }
 

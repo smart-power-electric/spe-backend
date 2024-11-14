@@ -5,12 +5,17 @@ import {
 } from './workerPayments.dto';
 import { WorkerPayments } from './workerPayments.entity';
 
+export type WorkerPaymentsFilters = {
+  workerId?: string;
+  serviceSheetId?: string;
+};
 export interface WorkerPaymentsRepository {
   insert(ctx: Context, row: WorkerPayments): Promise<WorkerPayments | null>;
   getAll(
     ctx: Context,
     limit: number,
     offset: number,
+    filters: WorkerPaymentsFilters,
   ): Promise<{
     data: WorkerPayments[];
     total: number;
@@ -31,6 +36,7 @@ export interface WorkerPaymentsUseCases {
     ctx: Context,
     limit: number,
     offset: number,
+    filters: WorkerPaymentsFilters,
   ): Promise<{
     data: WorkerPayments[];
     total: number;

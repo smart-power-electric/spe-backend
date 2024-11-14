@@ -63,7 +63,9 @@ models/VersionResponse.ts
 models/WorkerAssignmentPaginationResponse.ts
 models/WorkerAssignmentResponse.ts
 models/WorkerPaginationResponse.ts
+models/WorkerPaymentsPaginationResponse.ts
 models/WorkerPaymentsResponse.ts
+models/WorkerRatesPaginationResponse.ts
 models/WorkerRatesResponse.ts
 models/WorkerResponse.ts
 models/index.ts

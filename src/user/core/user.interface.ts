@@ -37,5 +37,11 @@ export interface UserUseCases {
   getById(ctx: Context, id: string): Promise<User>;
   update(ctx: Context, id: string, row: UpdateUserDto): Promise<User>;
   delete(ctx: Context, id: string): Promise<User>;
+  login(
+    ctx: Context,
+    email: string,
+    password: string,
+    otp?: string,
+  ): Promise<User>;
 }
 export const UserUseCases = Symbol('UserUseCases');

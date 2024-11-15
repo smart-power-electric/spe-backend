@@ -10,9 +10,9 @@ import {
 import { faker } from '@faker-js/faker';
 import {
   Configuration,
-  CreateWorkerPaymentsRequest,
-  WorkerPaymentsApi,
-  UpdateWorkerPaymentsRequest,
+  CreateUserRequest,
+  UserApi,
+  UpdateUserRequest,
 } from '../client/api';
 import { HttpAdapterHost } from '@nestjs/core';
 import { Stage } from '../src/stage/core/stage.entity';
@@ -39,16 +39,13 @@ import { MaterialRepository } from '../src/material/core/material.interface';
 import { DrizzleMaterialRepository } from '../src/material/infrastructure/material.repository';
 import { ServiceRepository } from '../src/service/core/service.interface';
 import { DrizzleServiceRepository } from '../src/service/infrastructure/service.repository';
-import { ServiceSheets } from '../src/serviceSheets/core/serviceSheets.entity';
-import { ServiceSheetsRepository } from '../src/serviceSheets/core/serviceSheets.interface';
-import { DrizzleServiceSheetsRepository } from '../src/serviceSheets/infrastructure/serviceSheets.repository';
 
-describe('WorkerPaymentsModule (e2e)', () => {
+describe('UserModule (e2e)', () => {
   const jestConsole = console;
   let app: INestApplication;
   let dbContainer: StartedPostgreSqlContainer;
   let appPort = 0;
-  let api: WorkerPaymentsApi;
+  let api: UserApi;
   let baseStage: Stage;
   let baseProject: Project;
   let baseClient: Client;
@@ -56,7 +53,6 @@ describe('WorkerPaymentsModule (e2e)', () => {
   let baseInvoice: Invoices;
   let baseMaterial: Material;
   let baseService: Service;
-  let baseServiceSheet: ServiceSheets;
   beforeAll(async () => {
     global.console = sysConsole;
     dbContainer = await new PostgreSqlContainer()
@@ -100,10 +96,6 @@ describe('WorkerPaymentsModule (e2e)', () => {
           provide: ServiceRepository,
           useClass: DrizzleServiceRepository,
         },
-        {
-          provide: ServiceSheetsRepository,
-          useClass: DrizzleServiceSheetsRepository,
-        },
       ],
     }).compile();
     app = moduleFixture.createNestApplication();
@@ -119,7 +111,7 @@ describe('WorkerPaymentsModule (e2e)', () => {
     appPort = dbContainer.getPort() - 10000;
     const basePath = `http://localhost:${appPort}`;
     const config = new Configuration({ basePath });
-    api = new WorkerPaymentsApi(config);
+    api = new UserApi(config);
 
     baseClient = new Client({
       id: undefined,
@@ -221,19 +213,6 @@ describe('WorkerPaymentsModule (e2e)', () => {
       (await app
         .get<ServiceRepository>(ServiceRepository)
         .insert(newContext(), baseService)) ?? baseService;
-    baseServiceSheet = new ServiceSheets({
-      id: undefined,
-      workerId: baseWorker.id,
-      projectId: baseProject.id,
-      weekStartDate: new Date(),
-      totalHours: faker.number.int({ min: 0, max: 40 }),
-      createdAt: new Date(),
-      updatedAt: null,
-    });
-    baseServiceSheet =
-      (await app
-        .get<ServiceSheetsRepository>(ServiceSheetsRepository)
-        .insert(newContext(), baseServiceSheet)) ?? baseServiceSheet;
     await app.listen(appPort);
   }, 600000);
   afterAll(async () => {
@@ -241,49 +220,43 @@ describe('WorkerPaymentsModule (e2e)', () => {
     global.console = jestConsole;
   }, 600000);
 
-  it('POST /worker-payments', async () => {
-    const newItem: CreateWorkerPaymentsRequest = {
+  it('POST /user', async () => {
+    const newItem: CreateUserRequest = {
       workerId: baseWorker.id,
-      serviceSheetId: baseServiceSheet.id,
-      totalPayment: faker.number.int({ min: 0, max: 10000 }),
-      paymentDate: faker.date.recent(),
-      isExtra: faker.datatype.boolean(),
+      rate: faker.number.int({ min: 0, max: 100 }),
+      effectiveDate: faker.date.recent(),
     };
-    const item = await api.createWorkerPayments({
-      createWorkerPaymentsRequest: newItem,
+    const item = await api.createUser({
+      createUserRequest: newItem,
     });
 
     expect(item).toBeDefined();
     expect(item).toBeDefined();
     expect(item.id).toBeDefined();
     expect(item.workerId).toEqual(newItem.workerId);
-    expect(item.serviceSheetId).toEqual(newItem.serviceSheetId);
-    expect(item.totalPayment).toEqual(newItem.totalPayment);
-    expect(item.paymentDate).toBeDefined();
-    expect(item.isExtra).toEqual(newItem.isExtra);
+    expect(item.rate).toEqual(newItem.rate);
+    expect(item.effectiveDate).toBeDefined();
     expect(item.createdAt).toBeDefined();
     expect(item.updatedAt).toBeNull();
   }, 600000);
-  it('GET /worker-payments', async () => {
-    const newItem: CreateWorkerPaymentsRequest = {
+  it('GET /user', async () => {
+    const newItem: CreateUserRequest = {
       workerId: baseWorker.id,
-      serviceSheetId: baseServiceSheet.id,
-      totalPayment: faker.number.int({ min: 0, max: 10000 }),
-      paymentDate: faker.date.recent(),
-      isExtra: faker.datatype.boolean(),
+      rate: faker.number.int({ min: 0, max: 100 }),
+      effectiveDate: faker.date.recent(),
     };
-    const item = await api.createWorkerPayments({
-      createWorkerPaymentsRequest: newItem,
+    const item = await api.createUser({
+      createUserRequest: newItem,
     });
 
-    const result = await api.findAllWorkerPayments({});
+    const result = await api.findAllUser({});
     expect(result).toBeDefined();
     expect(result.data).toBeDefined();
     expect(result.total).toBeGreaterThan(0);
     expect(result.data?.length).toEqual(result.total);
 
-    const result2 = await api.findAllWorkerPayments({
-      serviceSheetId: baseServiceSheet.id,
+    const result2 = await api.findAllUser({
+      workerId: newItem.workerId ?? '',
     });
     expect(result2).toBeDefined();
     expect(result2.data).toBeDefined();
@@ -291,100 +264,81 @@ describe('WorkerPaymentsModule (e2e)', () => {
     expect(result2.data?.length).toEqual(result2.total);
     expect(
       result2.data.find((x) =>
-        x.serviceSheetId
-          ?.toLowerCase()
-          .includes(newItem.serviceSheetId?.toLowerCase() ?? ''),
-      ),
-    ).toBeDefined();
-    const result3 = await api.findAllWorkerPayments({
-      workerId: newItem.workerId ?? '',
-    });
-    expect(result3).toBeDefined();
-    expect(result3.data).toBeDefined();
-    expect(result3.total).toBeGreaterThan(0);
-    expect(result3.data?.length).toEqual(result3.total);
-    expect(
-      result3.data.find((x) =>
         x.workerId
           ?.toLowerCase()
           .includes(newItem.workerId?.toLowerCase() ?? ''),
       ),
     ).toBeDefined();
-    const result5 = await api.findAllWorkerPayments({ limit: 0 });
+
+    const result5 = await api.findAllUser({ limit: 0 });
     expect(result5).toBeDefined();
     expect(result5.data).toBeDefined();
     expect(result5.total).toBeGreaterThan(0);
     expect(result5.data?.length).toEqual(0);
 
-    const result6 = await api.findAllWorkerPayments({ offset: 1000 });
+    const result6 = await api.findAllUser({ offset: 1000 });
     expect(result6).toBeDefined();
     expect(result6.data).toBeDefined();
     expect(result6.total).toBeGreaterThan(0);
     expect(result6.data?.length).toEqual(0);
   }, 600000);
 
-  it('GET /worker-payments/:id', async () => {
-    const newItem: CreateWorkerPaymentsRequest = {
+  it('GET /user/:id', async () => {
+    const newItem: CreateUserRequest = {
       workerId: baseWorker.id,
-      serviceSheetId: baseServiceSheet.id,
-      totalPayment: faker.number.int({ min: 0, max: 10000 }),
-      paymentDate: faker.date.recent(),
-      isExtra: faker.datatype.boolean(),
+      rate: faker.number.int({ min: 0, max: 100 }),
+      effectiveDate: faker.date.recent(),
     };
-    const item = await api.createWorkerPayments({
-      createWorkerPaymentsRequest: newItem,
+    const item = await api.createUser({
+      createUserRequest: newItem,
     });
 
-    const result = await api.findOneWorkerPayments({ id: item.id ?? '' });
+    const result = await api.findOneUser({ id: item.id ?? '' });
     expect(result).toBeDefined();
     expect(result.id).toEqual(item.id);
   }, 600000);
 
-  it('PATCH /worker-payments/:id', async () => {
-    const newItem: CreateWorkerPaymentsRequest = {
+  it('PATCH /user/:id', async () => {
+    const newItem: CreateUserRequest = {
       workerId: baseWorker.id,
-      serviceSheetId: baseServiceSheet.id,
-      totalPayment: faker.number.int({ min: 0, max: 10000 }),
-      paymentDate: faker.date.recent(),
-      isExtra: faker.datatype.boolean(),
+      rate: faker.number.int({ min: 0, max: 100 }),
+      effectiveDate: faker.date.recent(),
     };
-    const item = await api.createWorkerPayments({
-      createWorkerPaymentsRequest: newItem,
+    const item = await api.createUser({
+      createUserRequest: newItem,
     });
 
-    const updatedClient: UpdateWorkerPaymentsRequest = {
-      totalPayment: faker.number.int({ min: 0, max: 10000 }),
-      paymentDate: faker.date.recent(),
-      isExtra: faker.datatype.boolean(),
+    const updatedClient: UpdateUserRequest = {
+      workerId: baseWorker.id,
+      rate: faker.number.int({ min: 0, max: 100 }),
+      effectiveDate: faker.date.recent(),
     };
-    const result = await api.updateWorkerPayments({
+    const result = await api.updateUser({
       id: item.id ?? '',
-      updateWorkerPaymentsRequest: updatedClient,
+      updateUserRequest: updatedClient,
     });
 
     expect(result).toBeDefined();
     expect(result.id).toEqual(item.id);
-    expect(result.totalPayment).toEqual(updatedClient.totalPayment);
-    expect(result.paymentDate).toBeDefined();
-    expect(result.isExtra).toEqual(updatedClient.isExtra);
+    expect(result.workerId).toEqual(updatedClient.workerId);
+    expect(result.rate).toEqual(updatedClient.rate);
+    expect(result.effectiveDate).toBeDefined();
     expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
   });
 
-  it('DELETE /worker-payments/:id', async () => {
-    const newItem: CreateWorkerPaymentsRequest = {
+  it('DELETE /user/:id', async () => {
+    const newItem: CreateUserRequest = {
       workerId: baseWorker.id,
-      serviceSheetId: baseServiceSheet.id,
-      totalPayment: faker.number.int({ min: 0, max: 10000 }),
-      paymentDate: faker.date.recent(),
-      isExtra: faker.datatype.boolean(),
+      rate: faker.number.int({ min: 0, max: 100 }),
+      effectiveDate: faker.date.recent(),
     };
-    const item = await api.createWorkerPayments({
-      createWorkerPaymentsRequest: newItem,
+    const item = await api.createUser({
+      createUserRequest: newItem,
     });
 
     try {
-      await api.findOneWorkerPayments({ id: item.id ?? '' });
+      await api.findOneUser({ id: item.id ?? '' });
     } catch (error) {
       expect(error).toBeDefined();
       if (error instanceof ApplicationExceptionResponse) {

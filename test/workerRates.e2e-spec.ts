@@ -220,7 +220,7 @@ describe('WorkerRatesModule (e2e)', () => {
     global.console = jestConsole;
   }, 600000);
 
-  it('POST /stage', async () => {
+  it('POST /worker-rates', async () => {
     const newItem: CreateWorkerRatesRequest = {
       workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
@@ -239,7 +239,7 @@ describe('WorkerRatesModule (e2e)', () => {
     expect(item.createdAt).toBeDefined();
     expect(item.updatedAt).toBeNull();
   }, 600000);
-  it('GET /stage', async () => {
+  it('GET /worker-rates', async () => {
     const newItem: CreateWorkerRatesRequest = {
       workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
@@ -283,7 +283,7 @@ describe('WorkerRatesModule (e2e)', () => {
     expect(result6.data?.length).toEqual(0);
   }, 600000);
 
-  it('GET /stage/:id', async () => {
+  it('GET /worker-rates/:id', async () => {
     const newItem: CreateWorkerRatesRequest = {
       workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
@@ -298,7 +298,7 @@ describe('WorkerRatesModule (e2e)', () => {
     expect(result.id).toEqual(item.id);
   }, 600000);
 
-  it('PATCH /stage/:id', async () => {
+  it('PATCH /worker-rates/:id', async () => {
     const newItem: CreateWorkerRatesRequest = {
       workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
@@ -327,7 +327,7 @@ describe('WorkerRatesModule (e2e)', () => {
     expect(result.updatedAt).toBeDefined();
   });
 
-  it('DELETE /stage/:id', async () => {
+  it('DELETE /worker-rates/:id', async () => {
     const newItem: CreateWorkerRatesRequest = {
       workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),

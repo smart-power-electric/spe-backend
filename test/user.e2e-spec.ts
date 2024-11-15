@@ -11,8 +11,8 @@ import { faker } from '@faker-js/faker';
 import {
   Configuration,
   CreateUserRequest,
-  UserApi,
   UpdateUserRequest,
+  UserApi,
 } from '../client/api';
 import { HttpAdapterHost } from '@nestjs/core';
 import { Stage } from '../src/stage/core/stage.entity';
@@ -39,6 +39,7 @@ import { MaterialRepository } from '../src/material/core/material.interface';
 import { DrizzleMaterialRepository } from '../src/material/infrastructure/material.repository';
 import { ServiceRepository } from '../src/service/core/service.interface';
 import { DrizzleServiceRepository } from '../src/service/infrastructure/service.repository';
+import { UserStatusEnum } from '../src/user/core/user.entity';
 
 describe('UserModule (e2e)', () => {
   const jestConsole = console;
@@ -222,9 +223,13 @@ describe('UserModule (e2e)', () => {
 
   it('POST /user', async () => {
     const newItem: CreateUserRequest = {
-      workerId: baseWorker.id,
-      rate: faker.number.int({ min: 0, max: 100 }),
-      effectiveDate: faker.date.recent(),
+      email: faker.internet.email(),
+      fullname: faker.person.fullName(),
+      password: faker.internet.password(),
+      isEnabled: faker.datatype.boolean(),
+      status: Object.values(UserStatusEnum).at(
+        faker.number.int({ min: 0, max: Object.values(UserStatusEnum).length }),
+      ),
     };
     const item = await api.createUser({
       createUserRequest: newItem,
@@ -233,17 +238,25 @@ describe('UserModule (e2e)', () => {
     expect(item).toBeDefined();
     expect(item).toBeDefined();
     expect(item.id).toBeDefined();
-    expect(item.workerId).toEqual(newItem.workerId);
-    expect(item.rate).toEqual(newItem.rate);
-    expect(item.effectiveDate).toBeDefined();
+    expect(item.username).toEqual(newItem.email);
+    expect(item.fullname).toEqual(newItem.fullname);
+    expect(item.password).toBeDefined();
+    expect(item.isEnabled).toEqual(newItem.isEnabled);
     expect(item.createdAt).toBeDefined();
     expect(item.updatedAt).toBeNull();
   }, 600000);
   it('GET /user', async () => {
     const newItem: CreateUserRequest = {
-      workerId: baseWorker.id,
-      rate: faker.number.int({ min: 0, max: 100 }),
-      effectiveDate: faker.date.recent(),
+      email: faker.internet.email(),
+      fullname: faker.person.fullName(),
+      password: faker.internet.password(),
+      isEnabled: faker.datatype.boolean(),
+      status: Object.values(UserStatusEnum).at(
+        faker.number.int({
+          min: 0,
+          max: Object.values(UserStatusEnum).length,
+        }),
+      ),
     };
     const item = await api.createUser({
       createUserRequest: newItem,
@@ -256,7 +269,7 @@ describe('UserModule (e2e)', () => {
     expect(result.data?.length).toEqual(result.total);
 
     const result2 = await api.findAllUser({
-      workerId: newItem.workerId ?? '',
+      search: item.username ?? '',
     });
     expect(result2).toBeDefined();
     expect(result2.data).toBeDefined();
@@ -264,9 +277,7 @@ describe('UserModule (e2e)', () => {
     expect(result2.data?.length).toEqual(result2.total);
     expect(
       result2.data.find((x) =>
-        x.workerId
-          ?.toLowerCase()
-          .includes(newItem.workerId?.toLowerCase() ?? ''),
+        x.username?.toLowerCase().includes(newItem.email?.toLowerCase() ?? ''),
       ),
     ).toBeDefined();
 
@@ -285,9 +296,13 @@ describe('UserModule (e2e)', () => {
 
   it('GET /user/:id', async () => {
     const newItem: CreateUserRequest = {
-      workerId: baseWorker.id,
-      rate: faker.number.int({ min: 0, max: 100 }),
-      effectiveDate: faker.date.recent(),
+      email: faker.internet.email(),
+      fullname: faker.person.fullName(),
+      password: faker.internet.password(),
+      isEnabled: faker.datatype.boolean(),
+      status: Object.values(UserStatusEnum).at(
+        faker.number.int({ min: 0, max: Object.values(UserStatusEnum).length }),
+      ),
     };
     const item = await api.createUser({
       createUserRequest: newItem,
@@ -300,18 +315,26 @@ describe('UserModule (e2e)', () => {
 
   it('PATCH /user/:id', async () => {
     const newItem: CreateUserRequest = {
-      workerId: baseWorker.id,
-      rate: faker.number.int({ min: 0, max: 100 }),
-      effectiveDate: faker.date.recent(),
+      email: faker.internet.email(),
+      fullname: faker.person.fullName(),
+      password: faker.internet.password(),
+      isEnabled: faker.datatype.boolean(),
+      status: Object.values(UserStatusEnum).at(
+        faker.number.int({ min: 0, max: Object.values(UserStatusEnum).length }),
+      ),
     };
     const item = await api.createUser({
       createUserRequest: newItem,
     });
 
     const updatedClient: UpdateUserRequest = {
-      workerId: baseWorker.id,
-      rate: faker.number.int({ min: 0, max: 100 }),
-      effectiveDate: faker.date.recent(),
+      email: faker.internet.email(),
+      fullname: faker.person.fullName(),
+      password: faker.internet.password(),
+      isEnabled: faker.datatype.boolean(),
+      status: Object.values(UserStatusEnum).at(
+        faker.number.int({ min: 0, max: Object.values(UserStatusEnum).length }),
+      ),
     };
     const result = await api.updateUser({
       id: item.id ?? '',
@@ -320,18 +343,24 @@ describe('UserModule (e2e)', () => {
 
     expect(result).toBeDefined();
     expect(result.id).toEqual(item.id);
-    expect(result.workerId).toEqual(updatedClient.workerId);
-    expect(result.rate).toEqual(updatedClient.rate);
-    expect(result.effectiveDate).toBeDefined();
+    expect(result.username).toEqual(updatedClient.email);
+    expect(result.fullname).toEqual(updatedClient.fullname);
+    expect(result.password).toBeDefined();
+    expect(result.isEnabled).toEqual(updatedClient.isEnabled);
+    expect(result.status).toEqual(updatedClient.status);
     expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
-  });
+  }, 600000);
 
   it('DELETE /user/:id', async () => {
     const newItem: CreateUserRequest = {
-      workerId: baseWorker.id,
-      rate: faker.number.int({ min: 0, max: 100 }),
-      effectiveDate: faker.date.recent(),
+      email: faker.internet.email(),
+      fullname: faker.person.fullName(),
+      password: faker.internet.password(),
+      isEnabled: faker.datatype.boolean(),
+      status: Object.values(UserStatusEnum).at(
+        faker.number.int({ min: 0, max: Object.values(UserStatusEnum).length }),
+      ),
     };
     const item = await api.createUser({
       createUserRequest: newItem,

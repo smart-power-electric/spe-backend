@@ -17,6 +17,7 @@ export interface UserRepository {
     total: number;
   }>;
   getById(ctx: Context, id: string): Promise<User | null>;
+  getByUsername(ctx: Context, email: string): Promise<User | null>;
   update(ctx: Context, id: string, row: User): Promise<User | null>;
   delete(ctx: Context, id: string): Promise<User | null>;
 }

@@ -95,6 +95,21 @@ export class DrizzleUserRepository implements UserRepository {
       .execute();
     return result.map(RowToUser).at(0) ?? null;
   }
+  async getByUsername(ctx: Context, email: string): Promise<User | null> {
+    this.logger.info(
+      ctx,
+      DrizzleUserRepository.name,
+      'getByEmail',
+      'Getting client by email',
+    );
+    const result = await this.db
+      .getDb()
+      .select()
+      .from(user)
+      .where(eq(user.username, email))
+      .execute();
+    return result.map(RowToUser).at(0) ?? null;
+  }
   async update(ctx: Context, id: string, row: User) {
     this.logger.info(
       ctx,

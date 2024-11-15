@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 import { Context } from 'src/common/core/context.entity';
 import {
+  ConflictException,
   InternalErrorException,
   NotFoundException,
 } from 'src/common/core/exception';
@@ -31,6 +32,10 @@ export class UserApplication implements UserUseCases {
     this.logger.info(ctx, UserApplication.name, 'create', 'Creating new user');
     dto.password = await this.passwordHasher.hashPassword(ctx, dto.password);
     const user = CreateDtoToUser(dto);
+    const existEmail = await this.repository.getByUsername(ctx, user.username);
+    if (existEmail) {
+      throw new ConflictException(ctx, 'Email already exists');
+    }
     const newUser = await this.repository.insert(ctx, user);
     if (!newUser) {
       throw new InternalErrorException(ctx, 'User already exists');
@@ -74,10 +79,22 @@ export class UserApplication implements UserUseCases {
     } else {
       row.password = user.password;
     }
+
     const updatedUser = new User({
       ...user,
       ...row,
     });
+
+    if (row.email) {
+      updatedUser.username = row.email;
+      const existEmail = await this.repository.getByUsername(
+        ctx,
+        updatedUser.username,
+      );
+      if (existEmail) {
+        throw new ConflictException(ctx, 'Email already exists');
+      }
+    }
     const updated = await this.repository.update(ctx, id, updatedUser);
     if (!updated) {
       throw new InternalErrorException(ctx, 'User not updated');

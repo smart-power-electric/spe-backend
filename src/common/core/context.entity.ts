@@ -1,3 +1,5 @@
+import { JwtAccessTokenPayload } from 'src/security/core/auth.jwt.entity';
+
 export type UserLoginInfo = {
   userId: string;
   email: string;
@@ -12,8 +14,10 @@ export type UserLoginInfo = {
 export interface Context {
   startTime: Date;
   requestId: string;
-  payload: Record<string, string | number | Date>;
+  payload?: JwtAccessTokenPayload | null;
   user: UserLoginInfo | null;
+  isImpersonated: boolean;
+  roles: string[];
 }
 
 export function generateContextId(): string {
@@ -27,6 +31,7 @@ export function newContext(): Context {
     startTime: new Date(),
     requestId: generateContextId(),
     user: null,
-    payload: {},
+    isImpersonated: false,
+    roles: [],
   };
 }

@@ -26,14 +26,14 @@ import {
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
 import { ZodValidationPipe } from 'src/common/application/pipes/ZodValidationPipe';
-import { UserUseCases } from '../core/user.interface';
+import { UserUseCases } from '../../../core/user.interface';
 import {
   ChangePasswordRequest,
   LoginRequest,
   LoginResponse,
   UserResponse,
-} from './user.swagger';
-import { changePasswordSchema, loginUserSchema } from '../core/user.zod';
+} from '../../user.swagger';
+import { changePasswordSchema, loginUserSchema } from '../../../core/user.zod';
 
 @ApiTags('auth')
 @Controller('auth')

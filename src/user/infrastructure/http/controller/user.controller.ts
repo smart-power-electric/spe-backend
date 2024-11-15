@@ -27,14 +27,14 @@ import {
 import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
 import { ZodValidationPipe } from 'src/common/application/pipes/ZodValidationPipe';
-import { UserUseCases } from '../core/user.interface';
+import { UserUseCases } from '../../../core/user.interface';
 import {
   CreateUserRequest,
   UpdateUserRequest,
   UserPaginationResponse,
   UserResponse,
-} from './user.swagger';
-import { createUserSchema, UpdateUserSchema } from '../core/user.zod';
+} from '../../user.swagger';
+import { createUserSchema, UpdateUserSchema } from '../../../core/user.zod';
 
 @ApiTags('user')
 @Controller('users')

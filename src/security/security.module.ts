@@ -1,3 +1,4 @@
+import { AuthJwtService } from './core/auth.jwt.interface';
 import { Module } from '@nestjs/common';
 
 import { CommonModule } from 'src/common/common.module';
@@ -5,6 +6,7 @@ import { PasswordHasherApplication } from './application/password.hasher.applica
 import { PasswordHasherService } from './core/password.hasher.interface';
 import { ConfigModule } from '@nestjs/config';
 import configuration from '../common/application/application-config/configuration';
+import { AuthJwtApplication } from './application/auth.jwt.application';
 
 @Module({
   imports: [
@@ -15,6 +17,10 @@ import configuration from '../common/application/application-config/configuratio
     {
       provide: PasswordHasherService,
       useClass: PasswordHasherApplication,
+    },
+    {
+      provide: AuthJwtService,
+      useClass: AuthJwtApplication,
     },
   ],
   exports: [PasswordHasherService],

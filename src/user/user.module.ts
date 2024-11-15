@@ -5,10 +5,11 @@ import { DrizzleUserRepository } from './infrastructure/user.repository';
 import { UserApplication } from './application/user.application';
 import { CommonModule } from 'src/common/common.module';
 import { SecurityModule } from 'src/security/security.module';
+import { AuthrController } from './infrastructure/auth.controller';
 
 @Module({
   imports: [CommonModule, SecurityModule],
-  controllers: [UserController],
+  controllers: [UserController, AuthrController],
   providers: [
     {
       provide: UserRepository,

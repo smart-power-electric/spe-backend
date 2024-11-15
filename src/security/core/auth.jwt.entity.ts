@@ -5,7 +5,7 @@ export type Sub = {
 export type JwtAccessTokenPayload = {
   sub: string;
   email: string;
-  role: string | null;
+  role: string[] | null;
   isImpersonation: boolean;
   iss: string;
   aud: string;

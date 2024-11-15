@@ -39,10 +39,10 @@ export class AuthJwtApplication implements AuthJwtService {
   async generateAccessToken(
     ctx: Context,
     user: Sub,
-    role: string | null,
+    role: string[] | null,
     isImpersonation: boolean,
     customExpiration: string | null,
-  ): Promise<string> {
+  ): Promise<{ token: string; expAt: number; expDate: Date }> {
     this.logger.info(
       ctx,
       AuthJwtApplication.name,
@@ -61,10 +61,15 @@ export class AuthJwtApplication implements AuthJwtService {
       secret: customExpiration ?? this.SECRET,
       expiresIn: this.SECRET_EXPIRATION,
     });
+    const expAt = JSON.parse(accessToken.split('.')[1]).exp;
+    const expDate = new Date(expAt * 1000);
 
-    return accessToken;
+    return { token: accessToken, expAt, expDate };
   }
-  async generateRefreshToken(ctx: Context, user: Sub): Promise<string> {
+  async generateRefreshToken(
+    ctx: Context,
+    user: Sub,
+  ): Promise<{ token: string; expAt: number; expDate: Date }> {
     this.logger.info(
       ctx,
       AuthJwtApplication.name,
@@ -81,7 +86,10 @@ export class AuthJwtApplication implements AuthJwtService {
       secret: this.REFRESH_SECRET,
     });
 
-    return refreshToken;
+    const expAt = JSON.parse(refreshToken.split('.')[1]).exp;
+    const expDate = new Date(expAt * 1000);
+
+    return { token: refreshToken, expAt, expDate };
   }
   verifyRefreshToken(ctx: Context, refreshToken: string): Promise<Sub> {
     throw new Error('Method not implemented.');

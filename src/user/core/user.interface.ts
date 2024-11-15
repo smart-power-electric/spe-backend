@@ -1,6 +1,7 @@
 import { Context } from 'src/common/core/context.entity';
 import { User } from './user.entity';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { LoggedUser } from './auth.entity';
 
 export type UserFilters = {
   search?: string;
@@ -42,6 +43,14 @@ export interface UserUseCases {
     email: string,
     password: string,
     otp?: string,
+  ): Promise<LoggedUser>;
+  logout(ctx: Context, token: string): Promise<void>;
+  refreshToken(ctx: Context, token: string): Promise<LoggedUser>;
+  changePassword(
+    ctx: Context,
+    id: string,
+    oldPassword: string,
+    newPassword: string,
   ): Promise<User>;
 }
 export const UserUseCases = Symbol('UserUseCases');

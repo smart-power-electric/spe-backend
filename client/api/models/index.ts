@@ -1,6 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './ApplicationExceptionResponse';
+export * from './AssignRoleResponse';
+export * from './AssignRoleToUserRequest';
+export * from './ChangePasswordRequest';
 export * from './ClientPaginationResponse';
 export * from './ClientResponse';
 export * from './CreateClientRequest';
@@ -19,6 +22,8 @@ export * from './CreateWorkerRatesRequest';
 export * from './CreateWorkerRequest';
 export * from './InvoicesPaginationResponse';
 export * from './InvoicesResponse';
+export * from './LoginRequest';
+export * from './LoginResponse';
 export * from './MaterialPaginationResponse';
 export * from './MaterialResponse';
 export * from './NotificationsPaginationResponse';
@@ -27,6 +32,8 @@ export * from './ProjectPaginationResponse';
 export * from './ProjectQuotationPaginationResponse';
 export * from './ProjectQuotationResponse';
 export * from './ProjectResponse';
+export * from './RemoveRoleFromUserRequest';
+export * from './RoleResponse';
 export * from './ServicePaginationResponse';
 export * from './ServiceResponse';
 export * from './ServiceSheetsPaginationResponse';

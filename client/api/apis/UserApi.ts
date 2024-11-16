@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ApplicationExceptionResponse,
   CreateUserRequest,
+  RoleResponse,
   UpdateUserRequest,
   UserPaginationResponse,
   UserResponse,
@@ -26,6 +27,8 @@ import {
     ApplicationExceptionResponseToJSON,
     CreateUserRequestFromJSON,
     CreateUserRequestToJSON,
+    RoleResponseFromJSON,
+    RoleResponseToJSON,
     UpdateUserRequestFromJSON,
     UpdateUserRequestToJSON,
     UserPaginationResponseFromJSON,
@@ -45,6 +48,10 @@ export interface FindAllUserRequest {
 }
 
 export interface FindOneUserRequest {
+    id: string;
+}
+
+export interface FindUserRolesRequest {
     id: string;
 }
 
@@ -166,6 +173,39 @@ export class UserApi extends runtime.BaseAPI {
      */
     async findOneUser(requestParameters: FindOneUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserResponse> {
         const response = await this.findOneUserRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get user roles
+     */
+    async findUserRolesRaw(requestParameters: FindUserRolesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RoleResponse>>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling findUserRoles().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/v1/users/{id}/roles`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RoleResponseFromJSON));
+    }
+
+    /**
+     * Get user roles
+     */
+    async findUserRoles(requestParameters: FindUserRolesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RoleResponse>> {
+        const response = await this.findUserRolesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

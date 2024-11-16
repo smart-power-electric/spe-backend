@@ -28,8 +28,8 @@ export class AccessTokenGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly userrepo: UserRepository,
-    private readonly rolerepo: RoleRepository,
+    @Inject(UserRepository) private readonly userrepo: UserRepository,
+    @Inject(RoleRepository) private readonly rolerepo: RoleRepository,
     private readonly reflector: Reflector,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {

@@ -39,7 +39,7 @@ import { MaterialRepository } from '../src/material/core/material.interface';
 import { DrizzleMaterialRepository } from '../src/material/infrastructure/material.repository';
 import { ServiceRepository } from '../src/service/core/service.interface';
 import { DrizzleServiceRepository } from '../src/service/infrastructure/service.repository';
-import { UserStatusEnum } from '../src/user/core/user.entity';
+import { UserStatusEnum } from '../src/auth/core/user.entity';
 
 describe('UserModule (e2e)', () => {
   const jestConsole = console;

@@ -1,3 +1,4 @@
+apis/AuthenticationApi.ts
 apis/ClientApi.ts
 apis/DefaultApi.ts
 apis/InvoicesApi.ts
@@ -16,6 +17,9 @@ apis/WorkerRatesApi.ts
 apis/index.ts
 index.ts
 models/ApplicationExceptionResponse.ts
+models/AssignRoleResponse.ts
+models/AssignRoleToUserRequest.ts
+models/ChangePasswordRequest.ts
 models/ClientPaginationResponse.ts
 models/ClientResponse.ts
 models/CreateClientRequest.ts
@@ -34,6 +38,8 @@ models/CreateWorkerRatesRequest.ts
 models/CreateWorkerRequest.ts
 models/InvoicesPaginationResponse.ts
 models/InvoicesResponse.ts
+models/LoginRequest.ts
+models/LoginResponse.ts
 models/MaterialPaginationResponse.ts
 models/MaterialResponse.ts
 models/NotificationsPaginationResponse.ts
@@ -42,6 +48,8 @@ models/ProjectPaginationResponse.ts
 models/ProjectQuotationPaginationResponse.ts
 models/ProjectQuotationResponse.ts
 models/ProjectResponse.ts
+models/RemoveRoleFromUserRequest.ts
+models/RoleResponse.ts
 models/ServicePaginationResponse.ts
 models/ServiceResponse.ts
 models/ServiceSheetsPaginationResponse.ts

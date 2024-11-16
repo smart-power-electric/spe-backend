@@ -55,7 +55,9 @@ export const materials = main.table('materials', {
     precision: 6,
     withTimezone: true,
     mode: 'date',
-  }).defaultNow().notNull(),
+  })
+    .defaultNow()
+    .notNull(),
   updatedAt: timestamp('updated_at', {
     precision: 6,
     withTimezone: true,
@@ -150,7 +152,9 @@ export const services = main.table('services', {
     precision: 6,
     withTimezone: true,
     mode: 'date',
-  }).defaultNow().notNull(),
+  })
+    .defaultNow()
+    .notNull(),
   updatedAt: timestamp('updated_at', {
     precision: 6,
     withTimezone: true,
@@ -213,7 +217,9 @@ export const workers = main.table('workers', {
     precision: 6,
     withTimezone: true,
     mode: 'date',
-  }).defaultNow().notNull(),
+  })
+    .defaultNow()
+    .notNull(),
   updatedAt: timestamp('updated_at', {
     precision: 6,
     withTimezone: true,
@@ -410,10 +416,101 @@ export const clients = main.table('clients', {
     precision: 6,
     withTimezone: true,
     mode: 'date',
-  }).defaultNow().notNull(),
+  })
+    .defaultNow()
+    .notNull(),
   updatedAt: timestamp('updated_at', {
     precision: 6,
     withTimezone: true,
     mode: 'date',
   }),
 });
+
+export const user = main.table('user', {
+  id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+  fullname: varchar().notNull(),
+  username: varchar().notNull(),
+  password: varchar().notNull(),
+  status: varchar().notNull(),
+  isEnabled: boolean('is_enabled').notNull(),
+  createdAt: timestamp('created_at', {
+    precision: 6,
+    withTimezone: true,
+    mode: 'date',
+  })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', {
+    precision: 6,
+    withTimezone: true,
+    mode: 'date',
+  }),
+  deletedAt: timestamp('deleted_at', {
+    precision: 6,
+    withTimezone: true,
+    mode: 'date',
+  }),
+});
+export const role = main.table('role', {
+  id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+  roleName: varchar('role_name').notNull(),
+  roleDescription: varchar('role_description').notNull(),
+  role: varchar().notNull(),
+  createdAt: timestamp('created_at', {
+    precision: 6,
+    withTimezone: true,
+    mode: 'date',
+  })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', {
+    precision: 6,
+    withTimezone: true,
+    mode: 'date',
+  }),
+  deletedAt: timestamp('deleted_at', {
+    precision: 6,
+    withTimezone: true,
+    mode: 'date',
+  }),
+});
+
+export const userRole = main.table(
+  'user_role',
+  {
+    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+    userId: uuid('user_id').notNull(),
+    roleId: uuid('role_id').notNull(),
+    createdAt: timestamp('created_at', {
+      precision: 6,
+      withTimezone: true,
+      mode: 'date',
+    })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp('updated_at', {
+      precision: 6,
+      withTimezone: true,
+      mode: 'date',
+    }),
+    deletedAt: timestamp('deleted_at', {
+      precision: 6,
+      withTimezone: true,
+      mode: 'date',
+    }),
+  },
+  (table) => {
+    return {
+      userRoleUserIdFkey: foreignKey({
+        columns: [table.userId],
+        foreignColumns: [user.id],
+        name: 'user_role_user_id_fkey',
+      }),
+      userRoleRoleIdFkey: foreignKey({
+        columns: [table.roleId],
+        foreignColumns: [role.id],
+        name: 'user_role_role_id_fkey',
+      }),
+    };
+  },
+);

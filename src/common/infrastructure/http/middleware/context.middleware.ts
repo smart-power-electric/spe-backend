@@ -21,8 +21,19 @@ export class AppContextMiddleware implements NestMiddleware {
       requestId:
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15),
-      payload: {},
+      payload: userInfo
+        ? {
+            sub: userInfo.userId,
+            email: userInfo.email,
+            roles: userInfo.roles,
+            isImpersonation: false,
+            iss: 'issuer', // replace with actual issuer
+            aud: 'audience', // replace with actual audience
+          }
+        : null,
       user: userInfo,
+      isImpersonated: false,
+      roles: userInfo ? userInfo.roles : [],
     };
     next();
   }

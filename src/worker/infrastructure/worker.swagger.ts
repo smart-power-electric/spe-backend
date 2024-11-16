@@ -41,14 +41,14 @@ export class CreateWorkerRequest implements CreateWorkerDto {
   })
   socialSecurity: string | null;
   @ApiProperty({
-    type: 'string',
-    description: 'State of the worker',
+    type: Date,
+    description: 'Start date contract of the worker',
     nullable: true,
   })
   startDate: Date | null;
   @ApiProperty({
-    type: 'string',
-    description: 'Zip of the worker',
+    type: Date,
+    description: 'End date contract of the worker',
     nullable: true,
   })
   endDate: Date | null;

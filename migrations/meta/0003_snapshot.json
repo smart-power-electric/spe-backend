@@ -1,5 +1,5 @@
 {
-  "id": "599e305e-191b-4bad-af14-afcbd5a488e8",
+  "id": "f35afe72-a2b1-4b9c-9847-d4e9aec741ce",
   "prevId": "d32e721e-07fe-4dc2-8525-cb4d36aeb9df",
   "version": "7",
   "dialect": "postgresql",
@@ -470,14 +470,14 @@
           "primaryKey": true,
           "notNull": true
         },
-        "roleName": {
-          "name": "roleName",
+        "role_name": {
+          "name": "role_name",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
-        "roleDescription": {
-          "name": "roleDescription",
+        "role_description": {
+          "name": "role_description",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true

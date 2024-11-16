@@ -29,6 +29,6 @@ import { JwtModule } from '@nestjs/jwt';
       useClass: AuthJwtApplication,
     },
   ],
-  exports: [PasswordHasherService],
+  exports: [PasswordHasherService, AuthJwtService],
 })
 export class SecurityModule {}

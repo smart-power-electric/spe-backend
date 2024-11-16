@@ -17,14 +17,14 @@ import { User, UserStatusEnum } from '../core/user.entity';
 import { CreateDtoToUser } from '../infrastructure/user.mapper';
 import { PasswordHasherService } from 'src/security/core/password.hasher.interface';
 import { LoggedUser } from '../core/auth.entity';
-import { AuthJwtApplication } from 'src/security/application/auth.jwt.application';
 import { RoleRepository } from '../core/role.interface';
 import { Role } from '../core/role.entity';
+import { AuthJwtService } from 'src/security/core/auth.jwt.interface';
 
 @Injectable()
 export class UserApplication implements UserUseCases {
   constructor(
-    @Inject(AuthJwtApplication) private readonly authJwt: AuthJwtApplication,
+    @Inject(AuthJwtService) private readonly authJwt: AuthJwtService,
     @Inject(RoleRepository) private readonly roleRepository: RoleRepository,
     @Inject(UserRepository)
     private readonly repository: UserRepository,

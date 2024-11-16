@@ -453,8 +453,8 @@ export const user = main.table('user', {
 });
 export const role = main.table('role', {
   id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
-  roleName: varchar().notNull(),
-  roleDescription: varchar().notNull(),
+  roleName: varchar('role_name').notNull(),
+  roleDescription: varchar('role_description').notNull(),
   role: varchar().notNull(),
   createdAt: timestamp('created_at', {
     precision: 6,

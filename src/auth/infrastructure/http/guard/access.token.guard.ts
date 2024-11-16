@@ -12,7 +12,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { JwtConfig } from 'src/common/core/configuration.entity';
 import { IMPERSONATE_PROTECT_KEY } from '../decorator/auth.decorator';
 import { Context } from 'src/common/core/context.entity';
-import { UserRepository } from 'src/user/core/user.interface';
+import { UserRepository } from 'src/auth/core/user.interface';
 import {
   ForbiddenException,
   NotAuthorizedException,

@@ -20,7 +20,7 @@ import { InvoicesModule } from './invoices/invoices.module';
 import { ServiceModule } from './service/service.module';
 import { LoggingMiddleware } from './common/infrastructure/http/middleware/logging.middleware';
 import { AppContextMiddleware } from './common/infrastructure/http/middleware/context.middleware';
-import { UserModule } from './user/user.module';
+import { UserModule } from './auth/user.module';
 
 @Module({
   imports: [

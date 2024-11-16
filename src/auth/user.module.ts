@@ -1,3 +1,4 @@
+import { RoleRepository } from './core/role.interface';
 import { Module } from '@nestjs/common';
 import { UserController } from './infrastructure/http/controller/user.controller';
 import { UserRepository, UserUseCases } from './core/user.interface';
@@ -6,6 +7,7 @@ import { UserApplication } from './application/user.application';
 import { CommonModule } from 'src/common/common.module';
 import { SecurityModule } from 'src/security/security.module';
 import { AuthrController } from './infrastructure/http/controller/auth.controller';
+import { DrizzleRoleRepository } from './infrastructure/role.repository';
 
 @Module({
   imports: [CommonModule, SecurityModule],
@@ -18,6 +20,10 @@ import { AuthrController } from './infrastructure/http/controller/auth.controlle
     {
       provide: UserUseCases,
       useClass: UserApplication,
+    },
+    {
+      provide: RoleRepository,
+      useClass: DrizzleRoleRepository,
     },
   ],
 })

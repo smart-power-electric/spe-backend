@@ -7,11 +7,13 @@ import {
   Req,
   Query,
   Get,
+  UseGuards,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiOkResponse,
   ApiOperation,
@@ -37,6 +39,10 @@ import {
   RemoveRoleResponse,
   RoleResponse,
 } from '../../role.swagger';
+import { RefreshTokenGuard } from '../guard/refresh.token.guard';
+import { AccessTokenGuard } from '../guard/access.token.guard';
+import { RoleEnum } from 'src/auth/core/role.entity';
+import { Roles } from '../decorator/roles.decorator';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -106,6 +112,8 @@ export class AuthrController {
     type: ApplicationExceptionResponse,
   })
   @ApiQuery({ name: 'refreshToken', required: true, type: String })
+  @ApiBearerAuth('AUTH_TOKEN')
+  @UseGuards(RefreshTokenGuard)
   logoutUser(@Req() req: Request, @Query('refreshToken') token: string) {
     const ctx = req.appContext;
     this.logger.info(
@@ -137,6 +145,8 @@ export class AuthrController {
     type: ApplicationExceptionResponse,
   })
   @ApiQuery({ name: 'refreshToken', required: true, type: String })
+  @ApiBearerAuth('AUTH_TOKEN')
+  @UseGuards(RefreshTokenGuard)
   refreshUser(
     @Req() req: Request,
     @Query('refreshToken') token: string,
@@ -171,6 +181,8 @@ export class AuthrController {
     type: ApplicationExceptionResponse,
   })
   @ApiBody({ type: ChangePasswordRequest })
+  @ApiBearerAuth('AUTH_TOKEN')
+  @UseGuards(AccessTokenGuard)
   async changePassword(
     @Req() req: Request,
     @Body(new ZodValidationPipe(changePasswordSchema))
@@ -211,6 +223,9 @@ export class AuthrController {
     type: ApplicationExceptionResponse,
   })
   @ApiBody({ type: AssignRoleToUserRequest })
+  @ApiBearerAuth('AUTH_TOKEN')
+  @UseGuards(AccessTokenGuard)
+  @Roles(RoleEnum.admin)
   async assignRoleToUser(
     @Req() req: Request,
     @Body() body: AssignRoleToUserRequest,
@@ -245,6 +260,9 @@ export class AuthrController {
     type: ApplicationExceptionResponse,
   })
   @ApiBody({ type: RemoveRoleFromUserRequest })
+  @ApiBearerAuth('AUTH_TOKEN')
+  @UseGuards(AccessTokenGuard)
+  @Roles(RoleEnum.admin)
   async removeRoleFromUser(
     @Req() req: Request,
     @Body() body: RemoveRoleFromUserRequest,
@@ -278,6 +296,9 @@ export class AuthrController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
+  @ApiBearerAuth('AUTH_TOKEN')
+  @UseGuards(AccessTokenGuard)
+  @Roles(RoleEnum.admin)
   async getRoles(@Req() req: Request): Promise<RoleResponse[]> {
     const ctx = req.appContext;
     this.logger.info(

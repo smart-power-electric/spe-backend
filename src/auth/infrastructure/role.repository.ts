@@ -1,11 +1,12 @@
+import { user } from './../../common/infrastructure/schema/schema';
 import { Inject, Injectable } from '@nestjs/common';
 import { Context } from 'src/common/core/context.entity';
 import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
-import { role } from 'src/common/infrastructure/schema/schema';
+import { role, userRole } from 'src/common/infrastructure/schema/schema';
 
-import { count, eq } from 'drizzle-orm';
+import { and, count, eq, isNull } from 'drizzle-orm';
 import { RoleRepository } from '../core/role.interface';
 import { Role } from '../core/role.entity';
 import { RoleToRoleNew, RoleToRow, RowToRole } from './role.mapper';
@@ -140,5 +141,82 @@ export class DrizzleRoleRepository implements RoleRepository {
       .returning()
       .execute();
     return result.map(RowToRole).at(0) ?? null;
+  }
+  async insertRoleToUser(
+    ctx: Context,
+    userId: string,
+    roleId: string,
+  ): Promise<Role | null> {
+    this.logger.info(
+      ctx,
+      DrizzleRoleRepository.name,
+      'insertRoleToUser',
+      'Inserting role to user',
+    );
+    await this.db
+      .getDb()
+      .insert(userRole)
+      .values({
+        userId,
+        roleId,
+      })
+      .returning()
+      .execute();
+
+    return this.getById(ctx, roleId);
+  }
+  async getRolesByUserId(ctx: Context, userId: string): Promise<Role[]> {
+    this.logger.info(
+      ctx,
+      DrizzleRoleRepository.name,
+      'getRolesByUserId',
+      'Getting roles by user id',
+    );
+
+    const result = await this.db
+      .getDb()
+      .selectDistinct({ role })
+      .from(role)
+      .innerJoin(userRole, eq(role.id, userRole.roleId))
+      .innerJoin(user, eq(user.id, userRole.userId))
+      .where(
+        and(
+          ...[
+            eq(userRole.userId, userId),
+            isNull(role.deletedAt),
+            isNull(user.deletedAt),
+            isNull(userRole.deletedAt),
+          ],
+        ),
+      )
+      .execute();
+    return result.map((x) => RowToRole(x.role));
+  }
+  async getRolesByUserEmail(ctx: Context, email: string): Promise<Role[]> {
+    this.logger.info(
+      ctx,
+      DrizzleRoleRepository.name,
+      'getRolesByUserEmail',
+      'Getting roles by user email',
+    );
+
+    const result = await this.db
+      .getDb()
+      .selectDistinct({ role })
+      .from(role)
+      .innerJoin(userRole, eq(role.id, userRole.roleId))
+      .innerJoin(user, eq(user.id, userRole.userId))
+      .where(
+        and(
+          ...[
+            eq(user.username, email),
+            isNull(role.deletedAt),
+            isNull(user.deletedAt),
+            isNull(userRole.deletedAt),
+          ],
+        ),
+      )
+      .execute();
+    return result.map((x) => RowToRole(x.role));
   }
 }

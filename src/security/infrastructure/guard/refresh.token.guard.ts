@@ -2,20 +2,22 @@ import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/commo
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { JwtConfig } from '../../common/application-config/configuration.entity';
-import { ILogger } from '../../common/logging/logger.interface';
-import { PlatformError } from '../../common/http-exception/Error.entity';
+import { JwtConfig } from 'src/common/core/configuration.entity';
+import { ForbiddenException } from 'src/common/core/exception';
+import { ILogger } from 'src/common/core/logger.interface';
 
 @Injectable()
 export class RefreshTokenGuard implements CanActivate {
-  secret: string = 'secret';
+  refreshSecret: string = 'secret';
   constructor(
-    private jwtService: JwtService,
-    private configService: ConfigService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(RefreshTokenGuard.name, 'info');
-    this.secret = this.configService.get<JwtConfig>('jwt')?.refreshSecret ?? this.secret;
+    this.refreshSecret =
+      this.configService.get<JwtConfig>('jwt')?.refreshSecret ??
+      this.refreshSecret;
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -23,15 +25,15 @@ export class RefreshTokenGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
     if (!token) {
       this.logger.error(request.appContext, 'Refresh token not found');
-      throw PlatformError.Unauthorized('Refresh access token');
+      throw new ForbiddenException(null, 'Refresh access token');
     }
     try {
       await this.jwtService.verifyAsync(token, {
-        secret: this.secret,
+        secret: this.refreshSecret,
       });
     } catch {
       this.logger.error(request.appContext, 'Failed to verify refresh token');
-      throw PlatformError.Unauthorized('Invalid refresh token');
+      throw new ForbiddenException(null, 'Invalid refresh token');
     }
     this.logger.info(request.appContext, 'Refresh token verified');
     return true;

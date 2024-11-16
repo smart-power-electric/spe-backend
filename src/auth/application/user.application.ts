@@ -1,4 +1,3 @@
-import { user } from 'src/common/infrastructure/schema/schema';
 import { Inject, Injectable } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 import { Context } from 'src/common/core/context.entity';
@@ -19,11 +18,13 @@ import { CreateDtoToUser } from '../infrastructure/user.mapper';
 import { PasswordHasherService } from 'src/security/core/password.hasher.interface';
 import { LoggedUser } from '../core/auth.entity';
 import { AuthJwtApplication } from 'src/security/application/auth.jwt.application';
+import { RoleRepository } from '../core/role.interface';
 
 @Injectable()
 export class UserApplication implements UserUseCases {
   constructor(
     @Inject(AuthJwtApplication) private readonly authJwt: AuthJwtApplication,
+    @Inject(RoleRepository) private readonly roleRepository: RoleRepository,
     @Inject(UserRepository)
     private readonly repository: UserRepository,
     @Inject(PasswordHasherService)
@@ -158,11 +159,11 @@ export class UserApplication implements UserUseCases {
       this.logger.error(ctx, UserApplication.name, 'login', 'User not active');
       throw new NotAuthorizedException(ctx, 'Failed to login');
     }
-    const roles = ['user'];
+    const roles = await this.roleRepository.getRolesByUserId(ctx, user.id);
     const accessToken = await this.authJwt.generateAccessToken(
       ctx,
       { id: user.id, email: user.username },
-      roles,
+      roles.map((role) => role.role),
       false,
       null,
     );
@@ -172,7 +173,7 @@ export class UserApplication implements UserUseCases {
     });
     return {
       user,
-      roles,
+      roles: roles.map((role) => role.role),
       accessToken: accessToken.token,
       refreshToken: refreshToken.token,
       accessTokenExpiresIn: accessToken.expAt,

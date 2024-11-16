@@ -18,6 +18,9 @@ import {
   NotAuthorizedException,
 } from 'src/common/core/exception';
 import { JwtAccessTokenPayload } from 'src/security/core/auth.jwt.entity';
+import { RoleRepository } from 'src/auth/core/role.interface';
+import { ROLES_KEY } from '../decorator/roles.decorator';
+import { RoleEnum } from 'src/auth/core/role.entity';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
@@ -55,27 +58,30 @@ export class AccessTokenGuard implements CanActivate {
     }
 
     const userInfo = await this.getUserInfo(request.appContext, payload.email);
-    request.appContext.user = userInfo;
-    const primaryRole = await this.getActivePrimaryRole(
+    if (!userInfo) {
+      this.logger.error(request.appContext, 'User not found');
+      throw new NotAuthorizedException(null, 'User not found');
+    }
+    const roles = await this.rolerepo.getRolesByUserId(
       request.appContext,
       userInfo.id,
     );
-    const roles = await this.getRolesByUserId(request.appContext, userInfo.id);
+    request.appContext.user = {
+      userId: userInfo.id,
+      email: userInfo.username,
+      name: userInfo.fullname,
+      roles: roles.map((role) => role.role),
+    };
 
-    request.appContext.roles = [
-      ...new Set(roles.map((role) => role.role.slug)),
-    ];
+    request.appContext.roles = [...new Set(roles.map((role) => role.role))];
 
-    const isMatchingTokenRole =
-      payload.role == primaryRole.role.slug ||
-      request.appContext.roles.includes(RoleEnum.superadmin);
-    if (!requiredRoles) return isMatchingTokenRole;
+    if (!requiredRoles) return true;
 
-    const isAuthorized = requiredRoles.some(
-      (role) => primaryRole.role.slug == role,
-    );
+    const isAuthorized: boolean =
+      requiredRoles.find((x) => request.appContext.roles.includes(x)) !==
+        undefined || request.appContext.roles.includes(RoleEnum.admin);
 
-    return isAuthorized && isMatchingTokenRole;
+    return isAuthorized;
   }
 
   private async validateToken(ctx: Context, token: string | null) {
@@ -111,13 +117,5 @@ export class AccessTokenGuard implements CanActivate {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
 
     return type === 'Bearer' ? token : null;
-  }
-
-  private getActivePrimaryRole(ctx: Context, userId: number) {
-    return this.RoleService.findActiveRoleByUserId(ctx, userId);
-  }
-
-  private getRolesByUserId(ctx: Context, userId: number) {
-    return this.RoleService.getRolesByUserId(ctx, userId);
   }
 }

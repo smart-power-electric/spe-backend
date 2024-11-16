@@ -39,7 +39,7 @@ export class AuthJwtApplication implements AuthJwtService {
   async generateAccessToken(
     ctx: Context,
     user: Sub,
-    role: string[] | null,
+    roles: string[] | null,
     isImpersonation: boolean,
     customExpiration: string | null,
   ): Promise<{ token: string; expAt: number; expDate: Date }> {
@@ -52,7 +52,7 @@ export class AuthJwtApplication implements AuthJwtService {
     const payload: JwtAccessTokenPayload = {
       sub: user.id,
       email: user.email,
-      role,
+      roles,
       isImpersonation,
       iss: 'https://spe-api.cubantechsolutions.tech',
       aud: 'https://spe-fe.cubantechsolutions.tech',

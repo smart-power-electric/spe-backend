@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class PasswordHasherApplication implements PasswordHasherService {
-  private readonly SALT_ROUNDS = 16;
+  private readonly SALT_ROUNDS = 10;
 
   constructor(@Inject(ILogger) private readonly logger: ILogger) {
     this.logger.init(PasswordHasherApplication.name, 'info');

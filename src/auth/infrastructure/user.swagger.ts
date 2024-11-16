@@ -7,8 +7,6 @@ import {
 import { UserRow } from './user.repository';
 import { User, UserStatusEnum } from '../core/user.entity';
 import { LoggedUser } from '../core/auth.entity';
-import { changePasswordSchema } from '../core/user.zod';
-import { z } from 'zod';
 
 export class CreateUserRequest implements CreateUserDto {
   @ApiProperty({

@@ -25,3 +25,11 @@ export class Role {
     this.deletedAt = data.deletedAt;
   }
 }
+
+export const RoleEnum = {
+  admin: 'ADMIN',
+  operator: 'OPERATOR',
+  guest: 'GUEST',
+} as const;
+
+export type RoleType = (typeof RoleEnum)[keyof typeof RoleEnum];

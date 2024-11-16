@@ -4,7 +4,7 @@ export type UserLoginInfo = {
   userId: string;
   email: string;
   name: string;
-  role: string;
+  roles: string[];
 };
 /**
  * Context model

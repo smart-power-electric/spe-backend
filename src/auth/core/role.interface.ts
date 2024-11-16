@@ -23,6 +23,11 @@ export interface RoleRepository {
   getRolesByUserEmail(ctx: Context, email: string): Promise<Role[]>;
   update(ctx: Context, id: string, row: Role): Promise<Role | null>;
   delete(ctx: Context, id: string): Promise<Role | null>;
+  deleteRoleFromUser(
+    ctx: Context,
+    userId: string,
+    roleId: string,
+  ): Promise<Role | null>;
 }
 
 export const RoleRepository = Symbol('RoleRepository');

@@ -6,6 +6,7 @@ import {
   HttpCode,
   Req,
   Query,
+  Get,
 } from '@nestjs/common';
 import { ILogger } from 'src/common/core/logger.interface';
 
@@ -29,8 +30,15 @@ import {
   UserResponse,
 } from '../../user.swagger';
 import { changePasswordSchema, loginUserSchema } from '../../../core/user.zod';
+import {
+  AssignRoleResponse,
+  AssignRoleToUserRequest,
+  RemoveRoleFromUserRequest,
+  RemoveRoleResponse,
+  RoleResponse,
+} from '../../role.swagger';
 
-@ApiTags('auth')
+@ApiTags('authentication')
 @Controller('auth')
 export class AuthrController {
   constructor(
@@ -181,5 +189,103 @@ export class AuthrController {
       updateUserDto.oldPassword,
       updateUserDto.newPassword,
     );
+  }
+
+  @Post('assign-role')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Assign role to user',
+  })
+  @ApiOkResponse({
+    description: 'Role assigned',
+    type: AssignRoleResponse,
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiBody({ type: AssignRoleToUserRequest })
+  async assignRoleToUser(
+    @Req() req: Request,
+    @Body() body: AssignRoleToUserRequest,
+  ): Promise<AssignRoleResponse> {
+    const ctx = req.appContext;
+    this.logger.info(
+      req.appContext,
+      AuthrController.name,
+      'assignRoleToUser',
+      'Assigning role to user',
+    );
+    return this.application.assignRoleToUser(ctx, body.userId, body.roleId);
+  }
+
+  @Post('remove-role')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Remove role from user',
+  })
+  @ApiOkResponse({
+    description: 'Role removed',
+    type: RemoveRoleFromUserRequest,
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiBody({ type: RemoveRoleFromUserRequest })
+  async removeRoleFromUser(
+    @Req() req: Request,
+    @Body() body: RemoveRoleFromUserRequest,
+  ): Promise<RemoveRoleResponse> {
+    const ctx = req.appContext;
+    this.logger.info(
+      req.appContext,
+      AuthrController.name,
+      'removeRoleFromUser',
+      'Removing role from user',
+    );
+    return this.application.deleteRoleToUser(ctx, body.userId, body.roleId);
+  }
+
+  @Get('roles')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Get all roles',
+  })
+  @ApiOkResponse({
+    description: 'Roles retrieved',
+    type: [RoleResponse],
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
+  async getRoles(@Req() req: Request): Promise<RoleResponse[]> {
+    const ctx = req.appContext;
+    this.logger.info(
+      req.appContext,
+      AuthrController.name,
+      'getRoles',
+      'Getting roles',
+    );
+    return this.application.getRoles(ctx);
   }
 }

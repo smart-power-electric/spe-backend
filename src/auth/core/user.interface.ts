@@ -2,6 +2,7 @@ import { Context } from 'src/common/core/context.entity';
 import { User } from './user.entity';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { LoggedUser } from './auth.entity';
+import { Role } from './role.entity';
 
 export type UserFilters = {
   search?: string;
@@ -52,5 +53,17 @@ export interface UserUseCases {
     oldPassword: string,
     newPassword: string,
   ): Promise<User>;
+  assignRoleToUser(
+    ctx: Context,
+    userId: string,
+    roleId: string,
+  ): Promise<{ user: User; roles: Role[] }>;
+  deleteRoleToUser(
+    ctx: Context,
+    userId: string,
+    roleId: string,
+  ): Promise<{ user: User; roles: Role[] }>;
+  getRolesByUserId(ctx: Context, userId: string): Promise<Role[]>;
+  getRoles(ctx: Context): Promise<Role[]>;
 }
 export const UserUseCases = Symbol('UserUseCases');

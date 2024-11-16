@@ -35,6 +35,7 @@ import {
   UserResponse,
 } from '../../user.swagger';
 import { createUserSchema, UpdateUserSchema } from '../../../core/user.zod';
+import { RoleResponse } from '../../role.swagger';
 
 @ApiTags('user')
 @Controller('users')
@@ -118,6 +119,39 @@ export class UserController {
       'Getting all users',
     );
     return this.application.getAll(ctx, limit, offset, { search });
+  }
+  @Get(':id/roles')
+  @HttpCode(200)
+  @ApiOperation({
+    summary: 'Get user roles',
+  })
+  @ApiOkResponse({
+    description: 'User roles',
+    type: [RoleResponse],
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiParam({ name: 'id', type: String })
+  findUserRoles(
+    @Req() req: Request,
+    @Param('id') id: string,
+  ): Promise<RoleResponse[]> {
+    const ctx = req.appContext;
+    this.logger.info(
+      req.appContext,
+      UserController.name,
+      'findRoles',
+      'Getting user roles',
+    );
+    return this.application.getRolesByUserId(ctx, id);
   }
 
   @Get(':id')

@@ -19,6 +19,7 @@ import { PasswordHasherService } from 'src/security/core/password.hasher.interfa
 import { LoggedUser } from '../core/auth.entity';
 import { AuthJwtApplication } from 'src/security/application/auth.jwt.application';
 import { RoleRepository } from '../core/role.interface';
+import { Role } from '../core/role.entity';
 
 @Injectable()
 export class UserApplication implements UserUseCases {
@@ -249,5 +250,67 @@ export class UserApplication implements UserUseCases {
       this.logger.error(ctx, UserApplication.name, 'logout', 'User not found');
       throw new NotAuthorizedException(ctx, 'Failed to logout');
     }
+  }
+  async assignRoleToUser(
+    ctx: Context,
+    userId: string,
+    roleId: string,
+  ): Promise<{ user: User; roles: Role[] }> {
+    this.logger.info(
+      ctx,
+      UserApplication.name,
+      'assignRoleToUser',
+      'Assigning role to user',
+    );
+    const user = await this.repository.getById(ctx, userId);
+    if (!user) {
+      throw new NotFoundException(ctx, 'User not found');
+    }
+    const role = await this.roleRepository.getById(ctx, roleId);
+    if (!role) {
+      throw new NotFoundException(ctx, 'Role not found');
+    }
+    await this.roleRepository.insertRoleToUser(ctx, userId, roleId);
+    const roles = await this.roleRepository.getRolesByUserId(ctx, userId);
+    return { user, roles };
+  }
+
+  async deleteRoleToUser(
+    ctx: Context,
+    userId: string,
+    roleId: string,
+  ): Promise<{ user: User; roles: Role[] }> {
+    this.logger.info(
+      ctx,
+      UserApplication.name,
+      'deleteRoleToUser',
+      'deleting role from user',
+    );
+    const user = await this.repository.getById(ctx, userId);
+    if (!user) {
+      throw new NotFoundException(ctx, 'User not found');
+    }
+    const role = await this.roleRepository.getById(ctx, roleId);
+    if (!role) {
+      throw new NotFoundException(ctx, 'Role not found');
+    }
+    await this.roleRepository.deleteRoleFromUser(ctx, userId, roleId);
+    const roles = await this.roleRepository.getRolesByUserId(ctx, userId);
+    return { user, roles };
+  }
+
+  async getRolesByUserId(ctx: Context, userId: string): Promise<Role[]> {
+    this.logger.info(
+      ctx,
+      UserApplication.name,
+      'getRolesByUserId',
+      'Getting roles by user ID',
+    );
+    return this.roleRepository.getRolesByUserId(ctx, userId);
+  }
+  async getRoles(ctx: Context): Promise<Role[]> {
+    this.logger.info(ctx, UserApplication.name, 'getRoles', 'Getting roles');
+    const data = await this.roleRepository.getAll(ctx, 0, 1000000);
+    return data.data;
   }
 }

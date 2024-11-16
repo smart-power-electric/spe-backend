@@ -219,4 +219,25 @@ export class DrizzleRoleRepository implements RoleRepository {
       .execute();
     return result.map((x) => RowToRole(x.role));
   }
+
+  async deleteRoleFromUser(
+    ctx: Context,
+    userId: string,
+    roleId: string,
+  ): Promise<Role | null> {
+    this.logger.info(
+      ctx,
+      DrizzleRoleRepository.name,
+      'deleteRoleFromUser',
+      'deleting role from user',
+    );
+
+    await this.db
+      .getDb()
+      .delete(userRole)
+      .where(and(eq(userRole.userId, userId), eq(userRole.roleId, roleId)))
+      .execute();
+
+    return this.getById(ctx, roleId);
+  }
 }

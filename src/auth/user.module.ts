@@ -8,6 +8,8 @@ import { CommonModule } from 'src/common/common.module';
 import { SecurityModule } from 'src/security/security.module';
 import { AuthrController } from './infrastructure/http/controller/auth.controller';
 import { DrizzleRoleRepository } from './infrastructure/role.repository';
+import { RefreshTokenGuard } from './infrastructure/http/guard/refresh.token.guard';
+import { AccessTokenGuard } from './infrastructure/http/guard/access.token.guard';
 
 @Module({
   imports: [CommonModule, SecurityModule],
@@ -25,6 +27,8 @@ import { DrizzleRoleRepository } from './infrastructure/role.repository';
       provide: RoleRepository,
       useClass: DrizzleRoleRepository,
     },
+    AccessTokenGuard,
+    RefreshTokenGuard,
   ],
 })
 export class UserModule {}

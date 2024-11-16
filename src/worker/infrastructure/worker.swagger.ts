@@ -103,13 +103,13 @@ export class UpdateWorkerRequest implements UpdateWorkerDto {
   })
   socialSecurity?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: Date,
     description: 'State of the worker',
     nullable: true,
   })
   startDate?: Date | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: Date,
     description: 'Zip of the worker',
     nullable: true,
   })
@@ -171,13 +171,13 @@ export class WorkerResponse implements WorkerRow {
   })
   socialSecurity: string | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'State of the worker',
     nullable: true,
   })
   startDate: Date | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Zip of the worker',
     nullable: true,
   })

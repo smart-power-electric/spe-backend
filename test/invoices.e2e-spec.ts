@@ -138,7 +138,6 @@ describe('InvoicesModule (e2e)', () => {
     const newItem: CreateInvoiceRequest = {
       createInvoicesRequest: {
         stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
         date: faker.date.recent().toISOString(),
         totalAmount: +faker.finance.amount(),
         showMaterials: true,
@@ -150,9 +149,7 @@ describe('InvoicesModule (e2e)', () => {
     expect(result).toBeDefined();
     expect(result.id).toBeDefined();
     expect(result.stageId).toBeDefined();
-    expect(result.invoiceNumber).toEqual(
-      newItem.createInvoicesRequest.invoiceNumber,
-    );
+    expect(result.invoiceNumber).toBeGreaterThan(0);
     expect(result.date).toBeDefined();
     expect(result.totalAmount).toEqual(
       newItem.createInvoicesRequest.totalAmount,
@@ -167,7 +164,6 @@ describe('InvoicesModule (e2e)', () => {
     const newItem: CreateInvoiceRequest = {
       createInvoicesRequest: {
         stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
         date: faker.date.recent().toISOString(),
         totalAmount: +faker.finance.amount(),
         showMaterials: true,
@@ -209,7 +205,6 @@ describe('InvoicesModule (e2e)', () => {
     const newItem: CreateInvoiceRequest = {
       createInvoicesRequest: {
         stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
         date: faker.date.recent().toISOString(),
         totalAmount: +faker.finance.amount(),
         showMaterials: true,
@@ -226,7 +221,6 @@ describe('InvoicesModule (e2e)', () => {
     const newItem: CreateInvoiceRequest = {
       createInvoicesRequest: {
         stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
         date: faker.date.recent().toISOString(),
         totalAmount: +faker.finance.amount(),
         showMaterials: true,
@@ -267,7 +261,6 @@ describe('InvoicesModule (e2e)', () => {
     const newItem: CreateInvoiceRequest = {
       createInvoicesRequest: {
         stageId: baseStage.id,
-        invoiceNumber: faker.number.int().toString(),
         date: faker.date.recent().toISOString(),
         totalAmount: +faker.finance.amount(),
         showMaterials: true,

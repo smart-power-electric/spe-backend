@@ -63,16 +63,16 @@ export interface WorkerResponse {
     socialSecurity: string | null;
     /**
      * State of the worker
-     * @type {string}
+     * @type {Date}
      * @memberof WorkerResponse
      */
-    startDate: string | null;
+    startDate: Date | null;
     /**
      * Zip of the worker
-     * @type {string}
+     * @type {Date}
      * @memberof WorkerResponse
      */
-    endDate: string | null;
+    endDate: Date | null;
     /**
      * Created at of the worker
      * @type {string}
@@ -122,8 +122,8 @@ export function WorkerResponseFromJSONTyped(json: any, ignoreDiscriminator: bool
         'address': json['address'],
         'phone': json['phone'],
         'socialSecurity': json['socialSecurity'],
-        'startDate': json['startDate'],
-        'endDate': json['endDate'],
+        'startDate': (json['startDate'] == null ? null : new Date(json['startDate'])),
+        'endDate': (json['endDate'] == null ? null : new Date(json['endDate'])),
         'createdAt': json['createdAt'],
         'updatedAt': json['updatedAt'],
     };
@@ -147,8 +147,8 @@ export function WorkerResponseFromJSONTyped(json: any, ignoreDiscriminator: bool
         'address': value['address'],
         'phone': value['phone'],
         'socialSecurity': value['socialSecurity'],
-        'startDate': value['startDate'],
-        'endDate': value['endDate'],
+        'startDate': (value['startDate'] == null ? null : (value['startDate'] as any).toISOString()),
+        'endDate': (value['endDate'] == null ? null : (value['endDate'] as any).toISOString()),
         'createdAt': value['createdAt'],
         'updatedAt': value['updatedAt'],
     };

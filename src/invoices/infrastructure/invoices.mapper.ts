@@ -5,6 +5,7 @@ import { InvoicesNew, InvoicesRow } from './invoices.repository';
 export function CreateDtoToInvoices(dto: CreateInvoicesDto): Invoices {
   return new Invoices({
     ...dto,
+    invoiceNumber: null,
     createdAt: new Date(),
     updatedAt: null,
     id: undefined,
@@ -33,7 +34,7 @@ export function InvoicesToInvoicesNew(item: Invoices): InvoicesNew {
   return {
     date: item.date,
     stageId: item.stageId,
-    invoiceNumber: item.invoiceNumber,
+    invoiceNumber: undefined,
     totalAmount: item.totalAmount,
     showMaterials: item.showMaterials,
   };

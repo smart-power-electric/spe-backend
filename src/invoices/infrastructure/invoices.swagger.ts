@@ -12,12 +12,6 @@ export class CreateInvoicesRequest implements CreateInvoicesDto {
   stageId: string | null;
   @ApiProperty({
     type: 'string',
-    description: 'Invoice number of invoices',
-    nullable: true,
-  })
-  invoiceNumber: string | null;
-  @ApiProperty({
-    type: 'string',
     description: 'Date of invoices',
     nullable: true,
   })
@@ -37,7 +31,6 @@ export class CreateInvoicesRequest implements CreateInvoicesDto {
 
   constructor(data: CreateInvoicesDto) {
     this.stageId = data.stageId;
-    this.invoiceNumber = data.invoiceNumber;
     this.date = data.date;
     this.totalAmount = data.totalAmount;
     this.showMaterials = data.showMaterials;
@@ -78,7 +71,6 @@ export class UpdateInvoicesRequest implements UpdateInvoicesDto {
 
   constructor(data: UpdateInvoicesDto) {
     this.stageId = data.stageId;
-    this.invoiceNumber = data.invoiceNumber;
     this.date = data.date;
     this.totalAmount = data.totalAmount;
     this.showMaterials = data.showMaterials;
@@ -103,7 +95,7 @@ export class InvoicesResponse implements InvoicesRow {
     description: 'Invoice number of invoices',
     nullable: true,
   })
-  invoiceNumber: string | null;
+  invoiceNumber: number;
   @ApiProperty({
     type: 'string',
     description: 'Date of invoices',

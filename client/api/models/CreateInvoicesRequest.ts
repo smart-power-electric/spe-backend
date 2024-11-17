@@ -26,12 +26,6 @@ export interface CreateInvoicesRequest {
      */
     stageId: string | null;
     /**
-     * Invoice number of invoices
-     * @type {string}
-     * @memberof CreateInvoicesRequest
-     */
-    invoiceNumber: string | null;
-    /**
      * Date of invoices
      * @type {string}
      * @memberof CreateInvoicesRequest
@@ -56,7 +50,6 @@ export interface CreateInvoicesRequest {
  */
 export function instanceOfCreateInvoicesRequest(value: object): value is CreateInvoicesRequest {
     if (!('stageId' in value) || value['stageId'] === undefined) return false;
-    if (!('invoiceNumber' in value) || value['invoiceNumber'] === undefined) return false;
     if (!('date' in value) || value['date'] === undefined) return false;
     if (!('totalAmount' in value) || value['totalAmount'] === undefined) return false;
     if (!('showMaterials' in value) || value['showMaterials'] === undefined) return false;
@@ -74,7 +67,6 @@ export function CreateInvoicesRequestFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'stageId': json['stageId'],
-        'invoiceNumber': json['invoiceNumber'],
         'date': json['date'],
         'totalAmount': json['totalAmount'],
         'showMaterials': json['showMaterials'],
@@ -93,7 +85,6 @@ export function CreateInvoicesRequestFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'stageId': value['stageId'],
-        'invoiceNumber': value['invoiceNumber'],
         'date': value['date'],
         'totalAmount': value['totalAmount'],
         'showMaterials': value['showMaterials'],

@@ -56,17 +56,17 @@ export interface CreateWorkerRequest {
      */
     socialSecurity: string | null;
     /**
-     * State of the worker
-     * @type {string}
+     * Start date contract of the worker
+     * @type {Date}
      * @memberof CreateWorkerRequest
      */
-    startDate: string | null;
+    startDate: Date | null;
     /**
-     * Zip of the worker
-     * @type {string}
+     * End date contract of the worker
+     * @type {Date}
      * @memberof CreateWorkerRequest
      */
-    endDate: string | null;
+    endDate: Date | null;
 }
 
 /**
@@ -100,8 +100,8 @@ export function CreateWorkerRequestFromJSONTyped(json: any, ignoreDiscriminator:
         'address': json['address'],
         'phone': json['phone'],
         'socialSecurity': json['socialSecurity'],
-        'startDate': json['startDate'],
-        'endDate': json['endDate'],
+        'startDate': (json['startDate'] == null ? null : new Date(json['startDate'])),
+        'endDate': (json['endDate'] == null ? null : new Date(json['endDate'])),
     };
 }
 
@@ -122,8 +122,8 @@ export function CreateWorkerRequestFromJSONTyped(json: any, ignoreDiscriminator:
         'address': value['address'],
         'phone': value['phone'],
         'socialSecurity': value['socialSecurity'],
-        'startDate': value['startDate'],
-        'endDate': value['endDate'],
+        'startDate': (value['startDate'] == null ? null : (value['startDate'] as any).toISOString()),
+        'endDate': (value['endDate'] == null ? null : (value['endDate'] as any).toISOString()),
     };
 }
 

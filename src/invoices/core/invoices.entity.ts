@@ -2,7 +2,7 @@ export class Invoices {
   id: string;
   date: Date | null;
   stageId: string | null;
-  invoiceNumber: string | null;
+  invoiceNumber: number;
   totalAmount: number | null;
   showMaterials: boolean | null;
   createdAt: Date;
@@ -12,7 +12,7 @@ export class Invoices {
     id?: string;
     date: Date | null;
     stageId: string | null;
-    invoiceNumber: string | null;
+    invoiceNumber: number | null;
     totalAmount: number | null;
     showMaterials: boolean | null;
     createdAt: Date;
@@ -21,7 +21,7 @@ export class Invoices {
     this.id = params.id ?? '';
     this.date = params.date;
     this.stageId = params.stageId;
-    this.invoiceNumber = params.invoiceNumber;
+    this.invoiceNumber = params.invoiceNumber ?? -1;
     this.totalAmount = params.totalAmount;
     this.showMaterials = params.showMaterials;
     this.createdAt = params.createdAt;

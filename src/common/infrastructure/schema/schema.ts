@@ -9,6 +9,7 @@ import {
   boolean,
   timestamp,
   uuid,
+  bigserial,
 } from 'drizzle-orm/pg-core';
 import { v7 as uuidv7 } from 'uuid';
 export const main = pgSchema('main');
@@ -339,6 +340,12 @@ export const notifications = main.table(
     id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
     invoiceId: uuid('invoice_id'),
     clientId: uuid('client_id'),
+    //add projectId
+    // projectId NAMEX has finished stage NAMEY
+    // billing Information
+    //7 days before finish create notification but not send just for admin seend with status pending billing
+    // after stage finish send notification with sent billing status
+    // then create invoice with pending status
     status: varchar(),
     createdAt: timestamp('created_at', {
       precision: 6,
@@ -374,10 +381,11 @@ export const invoices = main.table(
   {
     id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
     stageId: uuid('stage_id'),
-    invoiceNumber: varchar('invoice_number'),
+    invoiceNumber: bigserial('invoice_number', { mode: 'number' }).notNull(),
     date: date({ mode: 'date' }),
     totalAmount: doublePrecision('total_amount'),
     showMaterials: boolean('show_materials'),
+    //add status pending, paid, reject
     createdAt: timestamp('created_at', {
       precision: 6,
       withTimezone: true,

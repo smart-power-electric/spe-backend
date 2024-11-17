@@ -57,16 +57,16 @@ export interface UpdateWorkerRequest {
     socialSecurity?: string | null;
     /**
      * State of the worker
-     * @type {string}
+     * @type {Date}
      * @memberof UpdateWorkerRequest
      */
-    startDate?: string | null;
+    startDate?: Date | null;
     /**
      * Zip of the worker
-     * @type {string}
+     * @type {Date}
      * @memberof UpdateWorkerRequest
      */
-    endDate?: string | null;
+    endDate?: Date | null;
 }
 
 /**
@@ -92,8 +92,8 @@ export function UpdateWorkerRequestFromJSONTyped(json: any, ignoreDiscriminator:
         'address': json['address'] == null ? undefined : json['address'],
         'phone': json['phone'] == null ? undefined : json['phone'],
         'socialSecurity': json['socialSecurity'] == null ? undefined : json['socialSecurity'],
-        'startDate': json['startDate'] == null ? undefined : json['startDate'],
-        'endDate': json['endDate'] == null ? undefined : json['endDate'],
+        'startDate': json['startDate'] == null ? undefined : (new Date(json['startDate'])),
+        'endDate': json['endDate'] == null ? undefined : (new Date(json['endDate'])),
     };
 }
 
@@ -114,8 +114,8 @@ export function UpdateWorkerRequestFromJSONTyped(json: any, ignoreDiscriminator:
         'address': value['address'],
         'phone': value['phone'],
         'socialSecurity': value['socialSecurity'],
-        'startDate': value['startDate'],
-        'endDate': value['endDate'],
+        'startDate': value['startDate'] == null ? undefined : ((value['startDate'] as any).toISOString()),
+        'endDate': value['endDate'] == null ? undefined : ((value['endDate'] as any).toISOString()),
     };
 }
 

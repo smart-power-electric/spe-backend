@@ -1,9 +1,8 @@
 import { CreateWorkerDto } from '../core/worker.dto';
 import { Worker } from '../core/worker.entity';
 import { WorkerNew, WorkerRow } from './worker.repository';
-import { WorkerResponse } from './worker.swagger';
 
-export function CreateDtoToWorker(dto: CreateWorkerDto): WorkerResponse {
+export function CreateDtoToWorker(dto: CreateWorkerDto): Worker {
   return new Worker({
     ...dto,
     createdAt: new Date(),

@@ -142,8 +142,8 @@ describe('WprkerModule (e2e)', () => {
       address: faker.location.streetAddress(),
       phone: faker.phone.number({ style: 'international' }),
       socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+      startDate: faker.date.recent(),
+      endDate: faker.date.future(),
     };
     const result = await api.createWorker({ createWorkerRequest: newItem });
 
@@ -169,8 +169,8 @@ describe('WprkerModule (e2e)', () => {
       address: faker.location.streetAddress(),
       phone: faker.phone.number({ style: 'international' }),
       socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+      startDate: faker.date.recent(),
+      endDate: faker.date.future(),
     };
     const resultItem = await api.createWorker({ createWorkerRequest: newItem });
 
@@ -208,8 +208,8 @@ describe('WprkerModule (e2e)', () => {
       address: faker.location.streetAddress(),
       phone: faker.phone.number({ style: 'international' }),
       socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+      startDate: faker.date.recent(),
+      endDate: faker.date.future(),
     };
     const resultItem = await api.createWorker({ createWorkerRequest: newItem });
 
@@ -226,8 +226,8 @@ describe('WprkerModule (e2e)', () => {
       address: faker.location.streetAddress(),
       phone: faker.phone.number({ style: 'international' }),
       socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+      startDate: faker.date.recent(),
+      endDate: faker.date.future(),
     };
     const resultItem = await api.createWorker({ createWorkerRequest: newItem });
 
@@ -270,8 +270,8 @@ describe('WprkerModule (e2e)', () => {
       address: faker.location.streetAddress(),
       phone: faker.phone.number({ style: 'international' }),
       socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent().toISOString(),
-      endDate: faker.date.future().toISOString(),
+      startDate: faker.date.recent(),
+      endDate: faker.date.future(),
     };
     const resultItem = await api.createWorker({
       createWorkerRequest: newItem,

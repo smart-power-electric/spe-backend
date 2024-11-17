@@ -164,7 +164,7 @@ describe('ProjectModule (e2e)', () => {
       id: undefined,
       date: new Date(),
       stageId: baseStage.id ?? null,
-      invoiceNumber: faker.number.int().toString(),
+      invoiceNumber: faker.number.int(),
       totalAmount: faker.number.float({ min: 0, max: 10000 }),
       showMaterials: faker.datatype.boolean(),
       createdAt: new Date(),

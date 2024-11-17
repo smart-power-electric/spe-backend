@@ -4,7 +4,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 import { clients } from 'src/common/infrastructure/schema/schema';
 import { Client } from '../core/client.entity';
-import { and, count, eq, ilike, SQLWrapper } from 'drizzle-orm';
+import { and, asc, count, eq, ilike, SQLWrapper } from 'drizzle-orm';
 import { ClientFilters, ClientRepository } from '../core/client.interface';
 import { RowtoClient, toClientNew, toClientRow } from './client.mapper';
 
@@ -61,6 +61,7 @@ export class DrizzleClientRepository implements ClientRepository {
       .select()
       .from(clients)
       .where(and(...sqlFilters))
+      .orderBy(asc(clients.name))
       .limit(limit)
       .offset(offset)
       .execute();

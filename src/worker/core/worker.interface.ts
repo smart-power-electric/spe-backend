@@ -1,7 +1,6 @@
 import { Context } from 'src/common/core/context.entity';
 import { CreateWorkerDto, UpdateWorkerDto } from './worker.dto';
 import { Worker } from './worker.entity';
-import { WorkerResponse } from '../infrastructure/worker.swagger';
 
 export type WorkerFilter = {
   name?: string;
@@ -24,7 +23,7 @@ export interface WorkerRepository {
 export const WorkerRepository = Symbol('WorkerRepository');
 
 export interface WorkerUseCases {
-  create(ctx: Context, dto: CreateWorkerDto): Promise<WorkerResponse>;
+  create(ctx: Context, dto: CreateWorkerDto): Promise<Worker>;
   getAll(
     ctx: Context,
     limit: number,

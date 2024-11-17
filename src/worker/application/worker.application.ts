@@ -13,7 +13,6 @@ import {
 import { CreateWorkerDto, UpdateWorkerDto } from '../core/worker.dto';
 import { Worker } from '../core/worker.entity';
 import { CreateDtoToWorker } from '../infrastructure/worker.mapper';
-import { WorkerResponse } from '../infrastructure/worker.swagger';
 
 @Injectable()
 export class WorkerApplication implements WorkerUseCases {
@@ -24,7 +23,7 @@ export class WorkerApplication implements WorkerUseCases {
     this.logger.init(WorkerApplication.name, 'info');
   }
 
-  async create(ctx: Context, dto: CreateWorkerDto): Promise<WorkerResponse> {
+  async create(ctx: Context, dto: CreateWorkerDto): Promise<Worker> {
     this.logger.info(
       ctx,
       WorkerApplication.name,

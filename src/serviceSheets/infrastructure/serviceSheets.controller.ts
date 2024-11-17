@@ -17,6 +17,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -52,7 +53,7 @@ export class ServiceSheetsController {
 
   @Post()
   @HttpCode(201)
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'ServiceSheets created',
     type: ServiceSheetsResponse,
   })
@@ -191,7 +192,7 @@ export class ServiceSheetsController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(200)
   @ApiOkResponse({ description: 'ServiceSheets deleted' })
   @ApiBadRequestResponse({
     status: 400,

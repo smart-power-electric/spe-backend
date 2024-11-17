@@ -17,6 +17,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -51,7 +52,10 @@ export class MaterialController {
 
   @Post()
   @HttpCode(201)
-  @ApiOkResponse({ description: 'Material created', type: MaterialResponse })
+  @ApiCreatedResponse({
+    description: 'Material created',
+    type: MaterialResponse,
+  })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -179,7 +183,7 @@ export class MaterialController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(200)
   @ApiOkResponse({ description: 'Material deleted' })
   @ApiBadRequestResponse({
     status: 400,

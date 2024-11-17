@@ -17,6 +17,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -52,7 +53,7 @@ export class ProjectQuotationController {
 
   @Post()
   @HttpCode(201)
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'ProjectQuotation created',
     type: ProjectQuotationResponse,
   })
@@ -197,7 +198,7 @@ export class ProjectQuotationController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(200)
   @ApiOkResponse({ description: 'ProjectQuotation deleted' })
   @ApiBadRequestResponse({
     status: 400,

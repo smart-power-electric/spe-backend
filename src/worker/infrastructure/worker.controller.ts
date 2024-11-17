@@ -17,6 +17,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -48,7 +49,7 @@ export class WorkerController {
 
   @Post()
   @HttpCode(201)
-  @ApiOkResponse({ description: 'Worker created', type: WorkerResponse })
+  @ApiCreatedResponse({ description: 'Worker created', type: WorkerResponse })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -168,8 +169,8 @@ export class WorkerController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
-  @ApiOkResponse({ description: 'Worker deleted' })
+  @HttpCode(200)
+  @ApiOkResponse({ status: '2XX', description: 'Worker deleted' })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',

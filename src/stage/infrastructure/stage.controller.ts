@@ -17,6 +17,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -48,7 +49,7 @@ export class StageController {
 
   @Post()
   @HttpCode(201)
-  @ApiOkResponse({ description: 'Stage created', type: StageResponse })
+  @ApiCreatedResponse({ description: 'Stage created', type: StageResponse })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -170,7 +171,7 @@ export class StageController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(200)
   @ApiOkResponse({ description: 'Stage deleted' })
   @ApiBadRequestResponse({
     status: 400,

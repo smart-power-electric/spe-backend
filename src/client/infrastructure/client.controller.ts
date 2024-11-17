@@ -23,6 +23,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -47,7 +48,7 @@ export class ClientController {
 
   @Post()
   @HttpCode(201)
-  @ApiOkResponse({ description: 'Client created', type: ClientResponse })
+  @ApiCreatedResponse({ description: 'Client created', type: ClientResponse })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -169,7 +170,7 @@ export class ClientController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(200)
   @ApiOkResponse({ description: 'Client deleted' })
   @ApiBadRequestResponse({
     status: 400,

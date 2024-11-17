@@ -17,6 +17,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -50,7 +51,7 @@ export class UserController {
 
   @Post()
   @HttpCode(201)
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'User created',
     type: UserResponse,
   })
@@ -215,8 +216,8 @@ export class UserController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
-  @ApiOkResponse({ description: 'User deleted' })
+  @HttpCode(200)
+  @ApiResponse({ description: 'User deleted' })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',

@@ -17,6 +17,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -52,7 +53,7 @@ export class WorkerPaymentsController {
 
   @Post()
   @HttpCode(201)
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'WorkerPayments created',
     type: WorkerPaymentsResponse,
   })
@@ -194,7 +195,7 @@ export class WorkerPaymentsController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(200)
   @ApiOkResponse({ description: 'WorkerPayments deleted' })
   @ApiBadRequestResponse({
     status: 400,

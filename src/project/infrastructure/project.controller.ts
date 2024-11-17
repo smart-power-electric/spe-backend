@@ -22,6 +22,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -47,7 +48,7 @@ export class ProjectController {
 
   @Post()
   @HttpCode(201)
-  @ApiOkResponse({ description: 'Project created', type: ProjectResponse })
+  @ApiCreatedResponse({ description: 'Project created', type: ProjectResponse })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',
@@ -170,7 +171,7 @@ export class ProjectController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(200)
   @ApiOkResponse({ description: 'Project deleted' })
   @ApiBadRequestResponse({
     status: 400,

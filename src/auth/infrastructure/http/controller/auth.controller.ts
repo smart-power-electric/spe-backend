@@ -96,7 +96,7 @@ export class AuthrController {
   }
 
   @Post('logout')
-  @HttpCode(204)
+  @HttpCode(200)
   @ApiOperation({
     summary: 'Logout user',
   })

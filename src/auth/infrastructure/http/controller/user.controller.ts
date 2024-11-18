@@ -217,7 +217,7 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(200)
-  @ApiResponse({ description: 'User deleted' })
+  @ApiOkResponse({ description: 'User deleted' })
   @ApiBadRequestResponse({
     status: 400,
     description: 'Bad request',

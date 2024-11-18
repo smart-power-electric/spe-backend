@@ -1,0 +1,1 @@
+ALTER TABLE "main"."clients" ADD COLUMN "tin" varchar;

@@ -32,6 +32,12 @@ export interface UpdateClientRequest {
      */
     address?: string | null;
     /**
+     * TIN of the client
+     * @type {string}
+     * @memberof UpdateClientRequest
+     */
+    tin?: string | null;
+    /**
      * Contact of the client
      * @type {string}
      * @memberof UpdateClientRequest
@@ -88,6 +94,7 @@ export function UpdateClientRequestFromJSONTyped(json: any, ignoreDiscriminator:
         
         'name': json['name'] == null ? undefined : json['name'],
         'address': json['address'] == null ? undefined : json['address'],
+        'tin': json['tin'] == null ? undefined : json['tin'],
         'contact': json['contact'] == null ? undefined : json['contact'],
         'email': json['email'] == null ? undefined : json['email'],
         'phone': json['phone'] == null ? undefined : json['phone'],
@@ -110,6 +117,7 @@ export function UpdateClientRequestFromJSONTyped(json: any, ignoreDiscriminator:
         
         'name': value['name'],
         'address': value['address'],
+        'tin': value['tin'],
         'contact': value['contact'],
         'email': value['email'],
         'phone': value['phone'],

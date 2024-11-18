@@ -60,6 +60,7 @@ describe('ClientModule (e2e)', () => {
     const newClient = {
       name: faker.person.fullName(),
       address: faker.location.streetAddress(),
+      tin: faker.number.int({ min: 1000000000, max: 9999999999 }).toString(),
       contact: faker.person.fullName(),
       email: faker.internet.email(),
       phone: faker.phone.number({ style: 'international' }),
@@ -74,6 +75,7 @@ describe('ClientModule (e2e)', () => {
     expect(result.id).toBeDefined();
     expect(result.name).toEqual(newClient.name);
     expect(result.address).toEqual(newClient.address);
+    expect(result.tin).toEqual(newClient.tin);
     expect(result.contact).toEqual(newClient.contact);
     expect(result.email).toEqual(newClient.email);
     expect(result.phone).toEqual(newClient.phone);
@@ -87,6 +89,7 @@ describe('ClientModule (e2e)', () => {
     const newClient = {
       name: faker.person.fullName(),
       address: faker.location.streetAddress(),
+      tin: faker.number.int({ min: 1000000000, max: 9999999999 }).toString(),
       contact: faker.person.fullName(),
       email: faker.internet.email(),
       phone: faker.phone.number({ style: 'international' }),
@@ -141,6 +144,7 @@ describe('ClientModule (e2e)', () => {
     const newClient = {
       name: faker.person.fullName(),
       address: faker.location.streetAddress(),
+      tin: faker.number.int({ min: 1000000000, max: 9999999999 }).toString(),
       contact: faker.person.fullName(),
       email: faker.internet.email(),
       phone: faker.phone.number({ style: 'international' }),
@@ -161,6 +165,7 @@ describe('ClientModule (e2e)', () => {
     const newClient = {
       name: faker.person.fullName(),
       address: faker.location.streetAddress(),
+      tin: faker.number.int({ min: 1000000000, max: 9999999999 }).toString(),
       contact: faker.person.fullName(),
       email: faker.internet.email(),
       phone: faker.phone.number({ style: 'international' }),
@@ -207,6 +212,7 @@ describe('ClientModule (e2e)', () => {
     const newClient = {
       name: faker.person.fullName(),
       address: faker.location.streetAddress(),
+      tin: faker.number.int({ min: 1000000000, max: 9999999999 }).toString(),
       contact: faker.person.fullName(),
       email: faker.internet.email(),
       phone: faker.phone.number({ style: 'international' }),

@@ -18,6 +18,12 @@ export class CreateClientRequest implements CreateClientDto {
   address: string | null;
   @ApiProperty({
     type: 'string',
+    description: 'TIN of the client',
+    nullable: true,
+  })
+  tin: string | null;
+  @ApiProperty({
+    type: 'string',
     description: 'Contact of the client',
     nullable: true,
   })
@@ -55,6 +61,7 @@ export class CreateClientRequest implements CreateClientDto {
   constructor(data: CreateClientDto) {
     this.name = data.name;
     this.address = data.address;
+    this.tin = data.tin;
     this.contact = data.contact;
     this.email = data.email;
     this.phone = data.phone;
@@ -77,6 +84,12 @@ export class UpdateClientRequest implements UpdateClientDto {
     nullable: true,
   })
   address?: string | null;
+  @ApiPropertyOptional({
+    type: 'string',
+    description: 'TIN of the client',
+    nullable: true,
+  })
+  tin?: string | null;
   @ApiPropertyOptional({
     type: 'string',
     description: 'Contact of the client',
@@ -116,6 +129,7 @@ export class UpdateClientRequest implements UpdateClientDto {
   constructor(data: UpdateClientDto) {
     this.name = data.name;
     this.address = data.address;
+    this.tin = data.tin;
     this.contact = data.contact;
     this.email = data.email;
     this.phone = data.phone;
@@ -144,6 +158,12 @@ export class ClientResponse implements ClientRow {
     nullable: true,
   })
   address: string | null;
+  @ApiProperty({
+    type: 'string',
+    description: 'TIN of the client',
+    nullable: true,
+  })
+  tin: string | null;
   @ApiProperty({
     type: 'string',
     description: 'Contact of the client',
@@ -195,6 +215,7 @@ export class ClientResponse implements ClientRow {
   constructor(data: Client) {
     this.id = data.id;
     this.name = data.name;
+    this.tin = data.tin;
     this.address = data.address;
     this.contact = data.contact;
     this.email = data.email;

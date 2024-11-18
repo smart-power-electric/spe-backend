@@ -32,6 +32,12 @@ export interface CreateClientRequest {
      */
     address: string | null;
     /**
+     * TIN of the client
+     * @type {string}
+     * @memberof CreateClientRequest
+     */
+    tin: string | null;
+    /**
      * Contact of the client
      * @type {string}
      * @memberof CreateClientRequest
@@ -75,6 +81,7 @@ export interface CreateClientRequest {
 export function instanceOfCreateClientRequest(value: object): value is CreateClientRequest {
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('address' in value) || value['address'] === undefined) return false;
+    if (!('tin' in value) || value['tin'] === undefined) return false;
     if (!('contact' in value) || value['contact'] === undefined) return false;
     if (!('email' in value) || value['email'] === undefined) return false;
     if (!('phone' in value) || value['phone'] === undefined) return false;
@@ -96,6 +103,7 @@ export function CreateClientRequestFromJSONTyped(json: any, ignoreDiscriminator:
         
         'name': json['name'],
         'address': json['address'],
+        'tin': json['tin'],
         'contact': json['contact'],
         'email': json['email'],
         'phone': json['phone'],
@@ -118,6 +126,7 @@ export function CreateClientRequestFromJSONTyped(json: any, ignoreDiscriminator:
         
         'name': value['name'],
         'address': value['address'],
+        'tin': value['tin'],
         'contact': value['contact'],
         'email': value['email'],
         'phone': value['phone'],

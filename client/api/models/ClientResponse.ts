@@ -38,6 +38,12 @@ export interface ClientResponse {
      */
     address: string | null;
     /**
+     * TIN of the client
+     * @type {string}
+     * @memberof ClientResponse
+     */
+    tin: string | null;
+    /**
      * Contact of the client
      * @type {string}
      * @memberof ClientResponse
@@ -94,6 +100,7 @@ export function instanceOfClientResponse(value: object): value is ClientResponse
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('address' in value) || value['address'] === undefined) return false;
+    if (!('tin' in value) || value['tin'] === undefined) return false;
     if (!('contact' in value) || value['contact'] === undefined) return false;
     if (!('email' in value) || value['email'] === undefined) return false;
     if (!('phone' in value) || value['phone'] === undefined) return false;
@@ -118,6 +125,7 @@ export function ClientResponseFromJSONTyped(json: any, ignoreDiscriminator: bool
         'name': json['name'],
         'id': json['id'],
         'address': json['address'],
+        'tin': json['tin'],
         'contact': json['contact'],
         'email': json['email'],
         'phone': json['phone'],
@@ -143,6 +151,7 @@ export function ClientResponseFromJSONTyped(json: any, ignoreDiscriminator: bool
         'name': value['name'],
         'id': value['id'],
         'address': value['address'],
+        'tin': value['tin'],
         'contact': value['contact'],
         'email': value['email'],
         'phone': value['phone'],

@@ -2,6 +2,7 @@ export class Client {
   id: string;
   name: string | null;
   address: string | null;
+  tin: string | null;
   contact: string | null;
   email: string | null;
   phone: string | null;
@@ -15,6 +16,7 @@ export class Client {
     name: string | null;
     id: string | undefined;
     address: string | null;
+    tin: string | null;
     contact: string | null;
     email: string | null;
     phone: string | null;
@@ -27,6 +29,7 @@ export class Client {
     this.name = params.name;
     this.id = params.id ?? '';
     this.address = params.address;
+    this.tin = params.tin;
     this.contact = params.contact;
     this.email = params.email;
     this.phone = params.phone;

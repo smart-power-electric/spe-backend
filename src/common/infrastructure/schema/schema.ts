@@ -415,6 +415,7 @@ export const clients = main.table('clients', {
   name: varchar(),
   email: varchar(),
   phone: varchar(),
+  tin: varchar(),
   address: varchar(),
   city: varchar(),
   state: varchar(),

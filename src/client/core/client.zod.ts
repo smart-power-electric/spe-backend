@@ -18,6 +18,7 @@ export const createClientSchema = z.object({
       },
     )
     .describe('Phone number'),
+  tin: z.string().nullable().describe('TIN of client'),
   address: z
     .string()
     .optional()
@@ -75,6 +76,7 @@ export const UpdateClientSchema = z.object({
     )
     .describe('Phone number'),
   address: z.string().optional().nullable().describe('Address of client'),
+  tin: z.string().optional().nullable().describe('TIN of client'),
   city: z.string().optional().nullable().describe('City of client'),
   state: z.string().optional().nullable().describe('State of client'),
   zip: z.string().optional().nullable().describe('Zip code of client'),

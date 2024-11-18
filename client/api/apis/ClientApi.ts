@@ -43,6 +43,8 @@ export interface FindAllClientRequest {
     offset?: number;
     name?: string;
     email?: string;
+    sortOrder?: FindAllClientSortOrderEnum;
+    sortField?: FindAllClientSortFieldEnum;
 }
 
 export interface FindOneClientRequest {
@@ -119,6 +121,14 @@ export class ClientApi extends runtime.BaseAPI {
 
         if (requestParameters['email'] != null) {
             queryParameters['email'] = requestParameters['email'];
+        }
+
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
+        if (requestParameters['sortField'] != null) {
+            queryParameters['sortField'] = requestParameters['sortField'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -246,3 +256,30 @@ export class ClientApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const FindAllClientSortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type FindAllClientSortOrderEnum = typeof FindAllClientSortOrderEnum[keyof typeof FindAllClientSortOrderEnum];
+/**
+ * @export
+ */
+export const FindAllClientSortFieldEnum = {
+    Id: 'id',
+    Name: 'name',
+    Address: 'address',
+    Tin: 'tin',
+    Contact: 'contact',
+    Email: 'email',
+    Phone: 'phone',
+    City: 'city',
+    State: 'state',
+    Zip: 'zip',
+    CreatedAt: 'createdAt',
+    UpdatedAt: 'updatedAt'
+} as const;
+export type FindAllClientSortFieldEnum = typeof FindAllClientSortFieldEnum[keyof typeof FindAllClientSortFieldEnum];

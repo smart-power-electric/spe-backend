@@ -40,3 +40,20 @@ export class Client {
     this.updatedAt = params.updatedAt;
   }
 }
+
+export const ClientKeys: { [P in keyof Client]: P } = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  tin: 'tin',
+  contact: 'contact',
+  email: 'email',
+  phone: 'phone',
+  city: 'city',
+  state: 'state',
+  zip: 'zip',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type ClientKeysType = (typeof ClientKeys)[keyof typeof ClientKeys];

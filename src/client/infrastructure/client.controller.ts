@@ -35,6 +35,8 @@ import { Request } from 'express';
 import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exception/http.swagger';
 import { ZodValidationPipe } from 'src/common/application/pipes/ZodValidationPipe';
 import { createClientSchema, UpdateClientSchema } from '../core/client.zod';
+import { ClientKeys, ClientKeysType } from '../core/client.entity';
+import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
 
 @ApiTags('client')
 @Controller('client')
@@ -98,12 +100,18 @@ export class ClientController {
   @ApiQuery({ name: 'email', required: false, type: String })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
+  @ApiQuery({ name: 'sortField', required: false, enum: ClientKeys })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   findAllClient(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('name') name: string,
     @Query('email') email: string,
+    @Query('sortField', new CustomValidateEnumPipe(ClientKeys))
+    sortField: ClientKeysType,
+    @Query('sortOrder', new CustomValidateEnumPipe(['ASC', 'DESC']))
+    sortOrder: 'ASC' | 'DESC',
   ): Promise<ClientPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -112,7 +120,12 @@ export class ClientController {
       'findAll',
       'Getting all clients',
     );
-    return this.application.getAll(ctx, limit, offset, { name, email });
+    return this.application.getAll(ctx, limit, offset, {
+      name,
+      email,
+      sortField,
+      sortOrder,
+    });
   }
 
   @Get(':id')

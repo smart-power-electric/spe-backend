@@ -98,6 +98,18 @@ describe('ClientModule (e2e)', () => {
       zip: faker.location.zipCode(),
     };
     await api.createClient({ createClientRequest: newClient });
+    const newClient2 = {
+      name: faker.person.fullName(),
+      address: faker.location.streetAddress(),
+      tin: faker.number.int({ min: 1000000000, max: 9999999999 }).toString(),
+      contact: faker.person.fullName(),
+      email: faker.internet.email(),
+      phone: faker.phone.number({ style: 'international' }),
+      city: faker.location.city(),
+      state: faker.location.state(),
+      zip: faker.location.zipCode(),
+    };
+    await api.createClient({ createClientRequest: newClient2 });
 
     const result = await api.findAllClient({});
     expect(result).toBeDefined();
@@ -138,6 +150,27 @@ describe('ClientModule (e2e)', () => {
     expect(result5.data).toBeDefined();
     expect(result5.total).toBeGreaterThan(0);
     expect(result5.data?.length).toEqual(0);
+
+    const ascSort = await api.findAllClient({
+      sortField: 'createdAt',
+      sortOrder: 'ASC',
+    });
+
+    const descSort = await api.findAllClient({
+      sortField: 'createdAt',
+      sortOrder: 'DESC',
+    });
+
+    expect(ascSort).toBeDefined();
+    expect(descSort).toBeDefined();
+    expect(ascSort.data).toBeDefined();
+    expect(descSort.data).toBeDefined();
+    expect(ascSort.total).toBeGreaterThan(0);
+    expect(descSort.total).toBeGreaterThan(0);
+    expect(ascSort.data?.length).toEqual(ascSort.total);
+    expect(descSort.data?.length).toEqual(descSort.total);
+    expect(ascSort.data).toEqual(descSort.data?.reverse());
+    
   }, 600000);
 
   it('GET /client/:id', async () => {

@@ -30,7 +30,7 @@ export class ErrorHandlerFilter extends BaseExceptionFilter {
       timestamp: errorParsed.error.timestamp,
       message: errorParsed.error.message,
       name: errorParsed.error.type,
-      path: request.url,
+      path: `[${request.method.toUpperCase()}] ${request.url}`,
       requestId: errorParsed.error.requestId ?? request.appContext?.requestId,
     };
     if (responseBody.statusCode === 500) {

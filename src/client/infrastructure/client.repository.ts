@@ -3,8 +3,8 @@ import { Context } from 'src/common/core/context.entity';
 import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 import { clients } from 'src/common/infrastructure/schema/schema';
-import { Client } from '../core/client.entity';
-import { and, asc, count, eq, ilike, SQLWrapper } from 'drizzle-orm';
+import { Client, ClientKeysType } from '../core/client.entity';
+import { and, asc, count, desc, eq, ilike, SQLWrapper } from 'drizzle-orm';
 import { ClientFilters, ClientRepository } from '../core/client.interface';
 import { RowtoClient, toClientNew, toClientRow } from './client.mapper';
 
@@ -56,12 +56,16 @@ export class DrizzleClientRepository implements ClientRepository {
     if (filters.name) {
       sqlFilters.push(ilike(clients.name, `%${filters.name}%`));
     }
+    const sortField =
+      clients[filters.sortField as ClientKeysType] ?? clients.name;
+    const sortOrder =
+      filters.sortOrder === 'ASC' ? asc(sortField) : desc(sortField);
     const result = await this.db
       .getDb()
       .select()
       .from(clients)
       .where(and(...sqlFilters))
-      .orderBy(asc(clients.name))
+      .orderBy(sortOrder)
       .limit(limit)
       .offset(offset)
       .execute();

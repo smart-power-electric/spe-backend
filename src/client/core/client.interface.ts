@@ -1,10 +1,12 @@
 import { Context } from 'src/common/core/context.entity';
-import { Client } from './client.entity';
+import { Client, ClientKeysType } from './client.entity';
 import { CreateClientDto, UpdateClientDto } from './client.dto';
 
 export type ClientFilters = {
   email?: string;
   name?: string;
+  sortField?: ClientKeysType;
+  sortOrder?: 'ASC' | 'DESC';
 };
 export interface ClientRepository {
   insert(ctx: Context, row: Client): Promise<Client | null>;

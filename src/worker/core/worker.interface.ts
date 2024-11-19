@@ -1,9 +1,11 @@
 import { Context } from 'src/common/core/context.entity';
 import { CreateWorkerDto, UpdateWorkerDto } from './worker.dto';
-import { Worker } from './worker.entity';
+import { Worker, WorkerKeysType } from './worker.entity';
 
 export type WorkerFilter = {
   name?: string;
+  sortField?: WorkerKeysType;
+  sortOrder?: 'ASC' | 'DESC';
 };
 export interface WorkerRepository {
   insert(ctx: Context, row: Worker): Promise<Worker | null>;

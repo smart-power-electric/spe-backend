@@ -5,10 +5,10 @@ import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { workers } from 'src/common/infrastructure/schema/schema';
 
-import { and, count, eq, ilike, SQLWrapper } from 'drizzle-orm';
+import { and, asc, count, desc, eq, ilike, SQLWrapper } from 'drizzle-orm';
 import { WorkerFilter, WorkerRepository } from '../core/worker.interface';
 import { RowToWorker, WorkerToRow, WorkerToWorkerNew } from './worker.mapper';
-import { Worker } from '../core/worker.entity';
+import { Worker, WorkerKeysType } from '../core/worker.entity';
 
 export type WorkerRow = typeof workers.$inferSelect;
 export type WorkerNew = typeof workers.$inferInsert;
@@ -55,11 +55,16 @@ export class DrizzleWorkerRepository implements WorkerRepository {
     if (filter.name) {
       sqlFilters.push(ilike(workers.name, `%${filter.name}%`));
     }
+    const sortField =
+      workers[filter.sortField as WorkerKeysType] ?? workers.name;
+    const sortOrder =
+      filter.sortOrder === 'ASC' ? asc(sortField) : desc(sortField);
     const result = await this.db
       .getDb()
       .select()
       .from(workers)
       .where(and(...sqlFilters))
+      .orderBy(sortOrder)
       .limit(limit)
       .offset(offset)
       .execute();

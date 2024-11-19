@@ -1,3 +1,4 @@
+import { WorkerKeysType } from './../core/worker.entity';
 import {
   Controller,
   Get,
@@ -36,6 +37,8 @@ import {
   WorkerResponse,
 } from './worker.swagger';
 import { createWorkerSchema, UpdateWorkerSchema } from '../core/worker.zod';
+import { WorkerKeys } from '../core/worker.entity';
+import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
 
 @ApiTags('worker')
 @Controller('worker')
@@ -98,11 +101,17 @@ export class WorkerController {
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'name', required: false, type: String })
+  @ApiQuery({ name: 'sortField', required: false, enum: WorkerKeys })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   findAllWorker(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('name') name: string,
+    @Query('sortField', new CustomValidateEnumPipe(WorkerKeys))
+    sortField: WorkerKeysType,
+    @Query('sortOrder', new CustomValidateEnumPipe(['ASC', 'DESC']))
+    sortOrder: 'ASC' | 'DESC',
   ): Promise<WorkerPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -111,7 +120,11 @@ export class WorkerController {
       'findAll',
       'Getting all workers',
     );
-    return this.application.getAll(ctx, limit, offset, { name });
+    return this.application.getAll(ctx, limit, offset, {
+      name,
+      sortField,
+      sortOrder,
+    });
   }
 
   @Get(':id')

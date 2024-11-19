@@ -39,6 +39,8 @@ import {
   createInvoicesSchema,
   UpdateInvoicesSchema,
 } from '../core/invoices.zod';
+import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
+import { InvoicesKeys, InvoicesKeysType } from '../core/invoices.entity';
 
 @ApiTags('invoices')
 @Controller('invoices')
@@ -107,11 +109,17 @@ export class InvoicesController {
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'stageId', required: false, type: String })
+  @ApiQuery({ name: 'sortField', required: false, enum: InvoicesKeys })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   findAllInvoice(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('stageId') stageId: string,
+    @Query('sortField', new CustomValidateEnumPipe(InvoicesKeys))
+    sortField: InvoicesKeysType,
+    @Query('sortOrder', new CustomValidateEnumPipe(['ASC', 'DESC']))
+    sortOrder: 'ASC' | 'DESC',
   ): Promise<InvoicesPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -120,7 +128,11 @@ export class InvoicesController {
       'findAll',
       'Getting all invoicess',
     );
-    return this.application.getAll(ctx, limit, offset, { stageId });
+    return this.application.getAll(ctx, limit, offset, {
+      stageId,
+      sortField,
+      sortOrder,
+    });
   }
 
   @Get(':id')

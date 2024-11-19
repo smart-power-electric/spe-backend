@@ -5,14 +5,14 @@ import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { invoices } from 'src/common/infrastructure/schema/schema';
 
-import { count, eq, SQLWrapper } from 'drizzle-orm';
+import { and, asc, count, desc, eq, SQLWrapper } from 'drizzle-orm';
 import { InvoiceFilters, InvoicesRepository } from '../core/invoices.interface';
 import {
   RowToInvoices,
   InvoicesToRow,
   InvoicesToInvoicesNew,
 } from './invoices.mapper';
-import { Invoices } from '../core/invoices.entity';
+import { Invoices, InvoicesKeysType } from '../core/invoices.entity';
 
 export type InvoicesRow = typeof invoices.$inferSelect;
 export type InvoicesNew = typeof invoices.$inferInsert;
@@ -59,10 +59,16 @@ export class DrizzleInvoicesRepository implements InvoicesRepository {
     if (filters.stageId) {
       sqlFilters.push(eq(invoices.stageId, filters.stageId));
     }
+    const sortField =
+      invoices[filters.sortField as InvoicesKeysType] ?? invoices.invoiceNumber;
+    const sortOrder =
+      filters.sortOrder === 'ASC' ? asc(sortField) : desc(sortField);
     const result = await this.db
       .getDb()
       .select()
       .from(invoices)
+      .where(and(...sqlFilters))
+      .orderBy(sortOrder)
       .limit(limit)
       .offset(offset)
       .execute();
@@ -70,6 +76,7 @@ export class DrizzleInvoicesRepository implements InvoicesRepository {
       .getDb()
       .select({ count: count() })
       .from(invoices)
+      .where(and(...sqlFilters))
       .limit(1)
       .execute();
     return { data: result.map(RowToInvoices), total: total[0].count };

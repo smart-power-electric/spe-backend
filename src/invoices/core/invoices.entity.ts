@@ -28,3 +28,16 @@ export class Invoices {
     this.updatedAt = params.updatedAt;
   }
 }
+
+export const InvoicesKeys: { [P in keyof Invoices]: P } = {
+  id: 'id',
+  date: 'date',
+  stageId: 'stageId',
+  invoiceNumber: 'invoiceNumber',
+  totalAmount: 'totalAmount',
+  showMaterials: 'showMaterials',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type InvoicesKeysType = (typeof InvoicesKeys)[keyof typeof InvoicesKeys];

@@ -1,8 +1,10 @@
 import { Context } from 'src/common/core/context.entity';
 import { CreateInvoicesDto, UpdateInvoicesDto } from './invoices.dto';
-import { Invoices } from './invoices.entity';
+import { Invoices, InvoicesKeysType } from './invoices.entity';
 export type InvoiceFilters = {
   stageId?: string;
+  sortField?: InvoicesKeysType;
+  sortOrder?: 'ASC' | 'DESC';
 };
 export interface InvoicesRepository {
   insert(ctx: Context, row: Invoices): Promise<Invoices | null>;

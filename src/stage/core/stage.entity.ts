@@ -34,3 +34,17 @@ export class Stage {
     this.updatedAt = params.updatedAt;
   }
 }
+export const StageKeys: { [P in keyof Stage]: P } = {
+  id: 'id',
+  projectId: 'projectId',
+  name: 'name',
+  description: 'description',
+  percentage: 'percentage',
+  adjustedPercentage: 'adjustedPercentage',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type StageKeysType = (typeof StageKeys)[keyof typeof StageKeys];

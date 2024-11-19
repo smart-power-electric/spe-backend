@@ -36,6 +36,8 @@ import {
   UpdateStageRequest,
 } from './stage.swagger';
 import { createStageSchema, UpdateStageSchema } from '../core/stage.zod';
+import { StageKeys, StageKeysType } from '../core/stage.entity';
+import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
 
 @ApiTags('stage')
 @Controller('stage')
@@ -99,12 +101,18 @@ export class StageController {
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'projectId', required: false, type: String })
   @ApiQuery({ name: 'name', required: false, type: String })
+  @ApiQuery({ name: 'sortField', required: false, enum: StageKeys })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   findAllStage(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('projectId') projectId: string,
     @Query('name') name: string,
+    @Query('sortField', new CustomValidateEnumPipe(StageKeys))
+    sortField: StageKeysType,
+    @Query('sortOrder', new CustomValidateEnumPipe(['ASC', 'DESC']))
+    sortOrder: 'ASC' | 'DESC',
   ): Promise<StagePaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -113,7 +121,12 @@ export class StageController {
       'findAll',
       'Getting all stages',
     );
-    return this.application.getAll(ctx, limit, offset, { projectId, name });
+    return this.application.getAll(ctx, limit, offset, {
+      projectId,
+      name,
+      sortField,
+      sortOrder,
+    });
   }
 
   @Get(':id')

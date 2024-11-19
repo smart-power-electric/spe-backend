@@ -1,3 +1,4 @@
+import { StageKeys, StageKeysType } from './../core/stage.entity';
 import { Inject, Injectable } from '@nestjs/common';
 import { Context } from 'src/common/core/context.entity';
 import { ILogger } from 'src/common/core/logger.interface';
@@ -7,7 +8,7 @@ import { stages } from 'src/common/infrastructure/schema/schema';
 import { StageGetAllFilters, StageRepository } from '../core/stage.interface';
 import { Stage } from '../core/stage.entity';
 import { StageToStageNew, StageToRow, RowToStage } from './stage.mapper';
-import { and, count, eq, ilike, SQLWrapper } from 'drizzle-orm';
+import { and, asc, count, desc, eq, ilike, SQLWrapper } from 'drizzle-orm';
 
 export type StageRow = typeof stages.$inferSelect;
 export type StageNew = typeof stages.$inferInsert;
@@ -57,11 +58,15 @@ export class DrizzleStageRepository implements StageRepository {
     if (filters.name) {
       sqlFilters.push(ilike(stages.name, `%${filters.name}%`));
     }
+    const sortField = stages[filters.sortField as StageKeysType] ?? stages.name;
+    const sortOrder =
+      filters.sortOrder === 'ASC' ? asc(sortField) : desc(sortField);
     const result = await this.db
       .getDb()
       .select()
       .from(stages)
       .where(and(...sqlFilters))
+      .orderBy(sortOrder)
       .limit(limit)
       .offset(offset)
       .execute();

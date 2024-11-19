@@ -35,6 +35,8 @@ import { ApplicationExceptionResponse } from 'src/common/infrastructure/http/exc
 import { ProjectUseCases } from '../core/project.interface';
 import { ZodValidationPipe } from 'src/common/application/pipes/ZodValidationPipe';
 import { createProjectSchema, UpdateProjectSchema } from '../core/project.zod';
+import { ProjectKeys, ProjectKeysType } from '../core/project.entity';
+import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
 
 @ApiTags('project')
 @Controller('project')
@@ -100,11 +102,17 @@ export class ProjectController {
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'clientId', required: false, type: String })
+  @ApiQuery({ name: 'sortField', required: false, enum: ProjectKeys })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   findAllProject(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('clientId') clientId: string,
+    @Query('sortField', new CustomValidateEnumPipe(ProjectKeys))
+    sortField: ProjectKeysType,
+    @Query('sortOrder', new CustomValidateEnumPipe(['ASC', 'DESC']))
+    sortOrder: 'ASC' | 'DESC',
   ): Promise<ProjectPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -113,7 +121,11 @@ export class ProjectController {
       'findAll',
       'Getting all projects',
     );
-    return this.application.getAll(ctx, limit, offset, { clientId });
+    return this.application.getAll(ctx, limit, offset, {
+      clientId,
+      sortField,
+      sortOrder,
+    });
   }
 
   @Get(':id')

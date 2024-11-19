@@ -4,7 +4,7 @@ import { ILogger } from 'src/common/core/logger.interface';
 import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 import { projects } from 'src/common/infrastructure/schema/schema';
 import { Project } from '../core/project.entity';
-import { and, count, eq, SQLWrapper } from 'drizzle-orm';
+import { and, asc, count, desc, eq, SQLWrapper } from 'drizzle-orm';
 import {
   ProjectGetAllFilters,
   ProjectRepository,
@@ -60,11 +60,15 @@ export class DrizzleProjectRepository implements ProjectRepository {
     if (filter.clientId) {
       filters.push(eq(projects.clientId, filter.clientId));
     }
+    const sortField = projects[filter.sortField] ?? projects.name;
+    const sortOrder =
+      filter.sortOrder === 'ASC' ? asc(sortField) : desc(sortField);
     const result = await this.db
       .getDb()
       .select()
       .from(projects)
       .where(and(...filters))
+      .orderBy(sortOrder)
       .limit(limit)
       .offset(offset)
       .execute();

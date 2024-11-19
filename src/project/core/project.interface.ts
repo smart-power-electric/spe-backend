@@ -1,9 +1,11 @@
 import { Context } from 'src/common/core/context.entity';
-import { Project } from './project.entity';
+import { Project, ProjectKeysType } from './project.entity';
 import { CreateProjectDto, UpdateProjectDto } from './project.dto';
 
 export type ProjectGetAllFilters = {
   clientId?: string;
+  sortField: ProjectKeysType;
+  sortOrder: 'ASC' | 'DESC';
 };
 export interface ProjectRepository {
   insert(ctx: Context, row: Project): Promise<Project | null>;

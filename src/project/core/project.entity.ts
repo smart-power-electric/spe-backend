@@ -31,3 +31,16 @@ export class Project {
     this.updatedAt = params.updatedAt;
   }
 }
+export const ProjectKeys: { [P in keyof Project]: P } = {
+  id: 'id',
+  clientId: 'clientId',
+  name: 'name',
+  description: 'description',
+  location: 'location',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type ProjectKeysType = (typeof ProjectKeys)[keyof typeof ProjectKeys];

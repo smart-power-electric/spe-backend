@@ -19,3 +19,13 @@ export class Material {
     this.updatedAt = params.updatedAt;
   }
 }
+
+export const MaterialKeys: { [P in keyof Material]: P } = {
+  id: 'id',
+  name: 'name',
+  unitCost: 'unitCost',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type MaterialKeysType = (typeof MaterialKeys)[keyof typeof MaterialKeys];

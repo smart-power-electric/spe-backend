@@ -1,9 +1,11 @@
 import { Context } from 'src/common/core/context.entity';
-import { Material } from './material.entity';
+import { Material, MaterialKeysType } from './material.entity';
 import { CreateMaterialDto, UpdateMaterialDto } from './material.dto';
 
 export type MaterialFilters = {
   name?: string;
+  sortField?: MaterialKeysType;
+  sortOrder?: 'ASC' | 'DESC';
 };
 export interface MaterialRepository {
   insert(ctx: Context, row: Material): Promise<Material | null>;

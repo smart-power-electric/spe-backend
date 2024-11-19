@@ -8,13 +8,13 @@ import {
   MaterialFilters,
   MaterialRepository,
 } from '../core/material.interface';
-import { Material } from '../core/material.entity';
+import { Material, MaterialKeysType } from '../core/material.entity';
 import {
   MaterialToMaterialNew,
   MaterialToRow,
   RowToMaterial,
 } from './material.mapper';
-import { and, count, eq, ilike, SQLWrapper } from 'drizzle-orm';
+import { and, asc, count, desc, eq, ilike, SQLWrapper } from 'drizzle-orm';
 
 export type MaterialRow = typeof materials.$inferSelect;
 export type MaterialNew = typeof materials.$inferInsert;
@@ -61,11 +61,16 @@ export class DrizzleMaterialRepository implements MaterialRepository {
     if (filters.name) {
       sqlFilters.push(ilike(materials.name, `%${filters.name}%`));
     }
+    const sortField =
+      materials[filters.sortField as MaterialKeysType] ?? materials.name;
+    const sortOrder =
+      filters.sortOrder === 'ASC' ? asc(sortField) : desc(sortField);
     const result = await this.db
       .getDb()
       .select()
       .from(materials)
       .where(and(...sqlFilters))
+      .orderBy(sortOrder)
       .limit(limit)
       .offset(offset)
       .execute();

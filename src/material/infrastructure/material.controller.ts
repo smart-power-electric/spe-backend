@@ -39,6 +39,8 @@ import {
   createMaterialSchema,
   UpdateMaterialSchema,
 } from '../core/material.zod';
+import { MaterialKeys, MaterialKeysType } from '../core/material.entity';
+import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
 
 @ApiTags('material')
 @Controller('material')
@@ -107,10 +109,16 @@ export class MaterialController {
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'name', required: false, type: String })
+  @ApiQuery({ name: 'sortField', required: false, enum: MaterialKeys })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   findAllMaterial(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
+    @Query('sortField', new CustomValidateEnumPipe(MaterialKeys))
+    sortField: MaterialKeysType,
+    @Query('sortOrder', new CustomValidateEnumPipe(['ASC', 'DESC']))
+    sortOrder: 'ASC' | 'DESC',
     @Query('name') name: string,
   ): Promise<MaterialPaginationResponse> {
     const ctx = req.appContext;
@@ -120,7 +128,11 @@ export class MaterialController {
       'findAll',
       'Getting all materials',
     );
-    return this.application.getAll(ctx, limit, offset, { name });
+    return this.application.getAll(ctx, limit, offset, {
+      name,
+      sortField,
+      sortOrder,
+    });
   }
 
   @Get(':id')

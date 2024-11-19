@@ -3,10 +3,12 @@ import {
   CreateNotificationsDto,
   UpdateNotificationsDto,
 } from './notifications.dto';
-import { Notifications } from './notifications.entity';
+import { Notifications, NotificationsKeysType } from './notifications.entity';
 export type NotificationsFilter = {
   invoiceId?: string;
   clientId?: string;
+  sortField?: NotificationsKeysType;
+  sortOrder?: 'ASC' | 'DESC';
 };
 export interface NotificationsRepository {
   insert(ctx: Context, row: Notifications): Promise<Notifications | null>;

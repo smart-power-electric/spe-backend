@@ -22,3 +22,14 @@ export class Notifications {
     this.updatedAt = params.updatedAt;
   }
 }
+export const NotificationsKeys: { [P in keyof Notifications]: P } = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  clientId: 'clientId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type NotificationsKeysType =
+  (typeof NotificationsKeys)[keyof typeof NotificationsKeys];

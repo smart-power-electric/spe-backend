@@ -5,7 +5,7 @@ import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { notifications } from 'src/common/infrastructure/schema/schema';
 
-import { and, count, eq, SQLWrapper } from 'drizzle-orm';
+import { and, asc, count, desc, eq, SQLWrapper } from 'drizzle-orm';
 import {
   NotificationsFilter,
   NotificationsRepository,
@@ -15,7 +15,10 @@ import {
   NotificationsToRow,
   NotificationsToNotificationsNew,
 } from './notifications.mapper';
-import { Notifications } from '../core/notifications.entity';
+import {
+  Notifications,
+  NotificationsKeysType,
+} from '../core/notifications.entity';
 
 export type NotificationsRow = typeof notifications.$inferSelect;
 export type NotificationsNew = typeof notifications.$inferInsert;
@@ -65,11 +68,17 @@ export class DrizzleNotificationsRepository implements NotificationsRepository {
     if (filters.clientId) {
       sqlDilters.push(eq(notifications.clientId, filters.clientId));
     }
+    const sortField =
+      notifications[filters.sortField as NotificationsKeysType] ??
+      notifications.clientId;
+    const sortOrder =
+      filters.sortOrder === 'ASC' ? asc(sortField) : desc(sortField);
     const result = await this.db
       .getDb()
       .select()
       .from(notifications)
       .where(and(...sqlDilters))
+      .orderBy(sortOrder)
       .limit(limit)
       .offset(offset)
       .execute();

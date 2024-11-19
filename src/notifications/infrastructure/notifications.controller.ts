@@ -39,6 +39,11 @@ import {
   createNotificationsSchema,
   UpdateNotificationsSchema,
 } from '../core/notifications.zod';
+import {
+  NotificationsKeys,
+  NotificationsKeysType,
+} from '../core/notifications.entity';
+import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
 
 @ApiTags('notifications')
 @Controller('notifications')
@@ -109,10 +114,16 @@ export class NotificationsController {
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'clientId', required: false, type: String })
   @ApiQuery({ name: 'invoiceId', required: false, type: String })
+  @ApiQuery({ name: 'sortField', required: false, enum: NotificationsKeys })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   findAllNotification(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
+    @Query('sortField', new CustomValidateEnumPipe(NotificationsKeys))
+    sortField: NotificationsKeysType,
+    @Query('sortOrder', new CustomValidateEnumPipe(['ASC', 'DESC']))
+    sortOrder: 'ASC' | 'DESC',
     @Query('clientId') clientId: string,
     @Query('invoiceId') invoiceId: string,
   ): Promise<NotificationsPaginationResponse> {
@@ -123,7 +134,12 @@ export class NotificationsController {
       'findAll',
       'Getting all notificationss',
     );
-    return this.application.getAll(ctx, limit, offset, { clientId, invoiceId });
+    return this.application.getAll(ctx, limit, offset, {
+      clientId,
+      invoiceId,
+      sortField,
+      sortOrder,
+    });
   }
 
   @Get(':id')

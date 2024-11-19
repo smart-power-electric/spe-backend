@@ -22,3 +22,13 @@ export class Service {
     this.updatedAt = params.updatedAt;
   }
 }
+export const ServiceKeys: { [P in keyof Service]: P } = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  unitCost: 'unitCost',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type ServiceKeysType = (typeof ServiceKeys)[keyof typeof ServiceKeys];

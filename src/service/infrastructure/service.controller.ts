@@ -36,6 +36,8 @@ import {
   UpdateServiceRequest,
 } from './service.swagger';
 import { createServiceSchema, UpdateServiceSchema } from '../core/service.zod';
+import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
+import { ServiceKeys, ServiceKeysType } from '../core/service.entity';
 
 @ApiTags('service')
 @Controller('service')
@@ -101,10 +103,16 @@ export class ServiceController {
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'name', required: false, type: String })
+  @ApiQuery({ name: 'sortField', required: false, enum: ServiceKeys })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   findAllService(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
+    @Query('sortField', new CustomValidateEnumPipe(ServiceKeys))
+    sortField: ServiceKeysType,
+    @Query('sortOrder', new CustomValidateEnumPipe(['ASC', 'DESC']))
+    sortOrder: 'ASC' | 'DESC',
     @Query('name') name?: string,
   ): Promise<ServicePaginationResponse> {
     const ctx = req.appContext;
@@ -114,7 +122,11 @@ export class ServiceController {
       'findAll',
       'Getting all services',
     );
-    return this.application.getAll(ctx, limit, offset, { name });
+    return this.application.getAll(ctx, limit, offset, {
+      name,
+      sortField,
+      sortOrder,
+    });
   }
 
   @Get(':id')

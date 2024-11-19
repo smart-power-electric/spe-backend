@@ -11,7 +11,7 @@ import {
   ServiceToRow,
   RowToService,
 } from './service.mapper';
-import { and, count, eq, SQLWrapper } from 'drizzle-orm';
+import { and, asc, count, desc, eq, SQLWrapper } from 'drizzle-orm';
 
 export type ServiceRow = typeof services.$inferSelect;
 export type ServiceNew = typeof services.$inferInsert;
@@ -58,11 +58,15 @@ export class DrizzleServiceRepository implements ServiceRepository {
     if (filters.name) {
       sqlFilters.push(eq(services.name, filters.name));
     }
+    const sortField = services[filters.sortField] ?? services.name;
+    const sqlSortField =
+      filters.sortOrder === 'ASC' ? asc(sortField) : desc(sortField);
     const result = await this.db
       .getDb()
       .select()
       .from(services)
       .where(and(...sqlFilters))
+      .orderBy(sqlSortField)
       .limit(limit)
       .offset(offset)
       .execute();

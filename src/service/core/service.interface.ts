@@ -1,9 +1,11 @@
 import { Context } from 'src/common/core/context.entity';
-import { Service } from './service.entity';
+import { Service, ServiceKeysType } from './service.entity';
 import { CreateServiceDto, UpdateServiceDto } from './service.dto';
 
 export type ServiceFilter = {
   name?: string;
+  sortField: ServiceKeysType;
+  sortOrder: 'ASC' | 'DESC';
 };
 export interface ServiceRepository {
   insert(ctx: Context, row: Service): Promise<Service | null>;

@@ -39,6 +39,11 @@ import {
   createWorkerPaymentsSchema,
   UpdateWorkerPaymentsSchema,
 } from '../core/workerPayments.zod';
+import {
+  WorkerPaymentsKeys,
+  WorkerPaymentsKeysType,
+} from '../core/workerPayments.entity';
+import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
 
 @ApiTags('workerPayments')
 @Controller('worker-payments')
@@ -109,12 +114,18 @@ export class WorkerPaymentsController {
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'workerId', required: false, type: String })
   @ApiQuery({ name: 'serviceSheetId', required: false, type: String })
+  @ApiQuery({ name: 'sortField', required: false, enum: WorkerPaymentsKeys })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
   findAllWorkerPayments(
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
     @Query('workerId') workerId: string,
     @Query('serviceSheetId') serviceSheetId: string,
+    @Query('sortField', new CustomValidateEnumPipe(WorkerPaymentsKeys))
+    sortField: WorkerPaymentsKeysType,
+    @Query('sortOrder', new CustomValidateEnumPipe(['ASC', 'DESC']))
+    sortOrder: 'ASC' | 'DESC',
   ): Promise<WorkerPaymentsPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -126,6 +137,8 @@ export class WorkerPaymentsController {
     return this.application.getAll(ctx, limit, offset, {
       workerId,
       serviceSheetId,
+      sortField,
+      sortOrder,
     });
   }
 

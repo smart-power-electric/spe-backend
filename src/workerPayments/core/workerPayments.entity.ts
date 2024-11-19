@@ -28,3 +28,16 @@ export class WorkerPayments {
     this.updatedAt = params.updatedAt;
   }
 }
+export const WorkerPaymentsKeys: { [P in keyof WorkerPayments]: P } = {
+  id: 'id',
+  workerId: 'workerId',
+  serviceSheetId: 'serviceSheetId',
+  totalPayment: 'totalPayment',
+  paymentDate: 'paymentDate',
+  isExtra: 'isExtra',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type WorkerPaymentsKeysType =
+  (typeof WorkerPaymentsKeys)[keyof typeof WorkerPaymentsKeys];

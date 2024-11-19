@@ -3,11 +3,16 @@ import {
   CreateWorkerPaymentsDto,
   UpdateWorkerPaymentsDto,
 } from './workerPayments.dto';
-import { WorkerPayments } from './workerPayments.entity';
+import {
+  WorkerPayments,
+  WorkerPaymentsKeysType,
+} from './workerPayments.entity';
 
 export type WorkerPaymentsFilters = {
   workerId?: string;
   serviceSheetId?: string;
+  sortField?: WorkerPaymentsKeysType;
+  sortOrder?: 'ASC' | 'DESC';
 };
 export interface WorkerPaymentsRepository {
   insert(ctx: Context, row: WorkerPayments): Promise<WorkerPayments | null>;

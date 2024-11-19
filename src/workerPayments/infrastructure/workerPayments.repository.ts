@@ -5,7 +5,7 @@ import { DrizzleDb } from 'src/common/infrastructure/database/drizzleDb';
 
 import { workerPayments } from 'src/common/infrastructure/schema/schema';
 
-import { and, count, eq, SQLWrapper } from 'drizzle-orm';
+import { and, asc, count, desc, eq, SQLWrapper } from 'drizzle-orm';
 import {
   WorkerPaymentsFilters,
   WorkerPaymentsRepository,
@@ -15,7 +15,10 @@ import {
   WorkerPaymentsToRow,
   WorkerPaymentsToWorkerPaymentsNew,
 } from './workerPayments.mapper';
-import { WorkerPayments } from '../core/workerPayments.entity';
+import {
+  WorkerPayments,
+  WorkerPaymentsKeysType,
+} from '../core/workerPayments.entity';
 
 export type WorkerPaymentsRow = typeof workerPayments.$inferSelect;
 export type WorkerPaymentsNew = typeof workerPayments.$inferInsert;
@@ -69,11 +72,17 @@ export class DrizzleWorkerPaymentsRepository
         eq(workerPayments.serviceSheetId, filters.serviceSheetId),
       );
     }
+    const sortField =
+      workerPayments[filters.sortField as WorkerPaymentsKeysType] ??
+      workerPayments.workerId;
+    const sortOrder =
+      filters.sortOrder === 'ASC' ? asc(sortField) : desc(sortField);
     const result = await this.db
       .getDb()
       .select()
       .from(workerPayments)
       .where(and(...sqlFilters))
+      .orderBy(sortOrder)
       .limit(limit)
       .offset(offset)
       .execute();

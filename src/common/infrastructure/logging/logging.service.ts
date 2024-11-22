@@ -220,10 +220,19 @@ function getLocalTransport() {
  * @returns {winston.Logform.Format} The custom log format.
  */
 function customFormat() {
-  return format.printf(
-    ({ level, message, timestamp, stack, metadata }) =>
-      `${metadata ? metadata.service : 'HttpServer'} [${level.toUpperCase()}] ${metadata.requestId ?? ''} ${timestamp || new Date().toISOString()} ${metadata.elapsedTime ?? 0}ms : ${stack || message} ${metadata ? JSON.stringify({ ...metadata, service: undefined, requestId: undefined, elapsedTime: undefined }) : ''}`,
-  );
+  return format.printf(({ level, message, timestamp, stack, metadata }) => {
+    if (typeof metadata !== 'object') {
+      return `[${level.toUpperCase()}] ${timestamp || new Date().toISOString()} ${stack || message}`;
+    }
+    const service = (metadata as { service?: string })?.service ?? 'HttpServer';
+    const requestId = (metadata as { requestId?: string })?.requestId ?? '';
+    const elapsedTime =
+      (metadata as { elapsedTime?: number })?.elapsedTime ?? 0;
+    return `${service} [${level.toUpperCase()}] ${requestId} ${timestamp || new Date().toISOString()} ${elapsedTime}ms : ${stack || message} ${JSON.stringify({ ...metadata, service: undefined, requestId: undefined, elapsedTime: undefined })}`.replace(
+      /"/g,
+      '',
+    );
+  });
 }
 
 export function getConsoleTransport() {

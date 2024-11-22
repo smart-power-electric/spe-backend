@@ -59,7 +59,6 @@ export class MaterialController {
     type: MaterialResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -97,7 +96,6 @@ export class MaterialController {
     type: MaterialPaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -142,7 +140,6 @@ export class MaterialController {
   })
   @ApiOkResponse({ description: 'Material found', type: MaterialResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -167,7 +164,6 @@ export class MaterialController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Material updated', type: MaterialResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -198,7 +194,6 @@ export class MaterialController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Material deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

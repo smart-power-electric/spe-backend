@@ -19,3 +19,8 @@ export const UpdateNotificationsSchema = z.object({
     .describe('Client id of notifications'),
   status: z.string().nullable().optional().describe('Status of notifications'),
 });
+
+export const EmailTestSchema = z
+  .string()
+  .email()
+  .describe('Email to send test');

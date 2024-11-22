@@ -52,7 +52,6 @@ export class ProjectController {
   @HttpCode(201)
   @ApiCreatedResponse({ description: 'Project created', type: ProjectResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -90,7 +89,6 @@ export class ProjectController {
     type: ProjectPaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -135,7 +133,6 @@ export class ProjectController {
   })
   @ApiOkResponse({ description: 'Project found', type: ProjectResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -160,7 +157,6 @@ export class ProjectController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Project updated', type: ProjectResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -186,7 +182,6 @@ export class ProjectController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Project deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

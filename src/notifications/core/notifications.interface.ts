@@ -49,5 +49,6 @@ export interface NotificationsUseCases {
     row: UpdateNotificationsDto,
   ): Promise<Notifications>;
   delete(ctx: Context, id: string): Promise<Notifications>;
+  sendTestEmail(ctx: Context, to: string): Promise<void>;
 }
 export const NotificationsUseCases = Symbol('NotificationsUseCases');

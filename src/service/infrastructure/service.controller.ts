@@ -53,7 +53,6 @@ export class ServiceController {
   @HttpCode(201)
   @ApiCreatedResponse({ description: 'Service created', type: ServiceResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -91,7 +90,6 @@ export class ServiceController {
     type: ServicePaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -136,7 +134,6 @@ export class ServiceController {
   })
   @ApiOkResponse({ description: 'Service found', type: ServiceResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -161,7 +158,6 @@ export class ServiceController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Service updated', type: ServiceResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -187,7 +183,6 @@ export class ServiceController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Service deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

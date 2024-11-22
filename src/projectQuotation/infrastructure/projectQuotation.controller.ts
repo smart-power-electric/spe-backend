@@ -58,7 +58,6 @@ export class ProjectQuotationController {
     type: ProjectQuotationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -96,7 +95,6 @@ export class ProjectQuotationController {
     type: ProjectQuotationPaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -142,7 +140,6 @@ export class ProjectQuotationController {
     type: ProjectQuotationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -170,7 +167,6 @@ export class ProjectQuotationController {
     type: ProjectQuotationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -201,7 +197,6 @@ export class ProjectQuotationController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'ProjectQuotation deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

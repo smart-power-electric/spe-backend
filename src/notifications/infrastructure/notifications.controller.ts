@@ -37,6 +37,7 @@ import {
 } from './notifications.swagger';
 import {
   createNotificationsSchema,
+  EmailTestSchema,
   UpdateNotificationsSchema,
 } from '../core/notifications.zod';
 import {
@@ -63,7 +64,6 @@ export class NotificationsController {
     type: NotificationsResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -101,7 +101,6 @@ export class NotificationsController {
     type: NotificationsPaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -152,7 +151,6 @@ export class NotificationsController {
     type: NotificationsResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -180,7 +178,6 @@ export class NotificationsController {
     type: NotificationsResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -211,7 +208,6 @@ export class NotificationsController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Notifications deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -230,5 +226,32 @@ export class NotificationsController {
       'Deleting notifications',
     );
     return this.application.delete(ctx, id);
+  }
+
+  @Post('email-test/:to')
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'Email sent' })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiParam({ name: 'to', type: String })
+  sendTestEmail(
+    @Req() req: Request,
+    @Param('to', new ZodValidationPipe(EmailTestSchema)) to: string,
+  ) {
+    const ctx = req.appContext;
+    this.logger.info(
+      ctx,
+      NotificationsController.name,
+      'sendTestEmail',
+      `Sending test email to ${to}`,
+    );
+    return this.application.sendTestEmail(ctx, to);
   }
 }

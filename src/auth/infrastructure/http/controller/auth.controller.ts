@@ -62,7 +62,6 @@ export class AuthrController {
     type: LoginResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -102,7 +101,6 @@ export class AuthrController {
   })
   @ApiOkResponse({ description: 'User logged out' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -135,7 +133,6 @@ export class AuthrController {
     type: LoginResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -171,7 +168,6 @@ export class AuthrController {
     type: UserResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -213,7 +209,6 @@ export class AuthrController {
     type: AssignRoleResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -250,7 +245,6 @@ export class AuthrController {
     type: RemoveRoleFromUserRequest,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -287,7 +281,6 @@ export class AuthrController {
     type: [RoleResponse],
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

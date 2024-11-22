@@ -16,13 +16,16 @@ import {
 } from '../core/notifications.dto';
 import { Notifications } from '../core/notifications.entity';
 import { CreateDtoToNotifications } from '../infrastructure/notifications.mapper';
+import { MailService } from '../core/mail.interface';
 
 @Injectable()
 export class NotificationsApplication implements NotificationsUseCases {
   constructor(
     @Inject(NotificationsRepository)
     private readonly repository: NotificationsRepository,
-    @Inject(ILogger) private readonly logger: ILogger,
+    @Inject(MailService) private readonly mailService: MailService,
+    @Inject(ILogger)
+    private readonly logger: ILogger,
   ) {
     this.logger.init(NotificationsApplication.name, 'info');
   }
@@ -117,5 +120,28 @@ export class NotificationsApplication implements NotificationsUseCases {
       throw new InternalErrorException(ctx, 'Notifications not deleted');
     }
     return deleted;
+  }
+
+  async sendTestEmail(ctx: Context, to: string): Promise<void> {
+    this.logger.info(
+      ctx,
+      NotificationsApplication.name,
+      'sendTestEmail',
+      `Sending test email to ${to}`,
+    );
+    try {
+      const subject = 'Test Email';
+      const body = 'This is a test email from NotificationsApplication.';
+      await this.mailService.sendMail(ctx, to, subject, body);
+    } catch (error) {
+      this.logger.error(
+        ctx,
+        NotificationsApplication.name,
+        'sendTestEmail',
+        `Failed to send test email to ${to}`,
+        error,
+      );
+      throw new InternalErrorException(ctx, 'Failed to send test email');
+    }
   }
 }

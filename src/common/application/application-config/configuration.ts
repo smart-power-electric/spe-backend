@@ -22,6 +22,11 @@ export default function Config(): Config {
       expirationToken: process.env.JWT_EXPIRATION_TOKEN ?? '1h',
       expirationRefreshToken: process.env.JWT_EXPIRATION_REFRESH_TOKEN ?? '7d',
     },
+    gmailEmail: {
+      senderEmail: process.env.EMAIL_SENDER_EMAIL ?? 'email@email.com',
+      senderName: process.env.EMAIL_SENDER_NAME ?? 'Smart Power Electric',
+      senderPassword: process.env.EMAIL_SENDER_PASSWORD ?? 'password',
+    },
   };
 
   return config;

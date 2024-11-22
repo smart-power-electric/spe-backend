@@ -56,7 +56,6 @@ export class UserController {
     type: UserResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -94,7 +93,6 @@ export class UserController {
     type: UserPaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -131,7 +129,6 @@ export class UserController {
     type: [RoleResponse],
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -165,7 +162,6 @@ export class UserController {
     type: UserResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -193,7 +189,6 @@ export class UserController {
     type: UserResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -219,7 +214,6 @@ export class UserController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'User deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

@@ -21,6 +21,11 @@ export type JwtConfig = {
   expirationToken: string;
   expirationRefreshToken: string;
 };
+export type GmailEmailConfig = {
+  senderEmail: string;
+  senderName: string;
+  senderPassword: string;
+};
 /**
  * Represents the configuration object.
  *
@@ -35,4 +40,5 @@ export type Config = {
   maxFileSize: number;
   database: DatabaseConfig;
   jwt: JwtConfig;
+  gmailEmail: GmailEmailConfig;
 };

@@ -58,7 +58,6 @@ export class WorkerAssignmentController {
     type: WorkerAssignmentResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -96,7 +95,6 @@ export class WorkerAssignmentController {
     type: WorkerAssignmentPaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -142,7 +140,6 @@ export class WorkerAssignmentController {
     type: WorkerAssignmentResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -170,7 +167,6 @@ export class WorkerAssignmentController {
     type: WorkerAssignmentResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -201,7 +197,6 @@ export class WorkerAssignmentController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'WorkerAssignment deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

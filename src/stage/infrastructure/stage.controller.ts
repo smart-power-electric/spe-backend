@@ -53,7 +53,6 @@ export class StageController {
   @HttpCode(201)
   @ApiCreatedResponse({ description: 'Stage created', type: StageResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -88,7 +87,6 @@ export class StageController {
   })
   @ApiOkResponse({ description: 'All stages', type: StagePaginationResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -136,7 +134,6 @@ export class StageController {
   })
   @ApiOkResponse({ description: 'Stage found', type: StageResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -161,7 +158,6 @@ export class StageController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Stage updated', type: StageResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -187,7 +183,6 @@ export class StageController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Stage deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

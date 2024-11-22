@@ -52,7 +52,6 @@ export class ClientController {
   @HttpCode(201)
   @ApiCreatedResponse({ description: 'Client created', type: ClientResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -87,7 +86,6 @@ export class ClientController {
   })
   @ApiOkResponse({ description: 'All clients', type: ClientPaginationResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -135,7 +133,6 @@ export class ClientController {
   })
   @ApiOkResponse({ description: 'Client found', type: ClientResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -160,7 +157,6 @@ export class ClientController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Client updated', type: ClientResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -186,7 +182,6 @@ export class ClientController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Client deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

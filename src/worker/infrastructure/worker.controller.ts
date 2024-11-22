@@ -54,7 +54,6 @@ export class WorkerController {
   @HttpCode(201)
   @ApiCreatedResponse({ description: 'Worker created', type: WorkerResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -89,7 +88,6 @@ export class WorkerController {
   })
   @ApiOkResponse({ description: 'All workers', type: WorkerPaginationResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -134,7 +132,6 @@ export class WorkerController {
   })
   @ApiOkResponse({ description: 'Worker found', type: WorkerResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -159,7 +156,6 @@ export class WorkerController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Worker updated', type: WorkerResponse })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -183,9 +179,8 @@ export class WorkerController {
 
   @Delete(':id')
   @HttpCode(200)
-  @ApiOkResponse({ status: '2XX', description: 'Worker deleted' })
+  @ApiOkResponse({ description: 'Worker deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

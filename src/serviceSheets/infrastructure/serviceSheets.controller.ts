@@ -58,7 +58,6 @@ export class ServiceSheetsController {
     type: ServiceSheetsResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -96,7 +95,6 @@ export class ServiceSheetsController {
     type: ServiceSheetsPaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -136,7 +134,6 @@ export class ServiceSheetsController {
     type: ServiceSheetsResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -164,7 +161,6 @@ export class ServiceSheetsController {
     type: ServiceSheetsResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -195,7 +191,6 @@ export class ServiceSheetsController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'ServiceSheets deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

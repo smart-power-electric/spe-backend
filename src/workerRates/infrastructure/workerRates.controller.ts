@@ -58,7 +58,6 @@ export class WorkerRatesController {
     type: WorkerRatesResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -96,7 +95,6 @@ export class WorkerRatesController {
     type: WorkerRatesPaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -134,7 +132,6 @@ export class WorkerRatesController {
     type: WorkerRatesResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -162,7 +159,6 @@ export class WorkerRatesController {
     type: WorkerRatesResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -193,7 +189,6 @@ export class WorkerRatesController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'WorkerRates deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

@@ -59,7 +59,6 @@ export class InvoicesController {
     type: InvoicesResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -97,7 +96,6 @@ export class InvoicesController {
     type: InvoicesPaginationResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -145,7 +143,6 @@ export class InvoicesController {
     type: InvoicesResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -173,7 +170,6 @@ export class InvoicesController {
     type: InvoicesResponse,
   })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })
@@ -204,7 +200,6 @@ export class InvoicesController {
   @HttpCode(200)
   @ApiOkResponse({ description: 'Invoices deleted' })
   @ApiBadRequestResponse({
-    status: 400,
     description: 'Bad request',
     type: ApplicationExceptionResponse,
   })

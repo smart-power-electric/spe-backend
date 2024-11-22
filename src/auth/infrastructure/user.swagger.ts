@@ -128,19 +128,19 @@ export class UserResponse implements UserRow {
   })
   isEnabled: boolean;
   @ApiProperty({
-    type: 'date',
+    type: Date,
     description: 'Creation date of the user',
     nullable: false,
   })
   createdAt: Date;
   @ApiProperty({
-    type: 'date',
+    type: Date,
     description: 'Update date of the user',
     nullable: true,
   })
   updatedAt: Date | null;
   @ApiProperty({
-    type: 'date',
+    type: Date,
     description: 'Deletion date of the user',
     nullable: true,
   })
@@ -243,13 +243,13 @@ export class LoginResponse implements LoggedUser {
   })
   refreshTokenExpiresIn: number;
   @ApiProperty({
-    type: 'date',
+    type: Date,
     description: 'Access token expiration date',
     nullable: false,
   })
   accessTokenExpiresAt: Date;
   @ApiProperty({
-    type: 'date',
+    type: Date,
     description: 'Refresh token expiration date',
     nullable: false,
   })

@@ -19,7 +19,6 @@ export function RowToWorkerRates(row: WorkerRatesRow): WorkerRates {
 export function WorkerRatesToRow(item: WorkerRates): WorkerRatesRow {
   return {
     id: item.id,
-    workerId: item.workerId,
     rate: item.rate,
     effectiveDate: item.effectiveDate,
     createdAt: item.createdAt,
@@ -29,7 +28,6 @@ export function WorkerRatesToRow(item: WorkerRates): WorkerRatesRow {
 
 export function WorkerRatesToWorkerRatesNew(item: WorkerRates): WorkerRatesNew {
   return {
-    workerId: item.workerId,
     rate: item.rate,
     effectiveDate: item.effectiveDate,
     createdAt: item.createdAt,

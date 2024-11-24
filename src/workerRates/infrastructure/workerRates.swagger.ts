@@ -8,12 +8,6 @@ import { WorkerRates } from '../core/workerRates.entity';
 
 export class CreateWorkerRatesRequest implements CreateWorkerRatesDto {
   @ApiProperty({
-    type: 'string',
-    description: 'Name of the workerRates',
-    nullable: true,
-  })
-  workerId: string | null;
-  @ApiProperty({
     type: 'number',
     description: 'Rate of the workerRates',
     nullable: true,
@@ -27,19 +21,12 @@ export class CreateWorkerRatesRequest implements CreateWorkerRatesDto {
   effectiveDate: Date | null;
 
   constructor(data: CreateWorkerRatesDto) {
-    this.workerId = data.workerId;
     this.rate = data.rate;
     this.effectiveDate = data.effectiveDate;
   }
 }
 
 export class UpdateWorkerRatesRequest implements UpdateWorkerRatesDto {
-  @ApiPropertyOptional({
-    type: 'string',
-    description: 'Name of the workerRates',
-    nullable: true,
-  })
-  workerId?: string | null;
   @ApiPropertyOptional({
     type: 'number',
     description: 'Rate of the workerRates',
@@ -53,7 +40,6 @@ export class UpdateWorkerRatesRequest implements UpdateWorkerRatesDto {
   })
   effectiveDate?: Date | null;
   constructor(data: UpdateWorkerRatesDto) {
-    this.workerId = data.workerId;
     this.rate = data.rate;
     this.effectiveDate = data.effectiveDate;
   }
@@ -66,12 +52,6 @@ export class WorkerRatesResponse implements WorkerRatesRow {
     nullable: false,
   })
   id: string;
-  @ApiProperty({
-    type: 'string',
-    description: 'Name of the workerRates',
-    nullable: true,
-  })
-  workerId: string | null;
   @ApiProperty({
     type: 'number',
     description: 'Rate of the workerRates',
@@ -99,7 +79,6 @@ export class WorkerRatesResponse implements WorkerRatesRow {
 
   constructor(data: WorkerRates) {
     this.id = data.id;
-    this.workerId = data.workerId;
     this.rate = data.rate;
     this.effectiveDate = data.effectiveDate;
     this.createdAt = data.createdAt;

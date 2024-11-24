@@ -1,5 +1,6 @@
 export class Worker {
   id: string;
+  workerRatesId: string | null;
   name: string | null;
   contact: string | null;
   address: string | null;
@@ -13,6 +14,7 @@ export class Worker {
 
   constructor(params: {
     id?: string;
+    workerRatesId: string | null;
     name: string | null;
     contact: string | null;
     address: string | null;
@@ -25,6 +27,7 @@ export class Worker {
     updatedAt: Date | null;
   }) {
     this.id = params.id ?? '';
+    this.workerRatesId = params.workerRatesId;
     this.name = params.name;
     this.contact = params.contact;
     this.address = params.address;
@@ -39,6 +42,7 @@ export class Worker {
 }
 export const WorkerKeys: { [P in keyof Worker]: P } = {
   id: 'id',
+  workerRatesId: 'workerRatesId',
   name: 'name',
   contact: 'contact',
   address: 'address',

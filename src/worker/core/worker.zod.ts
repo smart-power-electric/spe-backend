@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const createWorkerSchema = z.object({
+  workerRatesId: z.string().nullable().describe('Worker rates id'),
   name: z.string().nullable().describe('Name of worker'),
   speciality: z.string().nullable().describe('Speciality of worker'),
   contact: z.string().nullable().describe('Contact of worker'),
@@ -12,6 +13,7 @@ export const createWorkerSchema = z.object({
 });
 
 export const UpdateWorkerSchema = z.object({
+  workerRatesId: z.string().optional().nullable().describe('Worker rates id'),
   name: z.string().nullable().optional().describe('Name of worker'),
   speciality: z.string().nullable().optional().describe('Speciality of worker'),
   contact: z.string().nullable().optional().describe('Contact of worker'),

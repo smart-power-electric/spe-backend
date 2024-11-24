@@ -87,18 +87,19 @@ export const workerAssignmentRelations = relations(
   }),
 );
 
-export const workersRelations = relations(workers, ({ many }) => ({
+export const workersRelations = relations(workers, ({ one, many }) => ({
   workerAssignments: many(workerAssignment),
   workerRatess: many(workerRates),
   serviceSheetss: many(serviceSheets),
   workerPaymentss: many(workerPayments),
+  workersRates: one(workerRates, {
+    fields: [workers.workerRatesId],
+    references: [workerRates.id],
+  }),
 }));
 
-export const workerRatesRelations = relations(workerRates, ({ one }) => ({
-  workers: one(workers, {
-    fields: [workerRates.workerId],
-    references: [workers.id],
-  }),
+export const workerRatesRelations = relations(workerRates, ({ many }) => ({
+  workers: many(workers),
 }));
 
 export const serviceSheetsRelations = relations(

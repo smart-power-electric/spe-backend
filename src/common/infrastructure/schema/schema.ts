@@ -203,9 +203,27 @@ export const workerAssignment = main.table(
     };
   },
 );
+export const workerRates = main.table('worker_rates', {
+  id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+  rate: doublePrecision(),
+  effectiveDate: date('effective_date', { mode: 'date' }),
+  createdAt: timestamp('created_at', {
+    precision: 6,
+    withTimezone: true,
+    mode: 'date',
+  })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', {
+    precision: 6,
+    withTimezone: true,
+    mode: 'date',
+  }),
+});
 
 export const workers = main.table('workers', {
   id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
+  workerRatesId: uuid('worker_rates_id').references(() => workerRates.id),
   name: varchar(),
   speciality: varchar(),
   contact: varchar(),
@@ -228,36 +246,6 @@ export const workers = main.table('workers', {
   }),
 });
 
-export const workerRates = main.table(
-  'worker_rates',
-  {
-    id: uuid('id').primaryKey().$defaultFn(uuidv7).notNull(),
-    workerId: uuid('worker_id'),
-    rate: doublePrecision(),
-    effectiveDate: date('effective_date', { mode: 'date' }),
-    createdAt: timestamp('created_at', {
-      precision: 6,
-      withTimezone: true,
-      mode: 'date',
-    })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp('updated_at', {
-      precision: 6,
-      withTimezone: true,
-      mode: 'date',
-    }),
-  },
-  (table) => {
-    return {
-      workerRatesWorkerIdFkey: foreignKey({
-        columns: [table.workerId],
-        foreignColumns: [workers.id],
-        name: 'worker_rates_worker_id_fkey',
-      }),
-    };
-  },
-);
 
 export const serviceSheets = main.table(
   'service_sheets',

@@ -9,6 +9,12 @@ export class CreateWorkerRequest implements CreateWorkerDto {
     description: 'Name of the worker',
     nullable: true,
   })
+  workerRatesId: string | null;
+  @ApiProperty({
+    type: 'string',
+    description: 'Name of the worker',
+    nullable: true,
+  })
   name: string | null;
   @ApiProperty({
     type: 'string',
@@ -54,6 +60,7 @@ export class CreateWorkerRequest implements CreateWorkerDto {
   endDate: Date | null;
 
   constructor(data: CreateWorkerDto) {
+    this.workerRatesId = data.workerRatesId;
     this.name = data.name;
     this.speciality = data.speciality;
     this.contact = data.contact;
@@ -133,6 +140,12 @@ export class WorkerResponse implements WorkerRow {
     description: 'Id of the worker',
     nullable: false,
   })
+  @ApiProperty({
+    type: 'string',
+    description: 'rate id of the worker',
+    nullable: false,
+  })
+  workerRatesId: string | null;
   id: string;
   @ApiProperty({
     type: 'string',
@@ -196,6 +209,7 @@ export class WorkerResponse implements WorkerRow {
   updatedAt: Date | null;
 
   constructor(data: Worker) {
+    this.workerRatesId = data.workerRatesId;
     this.id = data.id;
     this.name = data.name;
     this.speciality = data.speciality;

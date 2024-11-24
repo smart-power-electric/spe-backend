@@ -110,7 +110,6 @@ export class WorkerRatesController {
     @Req() req: Request,
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number,
-    @Query('workerId') workerId: string,
   ): Promise<WorkerRatesPaginationResponse> {
     const ctx = req.appContext;
     this.logger.info(
@@ -119,7 +118,7 @@ export class WorkerRatesController {
       'findAll',
       'Getting all workerRatess',
     );
-    return this.application.getAll(ctx, limit, offset, { workerId });
+    return this.application.getAll(ctx, limit, offset);
   }
 
   @Get(':id')

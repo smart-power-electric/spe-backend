@@ -43,6 +43,13 @@
       "when": 1731890075216,
       "tag": "0005_ambitious_infant_terrible",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1732449183574,
+      "tag": "0006_loving_gateway",
+      "breakpoints": true
     }
   ]
 }

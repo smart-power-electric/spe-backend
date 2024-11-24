@@ -21,6 +21,7 @@ export function RowToWorker(row: WorkerRow): Worker {
 export function WorkerToRow(item: Worker): WorkerRow {
   return {
     id: item.id,
+    workerRatesId: item.workerRatesId,
     name: item.name,
     speciality: item.speciality,
     contact: item.contact,
@@ -36,6 +37,7 @@ export function WorkerToRow(item: Worker): WorkerRow {
 
 export function WorkerToWorkerNew(item: Worker): WorkerNew {
   return {
+    workerRatesId: item.workerRatesId,
     name: item.name,
     speciality: item.speciality,
     contact: item.contact,

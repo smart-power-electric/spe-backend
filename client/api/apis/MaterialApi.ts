@@ -41,7 +41,9 @@ export interface CreateMaterialOperationRequest {
 export interface FindAllMaterialRequest {
     limit?: number;
     offset?: number;
+    sortOrder?: FindAllMaterialSortOrderEnum;
     name?: string;
+    sortField?: FindAllMaterialSortFieldEnum;
 }
 
 export interface FindOneMaterialRequest {
@@ -112,8 +114,16 @@ export class MaterialApi extends runtime.BaseAPI {
             queryParameters['offset'] = requestParameters['offset'];
         }
 
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
         if (requestParameters['name'] != null) {
             queryParameters['name'] = requestParameters['name'];
+        }
+
+        if (requestParameters['sortField'] != null) {
+            queryParameters['sortField'] = requestParameters['sortField'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -241,3 +251,23 @@ export class MaterialApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const FindAllMaterialSortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type FindAllMaterialSortOrderEnum = typeof FindAllMaterialSortOrderEnum[keyof typeof FindAllMaterialSortOrderEnum];
+/**
+ * @export
+ */
+export const FindAllMaterialSortFieldEnum = {
+    Id: 'id',
+    Name: 'name',
+    UnitCost: 'unitCost',
+    CreatedAt: 'createdAt',
+    UpdatedAt: 'updatedAt'
+} as const;
+export type FindAllMaterialSortFieldEnum = typeof FindAllMaterialSortFieldEnum[keyof typeof FindAllMaterialSortFieldEnum];

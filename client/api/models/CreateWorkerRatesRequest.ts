@@ -20,12 +20,6 @@ import { mapValues } from '../runtime';
  */
 export interface CreateWorkerRatesRequest {
     /**
-     * Name of the workerRates
-     * @type {string}
-     * @memberof CreateWorkerRatesRequest
-     */
-    workerId: string | null;
-    /**
      * Rate of the workerRates
      * @type {number}
      * @memberof CreateWorkerRatesRequest
@@ -43,7 +37,6 @@ export interface CreateWorkerRatesRequest {
  * Check if a given object implements the CreateWorkerRatesRequest interface.
  */
 export function instanceOfCreateWorkerRatesRequest(value: object): value is CreateWorkerRatesRequest {
-    if (!('workerId' in value) || value['workerId'] === undefined) return false;
     if (!('rate' in value) || value['rate'] === undefined) return false;
     if (!('effectiveDate' in value) || value['effectiveDate'] === undefined) return false;
     return true;
@@ -59,7 +52,6 @@ export function CreateWorkerRatesRequestFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'workerId': json['workerId'],
         'rate': json['rate'],
         'effectiveDate': (json['effectiveDate'] == null ? null : new Date(json['effectiveDate'])),
     };
@@ -76,7 +68,6 @@ export function CreateWorkerRatesRequestFromJSONTyped(json: any, ignoreDiscrimin
 
     return {
         
-        'workerId': value['workerId'],
         'rate': value['rate'],
         'effectiveDate': (value['effectiveDate'] == null ? null : (value['effectiveDate'] as any).toISOString()),
     };

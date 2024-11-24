@@ -42,6 +42,8 @@ export interface FindAllInvoiceRequest {
     limit?: number;
     offset?: number;
     stageId?: string;
+    sortOrder?: FindAllInvoiceSortOrderEnum;
+    sortField?: FindAllInvoiceSortFieldEnum;
 }
 
 export interface FindOneInvoiceRequest {
@@ -114,6 +116,14 @@ export class InvoicesApi extends runtime.BaseAPI {
 
         if (requestParameters['stageId'] != null) {
             queryParameters['stageId'] = requestParameters['stageId'];
+        }
+
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
+        if (requestParameters['sortField'] != null) {
+            queryParameters['sortField'] = requestParameters['sortField'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -241,3 +251,26 @@ export class InvoicesApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const FindAllInvoiceSortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type FindAllInvoiceSortOrderEnum = typeof FindAllInvoiceSortOrderEnum[keyof typeof FindAllInvoiceSortOrderEnum];
+/**
+ * @export
+ */
+export const FindAllInvoiceSortFieldEnum = {
+    Id: 'id',
+    Date: 'date',
+    StageId: 'stageId',
+    InvoiceNumber: 'invoiceNumber',
+    TotalAmount: 'totalAmount',
+    ShowMaterials: 'showMaterials',
+    CreatedAt: 'createdAt',
+    UpdatedAt: 'updatedAt'
+} as const;
+export type FindAllInvoiceSortFieldEnum = typeof FindAllInvoiceSortFieldEnum[keyof typeof FindAllInvoiceSortFieldEnum];

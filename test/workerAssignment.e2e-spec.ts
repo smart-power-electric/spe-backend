@@ -30,6 +30,9 @@ import * as sysConsole from 'console';
 import { WorkerRepository } from '../src/worker/core/worker.interface';
 import { DrizzleWorkerRepository } from '../src/worker/infrastructure/worker.repository';
 import { Worker } from '../src/worker/core/worker.entity';
+import { WorkerRates } from '../src/workerRates/core/workerRates.entity';
+import { WorkerRatesRepository } from '../src/workerRates/core/workerRates.interface';
+import { DrizzleWorkerRatesRepository } from '../src/workerRates/infrastructure/workerRates.repository';
 
 describe('WorkerAssignmentModule (e2e)', () => {
   const jestConsole = console;
@@ -41,6 +44,7 @@ describe('WorkerAssignmentModule (e2e)', () => {
   let baseProject: Project;
   let baseClient: Client;
   let baseWorker: Worker;
+  let baseWorkerRate: WorkerRates;
   beforeAll(async () => {
     global.console = sysConsole;
     dbContainer = await new PostgreSqlContainer()
@@ -72,6 +76,10 @@ describe('WorkerAssignmentModule (e2e)', () => {
           provide: WorkerRepository,
           useClass: DrizzleWorkerRepository,
         },
+        {
+          provide: WorkerRatesRepository,
+          useClass: DrizzleWorkerRatesRepository,
+        },
       ],
     }).compile();
     app = moduleFixture.createNestApplication();
@@ -99,6 +107,7 @@ describe('WorkerAssignmentModule (e2e)', () => {
       city: faker.location.city(),
       state: faker.location.state(),
       zip: faker.location.zipCode(),
+      tin: faker.number.int({ min: 1000000, max: 9999999 }).toString(),
       createdAt: new Date(),
       updatedAt: null,
     });
@@ -135,8 +144,13 @@ describe('WorkerAssignmentModule (e2e)', () => {
       (await app
         .get<StageRepository>(StageRepository)
         .insert(newContext(), baseStage)) ?? baseStage;
+    baseWorkerRate =
+      (await app
+        .get<WorkerRatesRepository>(WorkerRatesRepository)
+        .insert(newContext(), baseWorkerRate)) ?? baseWorkerRate;
     baseWorker = new Worker({
       id: undefined,
+      workerRatesId: baseWorkerRate.id,
       name: faker.person.fullName(),
       contact: faker.person.fullName(),
       address: faker.location.streetAddress(),

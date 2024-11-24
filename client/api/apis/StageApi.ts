@@ -43,6 +43,8 @@ export interface FindAllStageRequest {
     offset?: number;
     projectId?: string;
     name?: string;
+    sortOrder?: FindAllStageSortOrderEnum;
+    sortField?: FindAllStageSortFieldEnum;
 }
 
 export interface FindOneStageRequest {
@@ -119,6 +121,14 @@ export class StageApi extends runtime.BaseAPI {
 
         if (requestParameters['name'] != null) {
             queryParameters['name'] = requestParameters['name'];
+        }
+
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
+        if (requestParameters['sortField'] != null) {
+            queryParameters['sortField'] = requestParameters['sortField'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -246,3 +256,28 @@ export class StageApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const FindAllStageSortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type FindAllStageSortOrderEnum = typeof FindAllStageSortOrderEnum[keyof typeof FindAllStageSortOrderEnum];
+/**
+ * @export
+ */
+export const FindAllStageSortFieldEnum = {
+    Id: 'id',
+    ProjectId: 'projectId',
+    Name: 'name',
+    Description: 'description',
+    Percentage: 'percentage',
+    AdjustedPercentage: 'adjustedPercentage',
+    StartDate: 'startDate',
+    EndDate: 'endDate',
+    CreatedAt: 'createdAt',
+    UpdatedAt: 'updatedAt'
+} as const;
+export type FindAllStageSortFieldEnum = typeof FindAllStageSortFieldEnum[keyof typeof FindAllStageSortFieldEnum];

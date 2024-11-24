@@ -27,6 +27,9 @@ import { DrizzleProjectRepository } from '../src/project/infrastructure/project.
 import { DrizzleStageRepository } from '../src/stage/infrastructure/stage.repository';
 import { CommonModule } from '../src/common/common.module';
 import * as sysConsole from 'console';
+import { WorkerRates } from '../src/workerRates/core/workerRates.entity';
+import { WorkerRatesRepository } from '../src/workerRates/core/workerRates.interface';
+import { DrizzleWorkerRatesRepository } from '../src/workerRates/infrastructure/workerRates.repository';
 
 describe('WprkerModule (e2e)', () => {
   const jestConsole = console;
@@ -37,6 +40,7 @@ describe('WprkerModule (e2e)', () => {
   let baseStage: Stage;
   let baseProject: Project;
   let baseClient: Client;
+  let baseWorkerRate: WorkerRates;
   beforeAll(async () => {
     global.console = sysConsole;
     dbContainer = await new PostgreSqlContainer()
@@ -63,6 +67,10 @@ describe('WprkerModule (e2e)', () => {
         {
           provide: StageRepository,
           useClass: DrizzleStageRepository,
+        },
+        {
+          provide: WorkerRatesRepository,
+          useClass: DrizzleWorkerRatesRepository,
         },
       ],
     }).compile();
@@ -91,6 +99,7 @@ describe('WprkerModule (e2e)', () => {
       city: faker.location.city(),
       state: faker.location.state(),
       zip: faker.location.zipCode(),
+      tin: faker.number.int({ min: 1000000, max: 9999999 }).toString(),
       createdAt: new Date(),
       updatedAt: null,
     });
@@ -127,6 +136,17 @@ describe('WprkerModule (e2e)', () => {
       (await app
         .get<StageRepository>(StageRepository)
         .insert(newContext(), baseStage)) ?? baseStage;
+    baseWorkerRate = new WorkerRates({
+      id: undefined,
+      rate: faker.number.float({ min: 0, max: 100 }),
+      effectiveDate: faker.date.recent(),
+      createdAt: new Date(),
+      updatedAt: null,
+    });
+    baseWorkerRate =
+      (await app
+        .get<WorkerRatesRepository>(WorkerRatesRepository)
+        .insert(newContext(), baseWorkerRate)) ?? baseWorkerRate;
     await app.listen(appPort);
   }, 600000);
   afterAll(async () => {
@@ -136,6 +156,7 @@ describe('WprkerModule (e2e)', () => {
 
   it('POST /worker', async () => {
     const newItem: CreateWorkerRequest = {
+      workerRatesId: baseWorkerRate.id,
       name: faker.person.fullName(),
       speciality: faker.lorem.words(),
       contact: faker.person.fullName(),
@@ -163,6 +184,7 @@ describe('WprkerModule (e2e)', () => {
   }, 600000);
   it('GET /worker', async () => {
     const newItem: CreateWorkerRequest = {
+      workerRatesId: baseWorkerRate.id,
       name: faker.person.fullName(),
       speciality: faker.lorem.words(),
       contact: faker.person.fullName(),
@@ -202,6 +224,7 @@ describe('WprkerModule (e2e)', () => {
 
   it('GET /worker/:id', async () => {
     const newItem: CreateWorkerRequest = {
+      workerRatesId: baseWorkerRate.id,
       name: faker.person.fullName(),
       speciality: faker.lorem.words(),
       contact: faker.person.fullName(),
@@ -220,6 +243,7 @@ describe('WprkerModule (e2e)', () => {
 
   it('PATCH /worker/:id', async () => {
     const newItem: CreateWorkerRequest = {
+      workerRatesId: baseWorkerRate.id,
       name: faker.person.fullName(),
       speciality: faker.lorem.words(),
       contact: faker.person.fullName(),
@@ -264,6 +288,7 @@ describe('WprkerModule (e2e)', () => {
 
   it('DELETE /worker/:id', async () => {
     const newItem: CreateWorkerRequest = {
+      workerRatesId: baseWorkerRate.id,
       name: faker.person.fullName(),
       speciality: faker.lorem.words(),
       contact: faker.person.fullName(),

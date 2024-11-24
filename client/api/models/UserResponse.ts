@@ -120,9 +120,9 @@ export function UserResponseFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'password': json['password'],
         'status': json['status'],
         'isEnabled': json['isEnabled'],
-        'createdAt': json['createdAt'],
-        'updatedAt': json['updatedAt'],
-        'deletedAt': json['deletedAt'],
+        'createdAt': (new Date(json['createdAt'])),
+        'updatedAt': (json['updatedAt'] == null ? null : new Date(json['updatedAt'])),
+        'deletedAt': (json['deletedAt'] == null ? null : new Date(json['deletedAt'])),
     };
 }
 
@@ -143,9 +143,9 @@ export function UserResponseFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'password': value['password'],
         'status': value['status'],
         'isEnabled': value['isEnabled'],
-        'createdAt': value['createdAt'],
-        'updatedAt': value['updatedAt'],
-        'deletedAt': value['deletedAt'],
+        'createdAt': ((value['createdAt']).toISOString()),
+        'updatedAt': (value['updatedAt'] == null ? null : (value['updatedAt'] as any).toISOString()),
+        'deletedAt': (value['deletedAt'] == null ? null : (value['deletedAt'] as any).toISOString()),
     };
 }
 

@@ -45,16 +45,16 @@ export interface ProjectResponse {
     location: string | null;
     /**
      * Start date of the project
-     * @type {string}
+     * @type {Date}
      * @memberof ProjectResponse
      */
-    startDate: string | null;
+    startDate: Date | null;
     /**
      * End date of the project
-     * @type {string}
+     * @type {Date}
      * @memberof ProjectResponse
      */
-    endDate: string | null;
+    endDate: Date | null;
     /**
      * Id of the project
      * @type {string}
@@ -105,8 +105,8 @@ export function ProjectResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         'description': json['description'],
         'clientId': json['clientId'],
         'location': json['location'],
-        'startDate': json['startDate'],
-        'endDate': json['endDate'],
+        'startDate': (json['startDate'] == null ? null : new Date(json['startDate'])),
+        'endDate': (json['endDate'] == null ? null : new Date(json['endDate'])),
         'id': json['id'],
         'createdAt': json['createdAt'],
         'updatedAt': json['updatedAt'],
@@ -128,8 +128,8 @@ export function ProjectResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         'description': value['description'],
         'clientId': value['clientId'],
         'location': value['location'],
-        'startDate': value['startDate'],
-        'endDate': value['endDate'],
+        'startDate': (value['startDate'] == null ? null : (value['startDate'] as any).toISOString()),
+        'endDate': (value['endDate'] == null ? null : (value['endDate'] as any).toISOString()),
         'id': value['id'],
         'createdAt': value['createdAt'],
         'updatedAt': value['updatedAt'],

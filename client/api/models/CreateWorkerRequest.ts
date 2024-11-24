@@ -24,6 +24,12 @@ export interface CreateWorkerRequest {
      * @type {string}
      * @memberof CreateWorkerRequest
      */
+    workerRatesId: string | null;
+    /**
+     * Name of the worker
+     * @type {string}
+     * @memberof CreateWorkerRequest
+     */
     name: string | null;
     /**
      * Speciality of the worker
@@ -73,6 +79,7 @@ export interface CreateWorkerRequest {
  * Check if a given object implements the CreateWorkerRequest interface.
  */
 export function instanceOfCreateWorkerRequest(value: object): value is CreateWorkerRequest {
+    if (!('workerRatesId' in value) || value['workerRatesId'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('speciality' in value) || value['speciality'] === undefined) return false;
     if (!('contact' in value) || value['contact'] === undefined) return false;
@@ -94,6 +101,7 @@ export function CreateWorkerRequestFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
+        'workerRatesId': json['workerRatesId'],
         'name': json['name'],
         'speciality': json['speciality'],
         'contact': json['contact'],
@@ -116,6 +124,7 @@ export function CreateWorkerRequestFromJSONTyped(json: any, ignoreDiscriminator:
 
     return {
         
+        'workerRatesId': value['workerRatesId'],
         'name': value['name'],
         'speciality': value['speciality'],
         'contact': value['contact'],

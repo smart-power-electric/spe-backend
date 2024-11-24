@@ -42,6 +42,9 @@ import { DrizzleServiceRepository } from '../src/service/infrastructure/service.
 import { ServiceSheets } from '../src/serviceSheets/core/serviceSheets.entity';
 import { ServiceSheetsRepository } from '../src/serviceSheets/core/serviceSheets.interface';
 import { DrizzleServiceSheetsRepository } from '../src/serviceSheets/infrastructure/serviceSheets.repository';
+import { WorkerRatesRepository } from '../src/workerRates/core/workerRates.interface';
+import { DrizzleWorkerRatesRepository } from '../src/workerRates/infrastructure/workerRates.repository';
+import { WorkerRates } from '../src/workerRates/core/workerRates.entity';
 
 describe('WorkerPaymentsModule (e2e)', () => {
   const jestConsole = console;
@@ -57,6 +60,7 @@ describe('WorkerPaymentsModule (e2e)', () => {
   let baseMaterial: Material;
   let baseService: Service;
   let baseServiceSheet: ServiceSheets;
+  let baseWorkerRate: WorkerRates;
   beforeAll(async () => {
     global.console = sysConsole;
     dbContainer = await new PostgreSqlContainer()
@@ -104,6 +108,10 @@ describe('WorkerPaymentsModule (e2e)', () => {
           provide: ServiceSheetsRepository,
           useClass: DrizzleServiceSheetsRepository,
         },
+        {
+          provide: WorkerRatesRepository,
+          useClass: DrizzleWorkerRatesRepository,
+        },
       ],
     }).compile();
     app = moduleFixture.createNestApplication();
@@ -131,6 +139,7 @@ describe('WorkerPaymentsModule (e2e)', () => {
       city: faker.location.city(),
       state: faker.location.state(),
       zip: faker.location.zipCode(),
+      tin: faker.number.int({ min: 1000000, max: 9999999 }).toString(),
       createdAt: new Date(),
       updatedAt: null,
     });
@@ -167,8 +176,13 @@ describe('WorkerPaymentsModule (e2e)', () => {
       (await app
         .get<StageRepository>(StageRepository)
         .insert(newContext(), baseStage)) ?? baseStage;
+    baseWorkerRate =
+      (await app
+        .get<WorkerRatesRepository>(WorkerRatesRepository)
+        .insert(newContext(), baseWorkerRate)) ?? baseWorkerRate;
     baseWorker = new Worker({
       id: undefined,
+      workerRatesId: baseWorkerRate.id,
       name: faker.person.fullName(),
       contact: faker.person.fullName(),
       address: faker.location.streetAddress(),

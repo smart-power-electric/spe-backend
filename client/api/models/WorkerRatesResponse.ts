@@ -26,12 +26,6 @@ export interface WorkerRatesResponse {
      */
     id: string;
     /**
-     * Name of the workerRates
-     * @type {string}
-     * @memberof WorkerRatesResponse
-     */
-    workerId: string | null;
-    /**
      * Rate of the workerRates
      * @type {number}
      * @memberof WorkerRatesResponse
@@ -62,7 +56,6 @@ export interface WorkerRatesResponse {
  */
 export function instanceOfWorkerRatesResponse(value: object): value is WorkerRatesResponse {
     if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('workerId' in value) || value['workerId'] === undefined) return false;
     if (!('rate' in value) || value['rate'] === undefined) return false;
     if (!('effectiveDate' in value) || value['effectiveDate'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
@@ -81,7 +74,6 @@ export function WorkerRatesResponseFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'id': json['id'],
-        'workerId': json['workerId'],
         'rate': json['rate'],
         'effectiveDate': (json['effectiveDate'] == null ? null : new Date(json['effectiveDate'])),
         'createdAt': (json['createdAt'] == null ? null : new Date(json['createdAt'])),
@@ -101,7 +93,6 @@ export function WorkerRatesResponseFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'id': value['id'],
-        'workerId': value['workerId'],
         'rate': value['rate'],
         'effectiveDate': (value['effectiveDate'] == null ? null : (value['effectiveDate'] as any).toISOString()),
         'createdAt': (value['createdAt'] == null ? null : (value['createdAt'] as any).toISOString()),

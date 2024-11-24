@@ -108,8 +108,8 @@ export function LoginResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'refreshToken': json['refreshToken'],
         'accessTokenExpiresIn': json['accessTokenExpiresIn'],
         'refreshTokenExpiresIn': json['refreshTokenExpiresIn'],
-        'accessTokenExpiresAt': json['accessTokenExpiresAt'],
-        'refreshTokenExpiresAt': json['refreshTokenExpiresAt'],
+        'accessTokenExpiresAt': (new Date(json['accessTokenExpiresAt'])),
+        'refreshTokenExpiresAt': (new Date(json['refreshTokenExpiresAt'])),
     };
 }
 
@@ -130,8 +130,8 @@ export function LoginResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'refreshToken': value['refreshToken'],
         'accessTokenExpiresIn': value['accessTokenExpiresIn'],
         'refreshTokenExpiresIn': value['refreshTokenExpiresIn'],
-        'accessTokenExpiresAt': value['accessTokenExpiresAt'],
-        'refreshTokenExpiresAt': value['refreshTokenExpiresAt'],
+        'accessTokenExpiresAt': ((value['accessTokenExpiresAt']).toISOString()),
+        'refreshTokenExpiresAt': ((value['refreshTokenExpiresAt']).toISOString()),
     };
 }
 

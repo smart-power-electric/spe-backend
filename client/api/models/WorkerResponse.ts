@@ -26,6 +26,12 @@ export interface WorkerResponse {
      */
     id: string;
     /**
+     * rate id of the worker
+     * @type {string}
+     * @memberof WorkerResponse
+     */
+    workerRatesId: string;
+    /**
      * Name of the worker
      * @type {string}
      * @memberof WorkerResponse
@@ -92,6 +98,7 @@ export interface WorkerResponse {
  */
 export function instanceOfWorkerResponse(value: object): value is WorkerResponse {
     if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('workerRatesId' in value) || value['workerRatesId'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('speciality' in value) || value['speciality'] === undefined) return false;
     if (!('contact' in value) || value['contact'] === undefined) return false;
@@ -116,6 +123,7 @@ export function WorkerResponseFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'id': json['id'],
+        'workerRatesId': json['workerRatesId'],
         'name': json['name'],
         'speciality': json['speciality'],
         'contact': json['contact'],
@@ -141,6 +149,7 @@ export function WorkerResponseFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'id': value['id'],
+        'workerRatesId': value['workerRatesId'],
         'name': value['name'],
         'speciality': value['speciality'],
         'contact': value['contact'],

@@ -123,6 +123,7 @@ describe('WorkerRatesModule (e2e)', () => {
       city: faker.location.city(),
       state: faker.location.state(),
       zip: faker.location.zipCode(),
+      tin: faker.number.int({ min: 1000000, max: 9999999 }).toString(),
       createdAt: new Date(),
       updatedAt: null,
     });
@@ -159,23 +160,6 @@ describe('WorkerRatesModule (e2e)', () => {
       (await app
         .get<StageRepository>(StageRepository)
         .insert(newContext(), baseStage)) ?? baseStage;
-    baseWorker = new Worker({
-      id: undefined,
-      name: faker.person.fullName(),
-      contact: faker.person.fullName(),
-      address: faker.location.streetAddress(),
-      phone: faker.phone.number({ style: 'international' }),
-      socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent(),
-      endDate: faker.date.future(),
-      speciality: faker.lorem.words(),
-      createdAt: new Date(),
-      updatedAt: null,
-    });
-    baseWorker =
-      (await app
-        .get<WorkerRepository>(WorkerRepository)
-        .insert(newContext(), baseWorker)) ?? baseWorker;
     baseInvoice = new Invoices({
       id: undefined,
       date: new Date(),
@@ -222,7 +206,6 @@ describe('WorkerRatesModule (e2e)', () => {
 
   it('POST /worker-rates', async () => {
     const newItem: CreateWorkerRatesRequest = {
-      workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
       effectiveDate: faker.date.recent(),
     };
@@ -233,7 +216,6 @@ describe('WorkerRatesModule (e2e)', () => {
     expect(item).toBeDefined();
     expect(item).toBeDefined();
     expect(item.id).toBeDefined();
-    expect(item.workerId).toEqual(newItem.workerId);
     expect(item.rate).toEqual(newItem.rate);
     expect(item.effectiveDate).toBeDefined();
     expect(item.createdAt).toBeDefined();
@@ -241,7 +223,6 @@ describe('WorkerRatesModule (e2e)', () => {
   }, 600000);
   it('GET /worker-rates', async () => {
     const newItem: CreateWorkerRatesRequest = {
-      workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
       effectiveDate: faker.date.recent(),
     };
@@ -254,21 +235,6 @@ describe('WorkerRatesModule (e2e)', () => {
     expect(result.data).toBeDefined();
     expect(result.total).toBeGreaterThan(0);
     expect(result.data?.length).toEqual(result.total);
-
-    const result2 = await api.findAllWorkerRates({
-      workerId: newItem.workerId ?? '',
-    });
-    expect(result2).toBeDefined();
-    expect(result2.data).toBeDefined();
-    expect(result2.total).toBeGreaterThan(0);
-    expect(result2.data?.length).toEqual(result2.total);
-    expect(
-      result2.data.find((x) =>
-        x.workerId
-          ?.toLowerCase()
-          .includes(newItem.workerId?.toLowerCase() ?? ''),
-      ),
-    ).toBeDefined();
 
     const result5 = await api.findAllWorkerRates({ limit: 0 });
     expect(result5).toBeDefined();
@@ -285,7 +251,6 @@ describe('WorkerRatesModule (e2e)', () => {
 
   it('GET /worker-rates/:id', async () => {
     const newItem: CreateWorkerRatesRequest = {
-      workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
       effectiveDate: faker.date.recent(),
     };
@@ -300,7 +265,6 @@ describe('WorkerRatesModule (e2e)', () => {
 
   it('PATCH /worker-rates/:id', async () => {
     const newItem: CreateWorkerRatesRequest = {
-      workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
       effectiveDate: faker.date.recent(),
     };
@@ -309,7 +273,6 @@ describe('WorkerRatesModule (e2e)', () => {
     });
 
     const updatedClient: UpdateWorkerRatesRequest = {
-      workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
       effectiveDate: faker.date.recent(),
     };
@@ -320,7 +283,6 @@ describe('WorkerRatesModule (e2e)', () => {
 
     expect(result).toBeDefined();
     expect(result.id).toEqual(item.id);
-    expect(result.workerId).toEqual(updatedClient.workerId);
     expect(result.rate).toEqual(updatedClient.rate);
     expect(result.effectiveDate).toBeDefined();
     expect(result.createdAt).toBeDefined();
@@ -329,7 +291,6 @@ describe('WorkerRatesModule (e2e)', () => {
 
   it('DELETE /worker-rates/:id', async () => {
     const newItem: CreateWorkerRatesRequest = {
-      workerId: baseWorker.id,
       rate: faker.number.int({ min: 0, max: 100 }),
       effectiveDate: faker.date.recent(),
     };

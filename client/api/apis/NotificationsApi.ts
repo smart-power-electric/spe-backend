@@ -41,8 +41,10 @@ export interface CreateNotificationRequest {
 export interface FindAllNotificationRequest {
     limit?: number;
     offset?: number;
+    sortOrder?: FindAllNotificationSortOrderEnum;
     clientId?: string;
     invoiceId?: string;
+    sortField?: FindAllNotificationSortFieldEnum;
 }
 
 export interface FindOneNotificationRequest {
@@ -51,6 +53,10 @@ export interface FindOneNotificationRequest {
 
 export interface RemoveNotificationRequest {
     id: string;
+}
+
+export interface SendTestEmailRequest {
+    to: string;
 }
 
 export interface UpdateNotificationRequest {
@@ -113,12 +119,20 @@ export class NotificationsApi extends runtime.BaseAPI {
             queryParameters['offset'] = requestParameters['offset'];
         }
 
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
         if (requestParameters['clientId'] != null) {
             queryParameters['clientId'] = requestParameters['clientId'];
         }
 
         if (requestParameters['invoiceId'] != null) {
             queryParameters['invoiceId'] = requestParameters['invoiceId'];
+        }
+
+        if (requestParameters['sortField'] != null) {
+            queryParameters['sortField'] = requestParameters['sortField'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -206,6 +220,36 @@ export class NotificationsApi extends runtime.BaseAPI {
 
     /**
      */
+    async sendTestEmailRaw(requestParameters: SendTestEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['to'] == null) {
+            throw new runtime.RequiredError(
+                'to',
+                'Required parameter "to" was null or undefined when calling sendTestEmail().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/v1/notifications/email-test/{to}`.replace(`{${"to"}}`, encodeURIComponent(String(requestParameters['to']))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async sendTestEmail(requestParameters: SendTestEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.sendTestEmailRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
     async updateNotificationRaw(requestParameters: UpdateNotificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NotificationsResponse>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
@@ -246,3 +290,24 @@ export class NotificationsApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const FindAllNotificationSortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type FindAllNotificationSortOrderEnum = typeof FindAllNotificationSortOrderEnum[keyof typeof FindAllNotificationSortOrderEnum];
+/**
+ * @export
+ */
+export const FindAllNotificationSortFieldEnum = {
+    Id: 'id',
+    InvoiceId: 'invoiceId',
+    ClientId: 'clientId',
+    Status: 'status',
+    CreatedAt: 'createdAt',
+    UpdatedAt: 'updatedAt'
+} as const;
+export type FindAllNotificationSortFieldEnum = typeof FindAllNotificationSortFieldEnum[keyof typeof FindAllNotificationSortFieldEnum];

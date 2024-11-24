@@ -124,13 +124,13 @@ export class ProjectResponse implements ProjectRow {
   })
   location: string | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Start date of the project',
     nullable: true,
   })
   startDate: Date | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'End date of the project',
     nullable: true,
   })

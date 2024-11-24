@@ -124,6 +124,7 @@ describe('UserModule (e2e)', () => {
       city: faker.location.city(),
       state: faker.location.state(),
       zip: faker.location.zipCode(),
+      tin: faker.number.int({ min: 1000000, max: 9999999 }).toString(),
       createdAt: new Date(),
       updatedAt: null,
     });
@@ -160,23 +161,7 @@ describe('UserModule (e2e)', () => {
       (await app
         .get<StageRepository>(StageRepository)
         .insert(newContext(), baseStage)) ?? baseStage;
-    baseWorker = new Worker({
-      id: undefined,
-      name: faker.person.fullName(),
-      contact: faker.person.fullName(),
-      address: faker.location.streetAddress(),
-      phone: faker.phone.number({ style: 'international' }),
-      socialSecurity: faker.number.int().toString(),
-      startDate: faker.date.recent(),
-      endDate: faker.date.future(),
-      speciality: faker.lorem.words(),
-      createdAt: new Date(),
-      updatedAt: null,
-    });
-    baseWorker =
-      (await app
-        .get<WorkerRepository>(WorkerRepository)
-        .insert(newContext(), baseWorker)) ?? baseWorker;
+    
     baseInvoice = new Invoices({
       id: undefined,
       date: new Date(),

@@ -1,6 +1,6 @@
+apis/AppApi.ts
 apis/AuthenticationApi.ts
 apis/ClientApi.ts
-apis/DefaultApi.ts
 apis/InvoicesApi.ts
 apis/MaterialApi.ts
 apis/NotificationsApi.ts
@@ -10,6 +10,7 @@ apis/ServiceApi.ts
 apis/ServiceSheetsApi.ts
 apis/StageApi.ts
 apis/UserApi.ts
+apis/VersionApi.ts
 apis/WorkerApi.ts
 apis/WorkerAssignmentApi.ts
 apis/WorkerPaymentsApi.ts

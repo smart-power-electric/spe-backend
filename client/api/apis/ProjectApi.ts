@@ -42,6 +42,8 @@ export interface FindAllProjectRequest {
     limit?: number;
     offset?: number;
     clientId?: string;
+    sortOrder?: FindAllProjectSortOrderEnum;
+    sortField?: FindAllProjectSortFieldEnum;
 }
 
 export interface FindOneProjectRequest {
@@ -114,6 +116,14 @@ export class ProjectApi extends runtime.BaseAPI {
 
         if (requestParameters['clientId'] != null) {
             queryParameters['clientId'] = requestParameters['clientId'];
+        }
+
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
+        if (requestParameters['sortField'] != null) {
+            queryParameters['sortField'] = requestParameters['sortField'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -241,3 +251,27 @@ export class ProjectApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const FindAllProjectSortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type FindAllProjectSortOrderEnum = typeof FindAllProjectSortOrderEnum[keyof typeof FindAllProjectSortOrderEnum];
+/**
+ * @export
+ */
+export const FindAllProjectSortFieldEnum = {
+    Id: 'id',
+    ClientId: 'clientId',
+    Name: 'name',
+    Description: 'description',
+    Location: 'location',
+    StartDate: 'startDate',
+    EndDate: 'endDate',
+    CreatedAt: 'createdAt',
+    UpdatedAt: 'updatedAt'
+} as const;
+export type FindAllProjectSortFieldEnum = typeof FindAllProjectSortFieldEnum[keyof typeof FindAllProjectSortFieldEnum];

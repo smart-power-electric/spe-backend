@@ -140,13 +140,13 @@ export class WorkerResponse implements WorkerRow {
     description: 'Id of the worker',
     nullable: false,
   })
+  id: string;
   @ApiProperty({
     type: 'string',
     description: 'rate id of the worker',
     nullable: false,
   })
   workerRatesId: string | null;
-  id: string;
   @ApiProperty({
     type: 'string',
     description: 'Name of the worker',

@@ -20,12 +20,6 @@ import { mapValues } from '../runtime';
  */
 export interface UpdateWorkerRatesRequest {
     /**
-     * Name of the workerRates
-     * @type {string}
-     * @memberof UpdateWorkerRatesRequest
-     */
-    workerId?: string | null;
-    /**
      * Rate of the workerRates
      * @type {number}
      * @memberof UpdateWorkerRatesRequest
@@ -56,7 +50,6 @@ export function UpdateWorkerRatesRequestFromJSONTyped(json: any, ignoreDiscrimin
     }
     return {
         
-        'workerId': json['workerId'] == null ? undefined : json['workerId'],
         'rate': json['rate'] == null ? undefined : json['rate'],
         'effectiveDate': json['effectiveDate'] == null ? undefined : (new Date(json['effectiveDate'])),
     };
@@ -73,7 +66,6 @@ export function UpdateWorkerRatesRequestFromJSONTyped(json: any, ignoreDiscrimin
 
     return {
         
-        'workerId': value['workerId'],
         'rate': value['rate'],
         'effectiveDate': value['effectiveDate'] == null ? undefined : ((value['effectiveDate'] as any).toISOString()),
     };

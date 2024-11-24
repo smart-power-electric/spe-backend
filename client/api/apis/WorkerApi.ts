@@ -42,6 +42,8 @@ export interface FindAllWorkerRequest {
     limit?: number;
     offset?: number;
     name?: string;
+    sortOrder?: FindAllWorkerSortOrderEnum;
+    sortField?: FindAllWorkerSortFieldEnum;
 }
 
 export interface FindOneWorkerRequest {
@@ -114,6 +116,14 @@ export class WorkerApi extends runtime.BaseAPI {
 
         if (requestParameters['name'] != null) {
             queryParameters['name'] = requestParameters['name'];
+        }
+
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
+        if (requestParameters['sortField'] != null) {
+            queryParameters['sortField'] = requestParameters['sortField'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -241,3 +251,30 @@ export class WorkerApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const FindAllWorkerSortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type FindAllWorkerSortOrderEnum = typeof FindAllWorkerSortOrderEnum[keyof typeof FindAllWorkerSortOrderEnum];
+/**
+ * @export
+ */
+export const FindAllWorkerSortFieldEnum = {
+    Id: 'id',
+    WorkerRatesId: 'workerRatesId',
+    Name: 'name',
+    Contact: 'contact',
+    Address: 'address',
+    Phone: 'phone',
+    SocialSecurity: 'socialSecurity',
+    StartDate: 'startDate',
+    EndDate: 'endDate',
+    Speciality: 'speciality',
+    CreatedAt: 'createdAt',
+    UpdatedAt: 'updatedAt'
+} as const;
+export type FindAllWorkerSortFieldEnum = typeof FindAllWorkerSortFieldEnum[keyof typeof FindAllWorkerSortFieldEnum];

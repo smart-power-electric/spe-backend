@@ -91,6 +91,7 @@ describe('InvoicesModule (e2e)', () => {
       city: faker.location.city(),
       state: faker.location.state(),
       zip: faker.location.zipCode(),
+      tin: faker.number.int({ min: 1000000, max: 9999999 }).toString(),
       createdAt: new Date(),
       updatedAt: null,
     });

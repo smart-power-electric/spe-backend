@@ -41,7 +41,9 @@ export interface CreateServiceOperationRequest {
 export interface FindAllServiceRequest {
     limit?: number;
     offset?: number;
+    sortOrder?: FindAllServiceSortOrderEnum;
     name?: string;
+    sortField?: FindAllServiceSortFieldEnum;
 }
 
 export interface FindOneServiceRequest {
@@ -112,8 +114,16 @@ export class ServiceApi extends runtime.BaseAPI {
             queryParameters['offset'] = requestParameters['offset'];
         }
 
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
         if (requestParameters['name'] != null) {
             queryParameters['name'] = requestParameters['name'];
+        }
+
+        if (requestParameters['sortField'] != null) {
+            queryParameters['sortField'] = requestParameters['sortField'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -241,3 +251,24 @@ export class ServiceApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const FindAllServiceSortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type FindAllServiceSortOrderEnum = typeof FindAllServiceSortOrderEnum[keyof typeof FindAllServiceSortOrderEnum];
+/**
+ * @export
+ */
+export const FindAllServiceSortFieldEnum = {
+    Id: 'id',
+    Name: 'name',
+    Description: 'description',
+    UnitCost: 'unitCost',
+    CreatedAt: 'createdAt',
+    UpdatedAt: 'updatedAt'
+} as const;
+export type FindAllServiceSortFieldEnum = typeof FindAllServiceSortFieldEnum[keyof typeof FindAllServiceSortFieldEnum];

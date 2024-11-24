@@ -43,6 +43,8 @@ export interface FindAllWorkerPaymentsRequest {
     offset?: number;
     workerId?: string;
     serviceSheetId?: string;
+    sortOrder?: FindAllWorkerPaymentsSortOrderEnum;
+    sortField?: FindAllWorkerPaymentsSortFieldEnum;
 }
 
 export interface FindOneWorkerPaymentsRequest {
@@ -119,6 +121,14 @@ export class WorkerPaymentsApi extends runtime.BaseAPI {
 
         if (requestParameters['serviceSheetId'] != null) {
             queryParameters['serviceSheetId'] = requestParameters['serviceSheetId'];
+        }
+
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
+        if (requestParameters['sortField'] != null) {
+            queryParameters['sortField'] = requestParameters['sortField'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -246,3 +256,26 @@ export class WorkerPaymentsApi extends runtime.BaseAPI {
     }
 
 }
+
+/**
+ * @export
+ */
+export const FindAllWorkerPaymentsSortOrderEnum = {
+    Asc: 'ASC',
+    Desc: 'DESC'
+} as const;
+export type FindAllWorkerPaymentsSortOrderEnum = typeof FindAllWorkerPaymentsSortOrderEnum[keyof typeof FindAllWorkerPaymentsSortOrderEnum];
+/**
+ * @export
+ */
+export const FindAllWorkerPaymentsSortFieldEnum = {
+    Id: 'id',
+    WorkerId: 'workerId',
+    ServiceSheetId: 'serviceSheetId',
+    TotalPayment: 'totalPayment',
+    PaymentDate: 'paymentDate',
+    IsExtra: 'isExtra',
+    CreatedAt: 'createdAt',
+    UpdatedAt: 'updatedAt'
+} as const;
+export type FindAllWorkerPaymentsSortFieldEnum = typeof FindAllWorkerPaymentsSortFieldEnum[keyof typeof FindAllWorkerPaymentsSortFieldEnum];

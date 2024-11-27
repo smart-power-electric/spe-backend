@@ -157,7 +157,7 @@ export class StageResponse implements StageRow {
   })
   startDate: Date | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'End date of the stage',
     nullable: true,
   })

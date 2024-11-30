@@ -12,7 +12,9 @@ import {
   Configuration,
   CreateProjectRequest,
   ProjectApi,
+  StageApi,
   UpdateProjectRequest,
+  UpsertStageRequest,
 } from '../client/api';
 import { HttpAdapterHost } from '@nestjs/core';
 import { Stage } from '../src/stage/core/stage.entity';
@@ -33,6 +35,7 @@ import { Worker } from '../src/worker/core/worker.entity';
 import { Invoices } from '../src/invoices/core/invoices.entity';
 import { InvoicesRepository } from '../src/invoices/core/invoices.interface';
 import { DrizzleInvoicesRepository } from '../src/invoices/infrastructure/invoices.repository';
+import { CreateStageRequest } from '../src/stage/infrastructure/stage.swagger';
 
 describe('ProjectModule (e2e)', () => {
   const jestConsole = console;
@@ -40,6 +43,7 @@ describe('ProjectModule (e2e)', () => {
   let dbContainer: StartedPostgreSqlContainer;
   let appPort = 0;
   let api: ProjectApi;
+  let apiStage: StageApi;
   let baseStage: Stage;
   let baseProject: Project;
   let baseClient: Client;
@@ -96,6 +100,7 @@ describe('ProjectModule (e2e)', () => {
     const basePath = `http://localhost:${appPort}`;
     const config = new Configuration({ basePath });
     api = new ProjectApi(config);
+    apiStage = new StageApi(config);
 
     baseClient = new Client({
       id: undefined,
@@ -144,7 +149,7 @@ describe('ProjectModule (e2e)', () => {
       (await app
         .get<StageRepository>(StageRepository)
         .insert(newContext(), baseStage)) ?? baseStage;
-    
+
     baseInvoice = new Invoices({
       id: undefined,
       date: new Date(),
@@ -324,5 +329,91 @@ describe('ProjectModule (e2e)', () => {
         expect(error.statusCode).toEqual(404);
       }
     }
+  });
+  it('POST /project/:id/stage/bulk', async () => {
+    const newItem: CreateProjectRequest = {
+      clientId: baseClient.id ?? '',
+      name: faker.person.fullName(),
+      description: faker.lorem.words(),
+      location: faker.location.city(),
+      startDate: new Date().toISOString(),
+      endDate: new Date().toISOString(),
+    };
+    const item = await api.createProject({
+      createProjectRequest: newItem,
+    });
+
+    const insertStage: CreateStageRequest = {
+      name: faker.person.fullName(),
+      description: faker.lorem.words(),
+      projectId: item.id,
+      percentage: faker.number.int({ min: 0, max: 100 }),
+      adjustedPercentage: faker.number.int({ min: 0, max: 100 }),
+      startDate: faker.date.recent(),
+      endDate: faker.date.future(),
+    };
+    const itemUpdateStage = await apiStage.createStage({
+      createStageRequest: insertStage,
+    });
+    const itemDeleteStage = await apiStage.createStage({
+      createStageRequest: insertStage,
+    });
+
+    const newStage: UpsertStageRequest = {
+      id: null,
+      projectId: item.id,
+      name: faker.word.noun(),
+      description: faker.lorem.words(),
+      percentage: faker.number.int({ min: 0, max: 100 }),
+      adjustedPercentage: faker.number.int({ min: 0, max: 100 }),
+      startDate: faker.date.past(),
+      endDate: faker.date.future(),
+    };
+
+    const updateStage: UpsertStageRequest = {
+      id: itemUpdateStage.id,
+      projectId: item.id,
+      name: faker.word.noun(),
+      description: faker.lorem.words(),
+      percentage: faker.number.int({ min: 0, max: 100 }),
+      adjustedPercentage: faker.number.int({ min: 0, max: 100 }),
+      startDate: faker.date.past(),
+      endDate: faker.date.future(),
+    };
+
+    const response = await api.updateBulkStage({
+      id: item.id ?? '',
+      upsertStageRequest: [newStage, updateStage],
+    });
+
+    expect(response).toBeDefined();
+    expect(response.length).toEqual(2);
+
+    const inserted = response.find((x) => x.name === newStage.name);
+    const updated = response.find((x) => x.id === updateStage.id);
+
+    expect(inserted).toBeDefined();
+    expect(inserted!.id).toBeDefined();
+    expect(inserted!.projectId).toEqual(item.id);
+    expect(inserted!.name).toEqual(newStage.name);
+    expect(inserted!.description).toEqual(newStage.description);
+    expect(inserted!.percentage).toEqual(newStage.percentage);
+    expect(inserted!.adjustedPercentage).toEqual(newStage.adjustedPercentage);
+    expect(inserted!.startDate).toBeDefined();
+    expect(inserted!.endDate).toBeDefined();
+    expect(inserted!.createdAt).toBeDefined();
+    expect(inserted!.updatedAt).toBeNull();
+
+    expect(updated).toBeDefined();
+    expect(updated!.id).toEqual(updateStage.id);
+    expect(updated!.projectId).toEqual(item.id);
+    expect(updated!.name).toEqual(updateStage.name);
+    expect(updated!.description).toEqual(updateStage.description);
+    expect(updated!.percentage).toEqual(updateStage.percentage);
+    expect(updated!.adjustedPercentage).toEqual(updateStage.adjustedPercentage);
+    expect(updated!.startDate).toBeDefined();
+    expect(updated!.endDate).toBeDefined();
+    expect(updated!.createdAt).toBeDefined();
+    expect(updated!.updatedAt).toBeDefined();
   });
 });

@@ -19,7 +19,9 @@ import type {
   CreateProjectRequest,
   ProjectPaginationResponse,
   ProjectResponse,
+  StageResponse,
   UpdateProjectRequest,
+  UpsertStageRequest,
 } from '../models/index';
 import {
     ApplicationExceptionResponseFromJSON,
@@ -30,8 +32,12 @@ import {
     ProjectPaginationResponseToJSON,
     ProjectResponseFromJSON,
     ProjectResponseToJSON,
+    StageResponseFromJSON,
+    StageResponseToJSON,
     UpdateProjectRequestFromJSON,
     UpdateProjectRequestToJSON,
+    UpsertStageRequestFromJSON,
+    UpsertStageRequestToJSON,
 } from '../models/index';
 
 export interface CreateProjectOperationRequest {
@@ -52,6 +58,11 @@ export interface FindOneProjectRequest {
 
 export interface RemoveProjectRequest {
     id: string;
+}
+
+export interface UpdateBulkStageRequest {
+    id: string;
+    upsertStageRequest: Array<UpsertStageRequest>;
 }
 
 export interface UpdateProjectOperationRequest {
@@ -207,6 +218,47 @@ export class ProjectApi extends runtime.BaseAPI {
      */
     async removeProject(requestParameters: RemoveProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.removeProjectRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async updateBulkStageRaw(requestParameters: UpdateBulkStageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<StageResponse>>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling updateBulkStage().'
+            );
+        }
+
+        if (requestParameters['upsertStageRequest'] == null) {
+            throw new runtime.RequiredError(
+                'upsertStageRequest',
+                'Required parameter "upsertStageRequest" was null or undefined when calling updateBulkStage().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/v1/project/{id}/stages/updates`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters['upsertStageRequest']!.map(UpsertStageRequestToJSON),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(StageResponseFromJSON));
+    }
+
+    /**
+     */
+    async updateBulkStage(requestParameters: UpdateBulkStageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<StageResponse>> {
+        const response = await this.updateBulkStageRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

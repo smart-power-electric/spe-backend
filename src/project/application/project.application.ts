@@ -135,29 +135,25 @@ export class ProjectApplication implements ProjectUseCases {
     }
     const stages = await this.stageRepository.getByProjectId(ctx, projectId);
     const deleteRows = stages.filter((x) => !rows.find((y) => y.id === x.id));
-    const insertRows = rows.filter((x) => !x.id);
+    const insertRows = rows
+      .filter((x) => !x.id)
+      .map((x) => {
+        return createStageSchema.parse(x);
+      });
     const updateRows = rows
       .filter((x) => x.id)
       .map((x) => {
         const oldRow = stages.filter((y) => x.id == y.id)[0];
-        const { id, projectId, ...data } = x;
+        const { id, projectId, ...data } = UpdateStageSchema.parse(x);
         return { ...oldRow, ...data, updatedAt: new Date() };
       });
-
-    insertRows.forEach((x) => {
-      createStageSchema.parse(x);
-    });
-
-    updateRows.forEach((x) => {
-      UpdateStageSchema.parse(x);
-    });
 
     const deletePromises = deleteRows.map((x) =>
       this.stageRepository.delete(ctx, x.id),
     );
 
     const insertPromises = insertRows.map((x) =>
-      this.stageRepository.insert(ctx, CreateDtoToStage(x as CreateStageDto)),
+      this.stageRepository.insert(ctx, CreateDtoToStage(x)),
     );
 
     const updatePromises = updateRows.map((x) =>

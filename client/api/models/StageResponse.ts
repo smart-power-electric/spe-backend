@@ -63,10 +63,10 @@ export interface StageResponse {
     startDate: Date | null;
     /**
      * End date of the stage
-     * @type {string}
+     * @type {Date}
      * @memberof StageResponse
      */
-    endDate: string | null;
+    endDate: Date | null;
     /**
      * Created at of the stage
      * @type {string}
@@ -115,7 +115,7 @@ export function StageResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'percentage': json['percentage'],
         'adjustedPercentage': json['adjustedPercentage'],
         'startDate': (json['startDate'] == null ? null : new Date(json['startDate'])),
-        'endDate': json['endDate'],
+        'endDate': (json['endDate'] == null ? null : new Date(json['endDate'])),
         'createdAt': json['createdAt'],
         'updatedAt': json['updatedAt'],
     };
@@ -139,7 +139,7 @@ export function StageResponseFromJSONTyped(json: any, ignoreDiscriminator: boole
         'percentage': value['percentage'],
         'adjustedPercentage': value['adjustedPercentage'],
         'startDate': (value['startDate'] == null ? null : (value['startDate'] as any).toISOString()),
-        'endDate': value['endDate'],
+        'endDate': (value['endDate'] == null ? null : (value['endDate'] as any).toISOString()),
         'createdAt': value['createdAt'],
         'updatedAt': value['updatedAt'],
     };

@@ -71,6 +71,7 @@ models/UpdateWorkerAssignmentRequest.ts
 models/UpdateWorkerPaymentsRequest.ts
 models/UpdateWorkerRatesRequest.ts
 models/UpdateWorkerRequest.ts
+models/UpsertStageRequest.ts
 models/UserPaginationResponse.ts
 models/UserResponse.ts
 models/VersionResponse.ts

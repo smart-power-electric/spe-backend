@@ -54,6 +54,7 @@ export * from './UpdateWorkerAssignmentRequest';
 export * from './UpdateWorkerPaymentsRequest';
 export * from './UpdateWorkerRatesRequest';
 export * from './UpdateWorkerRequest';
+export * from './UpsertStageRequest';
 export * from './UserPaginationResponse';
 export * from './UserResponse';
 export * from './VersionResponse';

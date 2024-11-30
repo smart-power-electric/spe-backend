@@ -69,9 +69,10 @@ export class StageApplication implements StageUseCases {
     if (!stage) {
       throw new NotFoundException(ctx, 'Stage not found');
     }
+    const { id: rowId, ...rowData } = row;
     const updatedStage = new Stage({
       ...stage,
-      ...row,
+      ...rowData,
     });
     const updated = await this.repository.update(ctx, id, updatedStage);
     if (!updated) {

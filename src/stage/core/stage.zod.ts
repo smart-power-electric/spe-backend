@@ -14,6 +14,7 @@ export const createStageSchema = z.object({
 });
 
 export const UpdateStageSchema = z.object({
+  id: z.string().optional().nullable().describe('ID of stage'),
   projectId: z.string().optional().nullable().describe('Project ID'),
   name: z.string().optional().nullable().describe('Name of stage'),
   description: z

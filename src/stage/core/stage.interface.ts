@@ -20,6 +20,7 @@ export interface StageRepository {
     total: number;
   }>;
   getById(ctx: Context, id: string): Promise<Stage | null>;
+  getByProjectId(ctx: Context, projectId: string): Promise<Stage[]>;
   update(ctx: Context, id: string, row: Stage): Promise<Stage | null>;
   delete(ctx: Context, id: string): Promise<Stage | null>;
 }

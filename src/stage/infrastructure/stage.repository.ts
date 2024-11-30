@@ -128,4 +128,20 @@ export class DrizzleStageRepository implements StageRepository {
       .execute();
     return result.map(RowToStage).at(0) ?? null;
   }
+  async getByProjectId(ctx: Context, projectId: string): Promise<Stage[]> {
+    this.logger.debug(
+      ctx,
+      DrizzleStageRepository.name,
+      'getByProjectId',
+      'Getting stages by project id',
+    );
+
+    const result = await this.db
+      .getDb()
+      .select()
+      .from(stages)
+      .where(eq(stages.projectId, projectId))
+      .execute();
+    return result.map(RowToStage);
+  }
 }

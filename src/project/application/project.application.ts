@@ -13,11 +13,17 @@ import {
   InternalErrorException,
   NotFoundException,
 } from 'src/common/core/exception';
+import { CreateStageDto, UpdateStageDto } from 'src/stage/core/stage.dto';
+import { Stage } from 'src/stage/core/stage.entity';
+import { StageRepository } from 'src/stage/core/stage.interface';
+import { createStageSchema, UpdateStageSchema } from 'src/stage/core/stage.zod';
+import { CreateDtoToStage } from 'src/stage/infrastructure/stage.mapper';
 
 @Injectable()
 export class ProjectApplication implements ProjectUseCases {
   constructor(
     @Inject(ProjectRepository) private readonly repository: ProjectRepository,
+    @Inject(StageRepository) private readonly stageRepository: StageRepository,
     @Inject(ILogger) private readonly logger: ILogger,
   ) {
     this.logger.init(ProjectApplication.name, 'info');
@@ -110,5 +116,60 @@ export class ProjectApplication implements ProjectUseCases {
       throw new InternalErrorException(ctx, 'Project not deleted');
     }
     return deleted;
+  }
+  async updateStageBulk(
+    ctx: Context,
+    projectId: string,
+    rows: UpdateStageDto[],
+  ): Promise<Stage[]> {
+    this.logger.debug(
+      ctx,
+      ProjectApplication.name,
+      'updateStageBulk',
+      'Updating stages',
+    );
+
+    const project = await this.repository.getById(ctx, projectId);
+    if (!project) {
+      throw new NotFoundException(ctx, 'Project not found');
+    }
+    const stages = await this.stageRepository.getByProjectId(ctx, projectId);
+    const deleteRows = stages.filter((x) => !rows.find((y) => y.id === x.id));
+    const insertRows = rows.filter((x) => !x.id);
+    const updateRows = rows
+      .filter((x) => x.id)
+      .map((x) => {
+        const oldRow = stages.filter((y) => x.id == y.id)[0];
+        const { id, projectId, ...data } = x;
+        return { ...oldRow, ...data, updatedAt: new Date() };
+      });
+
+    insertRows.forEach((x) => {
+      createStageSchema.parse(x);
+    });
+
+    updateRows.forEach((x) => {
+      UpdateStageSchema.parse(x);
+    });
+
+    const deletePromises = deleteRows.map((x) =>
+      this.stageRepository.delete(ctx, x.id),
+    );
+
+    const insertPromises = insertRows.map((x) =>
+      this.stageRepository.insert(ctx, CreateDtoToStage(x as CreateStageDto)),
+    );
+
+    const updatePromises = updateRows.map((x) =>
+      this.stageRepository.update(ctx, x.id, x),
+    );
+
+    await Promise.all([
+      ...insertPromises,
+      ...updatePromises,
+      ...deletePromises,
+    ]);
+
+    return this.stageRepository.getByProjectId(ctx, projectId);
   }
 }

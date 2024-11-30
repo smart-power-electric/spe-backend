@@ -37,6 +37,10 @@ import { ZodValidationPipe } from 'src/common/application/pipes/ZodValidationPip
 import { createProjectSchema, UpdateProjectSchema } from '../core/project.zod';
 import { ProjectKeys, ProjectKeysType } from '../core/project.entity';
 import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
+import {
+  StageResponse,
+  UpdateStageRequest,
+} from 'src/stage/infrastructure/stage.swagger';
 
 @ApiTags('project')
 @Controller('project')
@@ -195,5 +199,33 @@ export class ProjectController {
     const ctx = req.appContext;
     this.logger.info(ctx, ProjectController.name, 'remove', 'Deleting project');
     return this.application.delete(ctx, id);
+  }
+  @Post(':id/stages/updates')
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'Stage updates', type: [StageResponse] })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+    type: ApplicationExceptionResponse,
+  })
+  @ApiBody({ type: [UpdateStageRequest] })
+  @ApiParam({ name: 'id', type: String })
+  updateBulkStage(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() rows: UpdateStageRequest[],
+  ): Promise<StageResponse[]> {
+    const ctx = req.appContext;
+    this.logger.info(
+      ctx,
+      ProjectController.name,
+      'updateBulkStage',
+      'Updating stages',
+    );
+    return this.application.updateStageBulk(ctx, id, rows);
   }
 }

@@ -39,7 +39,7 @@ import { ProjectKeys, ProjectKeysType } from '../core/project.entity';
 import { CustomValidateEnumPipe } from 'src/common/application/pipes/CustomValidateEnumPipe';
 import {
   StageResponse,
-  UpdateStageRequest,
+  UpsertStageRequest,
 } from 'src/stage/infrastructure/stage.swagger';
 
 @ApiTags('project')
@@ -212,12 +212,12 @@ export class ProjectController {
     description: 'Internal server error',
     type: ApplicationExceptionResponse,
   })
-  @ApiBody({ type: [UpdateStageRequest] })
+  @ApiBody({ type: [UpsertStageRequest] })
   @ApiParam({ name: 'id', type: String })
   updateBulkStage(
     @Req() req: Request,
     @Param('id') id: string,
-    @Body() rows: UpdateStageRequest[],
+    @Body() rows: UpsertStageRequest[],
   ): Promise<StageResponse[]> {
     const ctx = req.appContext;
     this.logger.info(

@@ -4,9 +4,10 @@ import { DrizzleProjectRepository } from './infrastructure/project.repository';
 import { ProjectRepository, ProjectUseCases } from './core/project.interface';
 import { ProjectController } from './infrastructure/project.controller';
 import { CommonModule } from 'src/common/common.module';
+import { StageModule } from 'src/stage/stage.module';
 
 @Module({
-  imports: [CommonModule],
+  imports: [CommonModule, StageModule],
   controllers: [ProjectController],
   providers: [
     {

@@ -18,5 +18,6 @@ import { CommonModule } from 'src/common/common.module';
       useClass: StageApplication,
     },
   ],
+  exports: [StageUseCases, StageRepository],
 })
 export class StageModule {}

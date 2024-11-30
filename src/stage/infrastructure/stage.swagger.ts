@@ -113,6 +113,19 @@ export class UpdateStageRequest implements UpdateStageDto {
   }
 }
 
+export class UpsertStageRequest extends UpdateStageRequest {
+  @ApiProperty({
+    type: 'string',
+    description: 'id of the stage',
+    nullable: true,
+  })
+  id: string | null;
+
+  constructor(data: UpdateStageDto & { id: string }) {
+    super(data);
+    this.id = data.id;
+  }
+}
 export class StageResponse implements StageRow {
   @ApiProperty({
     type: 'string',

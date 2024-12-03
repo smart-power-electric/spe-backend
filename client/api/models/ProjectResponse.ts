@@ -63,16 +63,16 @@ export interface ProjectResponse {
     id: string;
     /**
      * Created at of the project
-     * @type {string}
+     * @type {Date}
      * @memberof ProjectResponse
      */
-    createdAt: string | null;
+    createdAt: Date | null;
     /**
      * Updated at of the project
-     * @type {string}
+     * @type {Date}
      * @memberof ProjectResponse
      */
-    updatedAt: string | null;
+    updatedAt: Date | null;
 }
 
 /**
@@ -108,8 +108,8 @@ export function ProjectResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         'startDate': (json['startDate'] == null ? null : new Date(json['startDate'])),
         'endDate': (json['endDate'] == null ? null : new Date(json['endDate'])),
         'id': json['id'],
-        'createdAt': json['createdAt'],
-        'updatedAt': json['updatedAt'],
+        'createdAt': (json['createdAt'] == null ? null : new Date(json['createdAt'])),
+        'updatedAt': (json['updatedAt'] == null ? null : new Date(json['updatedAt'])),
     };
 }
 
@@ -131,8 +131,8 @@ export function ProjectResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         'startDate': (value['startDate'] == null ? null : (value['startDate'] as any).toISOString()),
         'endDate': (value['endDate'] == null ? null : (value['endDate'] as any).toISOString()),
         'id': value['id'],
-        'createdAt': value['createdAt'],
-        'updatedAt': value['updatedAt'],
+        'createdAt': (value['createdAt'] == null ? null : (value['createdAt'] as any).toISOString()),
+        'updatedAt': (value['updatedAt'] == null ? null : (value['updatedAt'] as any).toISOString()),
     };
 }
 

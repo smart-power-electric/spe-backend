@@ -45,16 +45,16 @@ export interface CreateProjectRequest {
     location: string | null;
     /**
      * Start date of the project
-     * @type {string}
+     * @type {Date}
      * @memberof CreateProjectRequest
      */
-    startDate: string | null;
+    startDate: Date | null;
     /**
      * End date of the project
-     * @type {string}
+     * @type {Date}
      * @memberof CreateProjectRequest
      */
-    endDate: string | null;
+    endDate: Date | null;
 }
 
 /**
@@ -84,8 +84,8 @@ export function CreateProjectRequestFromJSONTyped(json: any, ignoreDiscriminator
         'name': json['name'],
         'description': json['description'],
         'location': json['location'],
-        'startDate': json['startDate'],
-        'endDate': json['endDate'],
+        'startDate': (json['startDate'] == null ? null : new Date(json['startDate'])),
+        'endDate': (json['endDate'] == null ? null : new Date(json['endDate'])),
     };
 }
 
@@ -104,8 +104,8 @@ export function CreateProjectRequestFromJSONTyped(json: any, ignoreDiscriminator
         'name': value['name'],
         'description': value['description'],
         'location': value['location'],
-        'startDate': value['startDate'],
-        'endDate': value['endDate'],
+        'startDate': (value['startDate'] == null ? null : (value['startDate'] as any).toISOString()),
+        'endDate': (value['endDate'] == null ? null : (value['endDate'] as any).toISOString()),
     };
 }
 

@@ -45,16 +45,16 @@ export interface UpdateProjectRequest {
     location?: string | null;
     /**
      * Start date of the project
-     * @type {string}
+     * @type {Date}
      * @memberof UpdateProjectRequest
      */
-    startDate?: string | null;
+    startDate?: Date | null;
     /**
      * End date of the project
-     * @type {string}
+     * @type {Date}
      * @memberof UpdateProjectRequest
      */
-    endDate?: string | null;
+    endDate?: Date | null;
 }
 
 /**
@@ -78,8 +78,8 @@ export function UpdateProjectRequestFromJSONTyped(json: any, ignoreDiscriminator
         'name': json['name'] == null ? undefined : json['name'],
         'description': json['description'] == null ? undefined : json['description'],
         'location': json['location'] == null ? undefined : json['location'],
-        'startDate': json['startDate'] == null ? undefined : json['startDate'],
-        'endDate': json['endDate'] == null ? undefined : json['endDate'],
+        'startDate': json['startDate'] == null ? undefined : (new Date(json['startDate'])),
+        'endDate': json['endDate'] == null ? undefined : (new Date(json['endDate'])),
     };
 }
 
@@ -98,8 +98,8 @@ export function UpdateProjectRequestFromJSONTyped(json: any, ignoreDiscriminator
         'name': value['name'],
         'description': value['description'],
         'location': value['location'],
-        'startDate': value['startDate'],
-        'endDate': value['endDate'],
+        'startDate': value['startDate'] == null ? undefined : ((value['startDate'] as any).toISOString()),
+        'endDate': value['endDate'] == null ? undefined : ((value['endDate'] as any).toISOString()),
     };
 }
 

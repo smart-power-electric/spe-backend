@@ -177,8 +177,8 @@ describe('ProjectModule (e2e)', () => {
       name: faker.person.fullName(),
       description: faker.lorem.words(),
       location: faker.location.city(),
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
+      startDate: new Date(),
+      endDate: new Date(),
     };
     const item = await api.createProject({
       createProjectRequest: newItem,
@@ -202,8 +202,8 @@ describe('ProjectModule (e2e)', () => {
       name: faker.person.fullName(),
       description: faker.lorem.words(),
       location: faker.location.city(),
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
+      startDate: new Date(),
+      endDate: new Date(),
     };
     const item = await api.createProject({
       createProjectRequest: newItem,
@@ -263,8 +263,8 @@ describe('ProjectModule (e2e)', () => {
       name: faker.person.fullName(),
       description: faker.lorem.words(),
       location: faker.location.city(),
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
+      startDate: new Date(),
+      endDate: new Date(),
     };
     const item = await api.createProject({
       createProjectRequest: newItem,
@@ -281,8 +281,8 @@ describe('ProjectModule (e2e)', () => {
       name: faker.person.fullName(),
       description: faker.lorem.words(),
       location: faker.location.city(),
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
+      startDate: new Date(),
+      endDate: new Date(),
     };
     const item = await api.createProject({
       createProjectRequest: newItem,
@@ -314,8 +314,8 @@ describe('ProjectModule (e2e)', () => {
       name: faker.person.fullName(),
       description: faker.lorem.words(),
       location: faker.location.city(),
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
+      startDate: new Date(),
+      endDate: new Date(),
     };
     const item = await api.createProject({
       createProjectRequest: newItem,
@@ -336,8 +336,8 @@ describe('ProjectModule (e2e)', () => {
       name: faker.person.fullName(),
       description: faker.lorem.words(),
       location: faker.location.city(),
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
+      startDate: new Date(),
+      endDate: new Date(),
     };
     const item = await api.createProject({
       createProjectRequest: newItem,

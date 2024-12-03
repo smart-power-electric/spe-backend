@@ -1,7 +1,7 @@
-import { ProjectRow } from './project.repository';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CreateProjectDto, UpdateProjectDto } from '../core/project.dto';
 import { Project } from '../core/project.entity';
+import { ProjectRow } from './project.repository';
 
 export class CreateProjectRequest implements CreateProjectDto {
   @ApiProperty({
@@ -29,13 +29,13 @@ export class CreateProjectRequest implements CreateProjectDto {
   })
   location: string | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Start date of the project',
     nullable: true,
   })
   startDate: Date | null;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'End date of the project',
     nullable: true,
   })
@@ -77,13 +77,13 @@ export class UpdateProjectRequest implements UpdateProjectDto {
   })
   location?: string | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: Date,
     description: 'Start date of the project',
     nullable: true,
   })
   startDate?: Date | null;
   @ApiPropertyOptional({
-    type: 'string',
+    type: Date,
     description: 'End date of the project',
     nullable: true,
   })
@@ -142,13 +142,13 @@ export class ProjectResponse implements ProjectRow {
   })
   id: string;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Created at of the project',
     nullable: true,
   })
   createdAt: Date;
   @ApiProperty({
-    type: 'string',
+    type: Date,
     description: 'Updated at of the project',
     nullable: true,
   })

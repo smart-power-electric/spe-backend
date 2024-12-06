@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { WorkerRow } from './worker.repository';
 import { CreateWorkerDto, UpdateWorkerDto } from '../core/worker.dto';
 import { Worker } from '../core/worker.entity';
+import { WorkerRow } from './worker.repository';
 
 export class CreateWorkerRequest implements CreateWorkerDto {
   @ApiProperty({
@@ -144,7 +144,7 @@ export class WorkerResponse implements WorkerRow {
   @ApiProperty({
     type: 'string',
     description: 'rate id of the worker',
-    nullable: false,
+    nullable: true,
   })
   workerRatesId: string | null;
   @ApiProperty({
